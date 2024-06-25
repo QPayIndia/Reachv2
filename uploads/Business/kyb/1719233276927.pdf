@@ -1,0 +1,379 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jun 19, 2024 at 09:48 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `cricscore`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `batters_record`
+--
+
+CREATE TABLE `batters_record` (
+  `batterid` int(11) NOT NULL,
+  `matchid` text NOT NULL,
+  `teamid` int(11) NOT NULL,
+  `playerid` int(11) NOT NULL,
+  `oppteamid` int(11) NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `run` int(4) NOT NULL DEFAULT 0,
+  `balls` int(4) NOT NULL DEFAULT 0,
+  `4s` int(3) NOT NULL DEFAULT 0,
+  `6s` int(3) NOT NULL DEFAULT 0,
+  `SR` decimal(10,0) NOT NULL DEFAULT 0,
+  `catch` int(11) NOT NULL DEFAULT 0,
+  `bowled` int(11) NOT NULL DEFAULT 0,
+  `isbatted` int(2) NOT NULL DEFAULT 0,
+  `runout` int(1) NOT NULL DEFAULT 0,
+  `isbatting` int(1) NOT NULL DEFAULT 0,
+  `batorder` varchar(1) DEFAULT NULL,
+  `isout` int(1) NOT NULL DEFAULT 0,
+  `isstrike` int(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bowlers_record`
+--
+
+CREATE TABLE `bowlers_record` (
+  `bowlerid` int(11) NOT NULL,
+  `matchid` int(11) DEFAULT 0,
+  `teamid` int(11) DEFAULT 0,
+  `oppteamid` int(11) DEFAULT 0,
+  `playerid` int(11) DEFAULT 0,
+  `name` varchar(50) DEFAULT NULL,
+  `overs` int(11) NOT NULL DEFAULT 0,
+  `maiden` int(11) NOT NULL DEFAULT 0,
+  `run` int(11) NOT NULL DEFAULT 0,
+  `balls` int(11) NOT NULL DEFAULT 0,
+  `wicket` int(11) NOT NULL DEFAULT 0,
+  `economy` int(11) NOT NULL DEFAULT 0,
+  `isbowling` int(11) NOT NULL DEFAULT 0,
+  `createdon` timestamp NOT NULL DEFAULT current_timestamp(),
+  `createdby` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `extras`
+--
+
+CREATE TABLE `extras` (
+  `id` int(11) NOT NULL,
+  `matchid` int(11) DEFAULT NULL,
+  `teamid` int(11) DEFAULT NULL,
+  `oppteamid` int(11) DEFAULT NULL,
+  `value` int(11) DEFAULT NULL,
+  `label` int(11) DEFAULT NULL,
+  `createdon` timestamp NOT NULL DEFAULT current_timestamp(),
+  `createdby` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fall_of_wickets`
+--
+
+CREATE TABLE `fall_of_wickets` (
+  `id` int(11) NOT NULL,
+  `matchid` int(11) NOT NULL,
+  `teamid` int(11) NOT NULL,
+  `oppteamid` int(11) NOT NULL,
+  `score` int(11) NOT NULL,
+  `overs` int(11) NOT NULL,
+  `createdon` timestamp NOT NULL DEFAULT current_timestamp(),
+  `createdby` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `match_config`
+--
+
+CREATE TABLE `match_config` (
+  `id` int(11) NOT NULL,
+  `matchid` int(11) NOT NULL,
+  `teamAid` int(11) NOT NULL,
+  `teamBid` int(11) NOT NULL,
+  `firstbatting` varchar(1) DEFAULT NULL,
+  `battingteam` varchar(2) NOT NULL,
+  `battingteamid` int(11) NOT NULL,
+  `bowlingteamid` int(11) NOT NULL,
+  `halftime` int(2) NOT NULL,
+  `ismatchfinished` int(1) DEFAULT 0,
+  `firstscore` int(11) NOT NULL,
+  `secondscore` int(11) NOT NULL,
+  `firstwicket` int(11) NOT NULL,
+  `secondwicket` int(11) NOT NULL,
+  `firstball` int(11) NOT NULL,
+  `secondball` int(11) NOT NULL,
+  `firstover` int(11) NOT NULL,
+  `secondover` int(11) NOT NULL,
+  `totalover` int(11) NOT NULL,
+  `firststriker` int(11) NOT NULL,
+  `firstnonstriker` int(11) NOT NULL,
+  `firstbowler` int(11) NOT NULL,
+  `secondstriker` int(11) NOT NULL,
+  `secondnonstriker` int(11) NOT NULL,
+  `secondbowler` int(11) NOT NULL,
+  `admin` int(11) NOT NULL,
+  `scorer` int(11) NOT NULL,
+  `createdon` timestamp NOT NULL DEFAULT current_timestamp(),
+  `createdby` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `match_master`
+--
+
+CREATE TABLE `match_master` (
+  `id` int(11) NOT NULL,
+  `tournament_id` int(11) DEFAULT NULL,
+  `teamAid` int(11) NOT NULL,
+  `teamBid` int(11) NOT NULL,
+  `teamAname` varchar(25) NOT NULL,
+  `teamBname` varchar(25) NOT NULL,
+  `matchType` int(10) NOT NULL,
+  `groundType` int(10) NOT NULL,
+  `pitchType` int(10) NOT NULL,
+  `ballType` int(10) NOT NULL,
+  `noOfOvers` int(11) NOT NULL,
+  `totalover` int(11) NOT NULL DEFAULT 0,
+  `firstbatting` varchar(1) DEFAULT NULL,
+  `groundName` varchar(25) NOT NULL,
+  `pitchLength` varchar(10) NOT NULL,
+  `gdimensions` varchar(100) NOT NULL,
+  `bowlingStyle` int(10) NOT NULL,
+  `tossTname` varchar(25) NOT NULL,
+  `tossTid` int(11) NOT NULL,
+  `toss` varchar(10) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `teamAscore` varchar(10) NOT NULL,
+  `teamBscore` varchar(10) NOT NULL,
+  `teamArun` int(11) NOT NULL,
+  `teamBrun` int(11) NOT NULL,
+  `teamAWicket` int(10) NOT NULL,
+  `teamBWicket` int(10) NOT NULL,
+  `admin` int(11) NOT NULL,
+  `scorer` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `players_history`
+--
+
+CREATE TABLE `players_history` (
+  `id` int(11) NOT NULL,
+  `matchid` int(11) NOT NULL,
+  `teamid` int(11) NOT NULL,
+  `playerid` int(11) NOT NULL,
+  `oppteamid` int(11) NOT NULL,
+  `createdon` datetime NOT NULL DEFAULT current_timestamp(),
+  `createdby` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `player_master`
+--
+
+CREATE TABLE `player_master` (
+  `id` int(11) NOT NULL,
+  `uid` varchar(255) DEFAULT NULL,
+  `name` varchar(25) NOT NULL,
+  `dob` date DEFAULT NULL,
+  `location` varchar(25) DEFAULT NULL,
+  `play_role` int(15) DEFAULT NULL,
+  `bat_style` int(15) DEFAULT NULL,
+  `bowl_style` int(15) DEFAULT NULL,
+  `phone` int(10) DEFAULT NULL,
+  `createdon` timestamp NOT NULL DEFAULT current_timestamp(),
+  `createdby` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `team_master`
+--
+
+CREATE TABLE `team_master` (
+  `id` int(11) NOT NULL,
+  `name` varchar(25) NOT NULL,
+  `profile` varchar(255) NOT NULL,
+  `location` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `team_players`
+--
+
+CREATE TABLE `team_players` (
+  `id` int(11) NOT NULL,
+  `teamid` int(11) NOT NULL,
+  `playerid` int(11) NOT NULL,
+  `oppteamid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `batters_record`
+--
+ALTER TABLE `batters_record`
+  ADD PRIMARY KEY (`batterid`);
+
+--
+-- Indexes for table `bowlers_record`
+--
+ALTER TABLE `bowlers_record`
+  ADD PRIMARY KEY (`bowlerid`);
+
+--
+-- Indexes for table `extras`
+--
+ALTER TABLE `extras`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fall_of_wickets`
+--
+ALTER TABLE `fall_of_wickets`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `match_config`
+--
+ALTER TABLE `match_config`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `match_master`
+--
+ALTER TABLE `match_master`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `players_history`
+--
+ALTER TABLE `players_history`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `player_master`
+--
+ALTER TABLE `player_master`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `team_master`
+--
+ALTER TABLE `team_master`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `team_players`
+--
+ALTER TABLE `team_players`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `batters_record`
+--
+ALTER TABLE `batters_record`
+  MODIFY `batterid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `bowlers_record`
+--
+ALTER TABLE `bowlers_record`
+  MODIFY `bowlerid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `extras`
+--
+ALTER TABLE `extras`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `fall_of_wickets`
+--
+ALTER TABLE `fall_of_wickets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `match_config`
+--
+ALTER TABLE `match_config`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `match_master`
+--
+ALTER TABLE `match_master`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `players_history`
+--
+ALTER TABLE `players_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `player_master`
+--
+ALTER TABLE `player_master`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `team_master`
+--
+ALTER TABLE `team_master`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `team_players`
+--
+ALTER TABLE `team_players`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
