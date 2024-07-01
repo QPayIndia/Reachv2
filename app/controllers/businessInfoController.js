@@ -14,6 +14,9 @@ const LoginModel = require("../models/LoginModel.js");
 const BusinessKycModel = require("../models/BusinessKycModel.js");
 const BusinessInfo = require("../models/BusinessInfoModel.js");
 const BusinessTimings = require("../models/BusinessTiming.js");
+const ProductModel = require("../models/productModel.js");
+const ServiceModel = require("../models/serviceModel.js");
+const BrochureModel = require("../models/brochureModel.js");
 
 exports.create = (req,res)=>{
     if(!req.body){
@@ -429,6 +432,156 @@ exports.getSubCategory = (req,res)=>{
   })
 }
 
+exports.addProduct = (req,res)=>{
+
+  const model = new ProductModel({
+    uid : req.body.uid,
+    productimg : req.body.productimg,
+    name : req.body.name,
+    description : req.body.description,
+    category : req.body.category,
+    businesstype : req.body.businesstype,
+    brandname : req.body.brandname,
+    origin : req.body.origin,
+    pricetype : req.body.pricetype,
+    price : req.body.price,
+    offerprice : req.body.offerprice,
+    units : req.body.units,
+    minprice : req.body.minprice,
+    maxprice : req.body.maxprice,
+    minqty : req.body.minqty,
+    maxqty : req.body.maxqty,
+    createdby : req.body.uid
+  })
+
+
+  ProductModel.create((model),(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+
+exports.getProducts = (req,res)=>{
+    
+  ProductModel.getData(req.body.uid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+exports.deleteProduct = (req,res)=>{
+    
+  ProductModel.deleteProduct(req.body.uid,req.body.productid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+exports.addService = (req,res)=>{
+
+  const model = new ServiceModel({
+    uid : req.body.uid,
+    serviceimg : req.body.serviceimg,
+    name : req.body.name,
+    
+    category : req.body.category,
+   
+    pricetype : req.body.pricetype,
+    price : req.body.price,
+    
+    units : req.body.units,
+    minprice : req.body.minprice,
+    maxprice : req.body.maxprice,
+   
+    createdby : req.body.uid
+  })
+
+
+  ServiceModel.create((model),(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+
+exports.getService = (req,res)=>{
+    
+  ServiceModel.getData(req.body.uid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+exports.deleteService = (req,res)=>{
+    
+  ServiceModel.deleteService(req.body.uid,req.body.serviceid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+
+exports.addBrochure = (req,res)=>{
+
+  const model = new BrochureModel({
+    uid : req.body.uid,
+    brochureimg : req.body.brochureimg,
+    name : req.body.name,
+    createdby : req.body.uid
+  })
+
+
+  BrochureModel.create((model),(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+
+exports.getBrochure = (req,res)=>{
+    
+  BrochureModel.getData(req.body.uid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+exports.deleteBrochure = (req,res)=>{
+    
+  BrochureModel.deleteBrochure(req.body.uid,req.body.brochureid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
 exports.addBusinessTiming = (req,res)=>{
 
   const model = new BusinessTimings({
@@ -681,6 +834,34 @@ exports.uploadCertificate = (req,res)=>{
         }
         
         var thumbimg = "/uploads/business/certificates/"+req.file.filename;
+        res.status(200).send({status:"success",message:"File Uploaded Successfully",data :{thumb: thumbimg}});
+          
+    });
+}
+exports.uploadthumbnail = (req,res)=>{
+
+  const storage = multer.diskStorage({
+      destination: function(req, file, cb) {
+        cb(null, 'uploads/business/videothumb');
+      },
+      filename: function(req, file, cb) {
+        cb(null, Date.now() + ".jpg"/*path.extname(file.originalname)*/);
+      }
+    });
+    
+    const upload = multer({ storage: storage });
+    upload.single('file')(req,res,function (err){
+      if (err instanceof multer.MulterError) {
+          return res.status(400).json({status:false, message: 'File upload error', error: err });
+        } else if (err) {
+          return res.status(500).json({status:false, message: 'Server error', error: err });
+        }
+    
+        if (!req.file) {
+          return res.status(400).json({ message: 'No files were uploaded.' });
+        }
+        
+        var thumbimg = "/uploads/business/videothumb/"+req.file.filename;
         res.status(200).send({status:"success",message:"File Uploaded Successfully",data :{thumb: thumbimg}});
           
     });

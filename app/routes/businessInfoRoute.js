@@ -22,6 +22,7 @@ module.exports = app =>{
     router.post('/addbphotoinfo',business.addBPicture);
     router.post('/getbphotoinfo',business.getBPicture);
     router.post('/uploadbvideo',business.uploadvideo);
+    router.post('/uploadbvideothumb',business.uploadthumbnail);
     router.post('/uploadcertificate',business.uploadCertificate);
     router.post('/addtradeinfo',business.addTradeData);
     router.post('/gettradeinfo',business.getTradeData);
@@ -34,6 +35,15 @@ module.exports = app =>{
     router.post('/getbinfo',business.getBusinessInfo);
     router.post('/getsubcategory',business.getSubCategory);
     router.post('/addbusinesstimings',business.addBusinessTiming);
+    router.post('/addproduct',business.addProduct);
+    router.post('/getproduct',business.getProducts);
+    router.post('/deleteproduct',business.deleteProduct);
+    router.post('/addservice',business.addService);
+    router.post('/getservice',business.getService);
+    router.post('/deleteservice',business.deleteService);
+    router.post('/addbrochure',business.addBrochure);
+    router.post('/getbrochure',business.getBrochure);
+    router.post('/deletebrochure',business.deleteBrochure);
 
     
 
