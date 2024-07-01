@@ -17,6 +17,8 @@ const BusinessTimings = require("../models/BusinessTiming.js");
 const ProductModel = require("../models/productModel.js");
 const ServiceModel = require("../models/serviceModel.js");
 const BrochureModel = require("../models/brochureModel.js");
+const OwnerModel = require("../models/ownerModel.js");
+const PhoneNumberModel = require("../models/phonenumberModel.js");
 
 exports.create = (req,res)=>{
     if(!req.body){
@@ -653,6 +655,80 @@ exports.addAward = (req,res)=>{
 exports.getAward = (req,res)=>{
     
   AwardCertficateModel.getInfo(req.body.uid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+exports.addOwner = (req,res)=>{
+
+  const model = new OwnerModel(
+            {
+                uid:req.body.uid,
+                isprimary:req.body.isprimary,
+                nameprefix:req.body.nameprefix,
+                name:req.body.name,
+                designation:req.body.designation,
+                createdby:req.body.uid
+            }
+        )
+  
+
+ 
+  OwnerModel.create((model),(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).json(data);
+    })
+}
+
+
+
+exports.deleteOwner = (req,res)=>{
+    
+  OwnerModel.deleteOwner(req.body.uid,req.body.ownerid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+exports.addPhone = (req,res)=>{
+
+  const model = new PhoneNumberModel(
+            {
+                uid:req.body.uid,
+                phone : req.body.phone,
+                isprimary : req.body.isprimary,
+                search : req.body.search,
+                notification : req.body.notification,
+                createdby:req.body.uid
+            }
+        )
+  
+
+ 
+  PhoneNumberModel.create((model),(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).json(data);
+    })
+}
+
+
+
+exports.deletePhone = (req,res)=>{
+    
+  PhoneNumberModel.deletePhoneNumber(req.body.uid,req.body.phoneid,(err,data)=>{
       if(err){
           res.status(500).send(data);
       }
