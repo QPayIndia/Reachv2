@@ -30,6 +30,10 @@ module.exports = app =>{
     router.post('/getaward',business.getAward);
     router.post('/addkyb',business.addKYBInfo);
     router.post('/getkyb',business.getBusinessKYC);
+    router.post('/addbinfo',business.addBusinessInfo);
+    router.post('/getbinfo',business.getBusinessInfo);
+    router.post('/getsubcategory',business.getSubCategory);
+    router.post('/addbusinesstimings',business.addBusinessTiming);
 
     
 

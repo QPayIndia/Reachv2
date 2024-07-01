@@ -12,6 +12,8 @@ const AwardCertficateModel = require("../models/award_certificate_master.js");
 const { json } = require("express");
 const LoginModel = require("../models/LoginModel.js");
 const BusinessKycModel = require("../models/BusinessKycModel.js");
+const BusinessInfo = require("../models/BusinessInfoModel.js");
+const BusinessTimings = require("../models/BusinessTiming.js");
 
 exports.create = (req,res)=>{
     if(!req.body){
@@ -375,6 +377,89 @@ exports.addTradeData = (req,res)=>{
             res.status(200).json(data);
     })
 }
+
+exports.addBusinessInfo = (req,res)=>{
+
+  const model = new BusinessInfo({
+    uid : req.body.uid,
+    name:req.body.name,
+    
+    legalname : req.body.legalname,
+    category : req.body.category,
+    categoryid : req.body.categoryid,
+    subcategory : req.body.subcategory,
+    subcategoryid : req.body.subcategoryid,
+    est : req.body.est,
+    type : req.body.type,
+    turnover : req.body.turnover,
+    fy : req.body.fy,
+    noofemp : req.body.noofemp,
+    createdby : req.body.uid
+    
+    
+  })
+    
+  BusinessInfo.create((model),(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).json(data);
+    })
+}
+
+exports.getBusinessInfo = (req,res)=>{
+    
+  BusinessInfo.getData(req.body.uid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+exports.getSubCategory = (req,res)=>{
+    
+  BusinessInfo.getSubCategory(req.body.categoryid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+exports.addBusinessTiming = (req,res)=>{
+
+  const model = new BusinessTimings({
+    uid : req.body.uid,
+    monfrom : req.body.monfrom,
+    monto : req.body.monto,
+    tuefrom : req.body.tuefrom,
+    tueto : req.body.tueto,
+    wedfrom : req.body.wedfrom,
+    wedto : req.body.wedto,
+    thurfrom : req.body.thurfrom,
+    thurto : req.body.thurto,
+    frifrom : req.body.frifrom,
+    frito : req.body.frito,
+    satfrom : req.body.satfrom,
+    satto : req.body.satto,
+    sunfrom : req.body.sunfrom,
+    sunto : req.body.sunto,
+    
+    
+  })
+    
+  BusinessTimings.addTimings((model),(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).json(data);
+    })
+}
+
 
 exports.addAward = (req,res)=>{
 
