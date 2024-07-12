@@ -32,6 +32,8 @@ LoginModel.Login = (phone,result)=>{
     
    
 }
+
+
 LoginModel.Signup = (model,result)=>{
     
 
@@ -48,15 +50,17 @@ LoginModel.Signup = (model,result)=>{
                     createdby:id
                     });
                     
-                    
+                    addContactInfo(binfo).then((cid)=>{
+						result(null,{status:"success",message:"User Created Successfully",uid:id});
+					});
                 
-                    ContactInfo.create(binfo,(err,data)=>{
-                        if(err){
-                            result(null,{status:"failure",message:"Something went wrong",uid:id});
-                        }
-                        else
-                        result(null,{status:"success",message:"User Created Successfully",uid:id});
-                    });
+                    // ContactInfo.create(binfo,(err,data)=>{
+                        // if(err){
+                            // result(null,{status:"failure",message:"Something went wrong",uid:id});
+                        // }
+                        // else
+                        // result(null,{status:"success",message:"User Created Successfully",uid:id});
+                    // });
                 
                 
             }).catch((err)=>{
@@ -77,6 +81,20 @@ function login(model){
                     return;
                 }
                 console.log('Login successfully');
+                resolve(res.insertId);
+            })
+    });
+}
+
+function addContactInfo(model){
+    return new Promise((resolve,reject)=>{
+        sql.query("INSERT INTO contact_info SET uid = ?,name = ?,phone = ?, designation = ?,nameprefix = ?",[model.uid,model.name,model.phone,"",model.nameprefix],(err,res)=>{
+                if(err){
+                    reject();
+                    console.log('Contact Info Failed due to '+err);
+                    return;
+                }
+                console.log('Contact Info Inserted successfully');
                 resolve(res.insertId);
             })
     });

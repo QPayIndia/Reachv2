@@ -23,12 +23,43 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
 });
 
+
 app.get('/uploads/:name', (req, res) => { 
   const imagePath = req.params.name; 
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  res.sendFile("D:/Skanda/Flutter Client Projects/Arun ZenAds/Tamil Defence News/Backend/nodejs-news-api/uploads/"+imagePath); 
+  res.sendFile("C:/Users/Public/Reach/reach/Reachv2/uploads/"+imagePath); 
+});
+
+app.get('/uploads/business/certificates/:name', (req, res) => { 
+  const imagePath = req.params.name; 
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.sendFile("C:/Users/Public/Reach/reach/Reachv2/uploads/business/certificates/"+imagePath); 
+});
+
+app.get('/uploads/business/photo/:name', (req, res) => { 
+  const imagePath = req.params.name; 
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.sendFile("C:/Users/Public/Reach/reach/Reachv2/uploads/business/photo/"+imagePath); 
+});
+app.get('/uploads/business/video/:name', (req, res) => { 
+  const imagePath = req.params.name; 
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.sendFile("C:/Users/Public/Reach/reach/Reachv2/uploads/business/video/"+imagePath); 
+});
+app.get('/uploads/kyc/:name', (req, res) => { 
+  const imagePath = req.params.name; 
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.sendFile("C:/Users/Public/Reach/reach/Reachv2/uploads/kyc/"+imagePath); 
 });
 
 require("./app/routes/businessInfoRoute.js")(app);

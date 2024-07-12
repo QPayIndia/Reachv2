@@ -3,7 +3,7 @@ const sql = require('./db.js');
 
 const LocationInfo = function(model){
     this.uid = model.uid,
-    this.locationid = model.locationid,
+    //this.locationid = model.locationid,
     this.doorno = model.doorno,
     this.streetname = model.streetname,
     this.landmark = model.landmark,

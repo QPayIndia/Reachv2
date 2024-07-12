@@ -32,6 +32,33 @@ AwardCertficateModel.deleteInfo = ([uid,tradeid],result)=>{
    
 }
 
+AwardCertficateModel.deleteAward = (uid,awardid,result)=>{
+    sql.query("DELETE FROM award_master WHERE awardid = ? AND uid = ?",[awardid,uid],(err,res)=>{
+        if(err){
+            
+            console.log('Award Delete Failed due to '+err);
+            return;
+        }
+        console.log('Award Deleted Successfully');
+        
+    })
+   
+    
+}
+AwardCertficateModel.deleteCertificate = (uid,awardid,result)=>{
+    sql.query("DELETE FROM certificate_master WHERE awardid = ? AND uid = ?",[awardid,uid],(err,res)=>{
+        if(err){
+            
+            console.log('Certificate Delete Failed due to '+err);
+            return;
+        }
+        console.log('Certificate Deleted Successfully');
+        
+    })
+   
+    
+}
+
 function addInfo(uid,award,certificate){
     return new Promise((resolve,reject)=>{
         

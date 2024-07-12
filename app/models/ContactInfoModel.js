@@ -3,7 +3,7 @@ const sql = require('./db.js');
 
 const ContactInfo = function(model){
     this.uid = model.uid,
-    this.contactid = model.contactid,
+    //this.contactid = model.contactid,
     this.phone = model.phone,
     this.name = model.name,
     this.designation = model.designation,
