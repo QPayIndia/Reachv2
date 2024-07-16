@@ -123,6 +123,8 @@ exports.addlocation = (req,res)=>{
     postalcode : req.body.postalcode,
     area : req.body.area,
     state : req.body.state,
+    areaid : req.body.areaid,
+    stateid : req.body.stateid,
     country : req.body.country,
     coordinates : req.body.coordinates,
     latitude : req.body.latitude,
@@ -142,6 +144,16 @@ exports.addlocation = (req,res)=>{
 exports.getLocationData = (req,res)=>{
     
     LocationInfo.getLocationData(req.body.uid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).json(data);
+    })
+}
+exports.getDistircts = (req,res)=>{
+    
+    LocationInfo.getDistricts(req.body.stateid,(err,data)=>{
         if(err){
             res.status(500).send(data);
         }

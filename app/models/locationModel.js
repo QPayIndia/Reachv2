@@ -11,6 +11,8 @@ const LocationInfo = function(model){
     this.postalcode = model.postalcode,
     this.area = model.area,
     this.state = model.state,
+    this.areaid = model.areaid,
+    this.stateid = model.stateid,
     this.country = model.country,
     this.coordinates = model.coordinates,
     this.latitude = model.latitude,
@@ -27,13 +29,13 @@ LocationInfo.create = (model,result)=>{
         if(data.length > 0){
             console.log("Info Already present")
             updateInfo(model).then((id)=>{
-                result(null,{status:"success",message:"Location Info Updated Successfully",data:id});
+                result(null,{status:"success",message:"Location Info Updated Successfully"});
             }).catch(({
         
             }));
         }else{
             addLocationInfo(model).then((id)=>{
-                result(null,{status:"success",message:"Location Info Inserted Successfully",data:id});
+                result(null,{status:"success",message:"Location Info Inserted Successfully"});
             }).catch(({
         
             }));
@@ -77,10 +79,54 @@ function updateInfo(model){
 LocationInfo.getLocationData = (uid,result)=>{
     
     getLocationData(uid).then((data)=>{
-        result(null,{status:"success",message:"Location Info Fetched Successfully",data:data[0]});
+        getState().then((state)=>{
+            result(null,{status:"success",message:"Location Info Fetched Successfully",data:data[0],state:state});
+        })
     })
 
     
+}
+
+LocationInfo.getDistricts = (stateid,result)=>{
+    
+    
+        getDistricts(stateid).then((district)=>{
+            result(null,{status:"success",message:"Districts Fetched Successfully",district:district});
+        })
+  
+
+    
+}
+
+function getState(){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT state,stateid FROM state_master",(err,data)=>{
+            if(err){
+                result(err,{status:"failure",message:err,data:{}});
+                
+                return;
+            }
+
+            resolve(data);
+
+        })
+    })
+}
+
+
+function getDistricts(stateid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT stateid,district,districtid FROM district_master WHERE stateid = ?",[stateid],(err,data)=>{
+            if(err){
+                result(err,{status:"failure",message:err,data:{}});
+                
+                return;
+            }
+
+            resolve(data);
+
+        })
+    })
 }
 
 function getLocationData(uid){

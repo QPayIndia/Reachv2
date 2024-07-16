@@ -9,6 +9,7 @@ module.exports = app =>{
     router.post('/getdata',business.getDtaa);
     router.post('/addlocationdata',business.addlocation);
     router.post('/getlocationdata',business.getLocationData);
+    router.post('/getdistricts',business.getDistircts);
     router.post('/addsocialinfo',business.addSocialInfo);
     router.post('/getsocialinfo',business.getSocailInfo);
     router.post('/addpaymentinfo',business.addPaymentInfo);
