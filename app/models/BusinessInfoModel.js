@@ -123,7 +123,9 @@ function getBusinessInfo(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM business_info WHERE uid = ? LIMIT 1",[uid],(err,data)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
+				console.log("Business Info Model "+err);
+                resolve([]);
+				
                 
                 return;
             }
