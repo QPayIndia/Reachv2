@@ -284,6 +284,7 @@ exports.addKYCInfo = (req,res)=>{
     pan:req.body.pan,
     frontpan:req.body.frontpan,
     backpan:req.body.backpan,
+    verifyFlag:0,
     
     
   })

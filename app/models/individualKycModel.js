@@ -11,7 +11,7 @@ const IndividualKycModel = function(model){
     this.pan=model.pan,
     this.frontpan=model.frontpan,
     this.backpan=model.backpan,
-    
+    this.verifyFlag=model.verifyFlag,
     this.createdby = model.uid
     
 }
