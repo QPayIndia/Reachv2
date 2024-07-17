@@ -31,7 +31,7 @@ function getAll(model){
             }
             console.log('Business Listing Fetched successfully :'+model);
             for(let i=0;i< res.length; i++){
-                res[i]['thumb'] = "http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com"+    res[i]['thumb'];
+                res[i]['thumb'] = "http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080"+    res[i]['thumb'];
                 res[i]['rating'] = 0;
                 res[i]['review'] = 0;
             }
