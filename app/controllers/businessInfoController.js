@@ -381,6 +381,7 @@ exports.addTradeData = (req,res)=>{
   const model = new TradeMemberModel({
     uid : req.body.uid,
     name:req.body.name,
+    year:req.body.year,
     image:req.body.image,
     
     

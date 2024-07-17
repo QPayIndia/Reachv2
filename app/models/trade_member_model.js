@@ -5,6 +5,7 @@ const TradeMemberModel = function(model){
     this.uid = model.uid,
     // this.pinfoid  = model.pinfoid,
     this.name=model.name,
+    this.year = model.year,
     this.image=model.image,
    
     this.createdby = model.uid
