@@ -63,6 +63,7 @@ app.get('/uploads/kyc/:name', (req, res) => {
 });
 
 require("./app/routes/businessInfoRoute.js")(app);
+require("./app/routes/businessListingRoute.js")(app);
 require("./app/routes/businessMasterRoute.js")(app);
 require('./app/routes/categoryRoute.js')(app);
 require('./app/routes/likeRoute.js')(app);
