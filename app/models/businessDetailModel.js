@@ -5,7 +5,17 @@ const BusinessDetail = function(model){
     // this.search = model.search,
     // this.stateid = model.stateid,
     // this.districtid = model.districtid
+
     
+}
+
+
+const RatingModel = function(model){
+    this.uid = model.uid,
+    this.userid = model.userid,
+    this.rating = model.rating,
+    this.review = model.review
+
     
 }
 
@@ -30,6 +40,21 @@ BusinessDetail.getDetail = (model,result)=>{
     }).catch((err)=>{
         result(err,{status:"failure",message:err});
     })
+}
+
+BusinessDetail.addRating = ([uid,userid,rating,review],result)=>{
+    const model = new RatingModel({
+        uid : uid,
+        userid:userid,
+        rating:rating,
+        review:review
+    });
+
+    addRating(model).then((id)=>{
+        result(null,{status:"success",message:"Rating  Inserted Successfully",data:id});
+    }).catch((err)=>{
+        result(null,{status:"failure",message:err});
+    });
 }
 
 
@@ -150,6 +175,20 @@ function getBusinessHour(uid){
             }
             console.log('Business Timings Fetched successfully');
             resolve(res[0]);
+        })
+    })
+}
+function addRating(model){
+    return new Promise((resolve,reject)=>{
+        sql.query("INSERT INTO  business_rating_master SET ?",[model],(err,res)=>{
+            if(err){
+                
+                console.log('Rating Insert Fail due to '+err);
+                reject();
+                return;
+            }
+            console.log('Rating Inserted successfully');
+            resolve(res.insertId);
         })
     })
 }
