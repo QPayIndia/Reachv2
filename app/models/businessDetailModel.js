@@ -15,8 +15,16 @@ BusinessDetail.getDetail = (model,result)=>{
         getSocialMedia(model.uid).then((socialData)=>{
             getBusinessHour(model.uid).then((timing)=>{
                 getImage(model.uid).then((image)=>{
-                    result(null,{status:"success",message:"Business Detail Fetched successfully ",data:data,social:socialData,businessTiming:timing,images:image});
-                })            })       
+                    getProducts(model.uid).then((products)=>{
+                        getService(model.uid).then((services)=>{
+                             getBrochure(model.uid).then((brochure)=>{
+                                result(null,{status:"success",message:"Business Detail Fetched successfully ",data:data,social:socialData,businessTiming:timing,images:image,product:products,service:services,brochure:brochure});
+
+                        })
+                       
+                        })
+                    })                })            
+            })       
          })
        
     }).catch((err)=>{
@@ -58,6 +66,64 @@ function getSocialMedia(uid){
         })
     })
 }
+function getProducts(uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT productid,name,price,productimg,pricetype,offerprice,minprice,maxprice FROM product_master WHERE uid = ?",[uid],(err,res)=>{
+            if(err){
+                
+                console.log('Product Fetch Fail due to '+err);
+                reject();
+                return;
+            }
+            for(let i=0;i< res.length; i++){
+                res[i]['productimg'] = "http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080"+  res[i]['productimg'];
+                
+            }
+            console.log('Product Data Fetched successfully');
+            resolve(res);
+        })
+    })
+}
+
+function getService(uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT serviceid,name,price,serviceimg,pricetype,minprice,maxprice FROM service_master WHERE uid = ?",[uid],(err,res)=>{
+            if(err){
+                
+                console.log('Service Fetch Fail due to '+err);
+                reject();
+                return;
+            }
+            for(let i=0;i< res.length; i++){
+                res[i]['serviceimg'] = "http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080"+  res[i]['serviceimg'];
+                
+            }
+            console.log('Service Data Fetched successfully');
+            resolve(res);
+        })
+    })
+}
+
+
+function getBrochure(uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT brochureid,name,brochureimg FROM brochure_master WHERE uid = ?",[uid],(err,res)=>{
+            if(err){
+                
+                console.log('Service Fetch Fail due to '+err);
+                reject();
+                return;
+            }
+            for(let i=0;i< res.length; i++){
+                res[i]['brochureimg'] = "http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080"+  res[i]['brochureimg'];
+                
+            }
+            console.log('Service Data Fetched successfully');
+            resolve(res);
+        })
+    })
+}
+
 function getImage(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM business_photo_master WHERE uid = ?",[uid],(err,res)=>{
