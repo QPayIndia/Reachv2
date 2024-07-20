@@ -28,8 +28,10 @@ BusinessDetail.getDetail = (model,result)=>{
                     getProducts(model.uid).then((products)=>{
                         getService(model.uid).then((services)=>{
                              getBrochure(model.uid).then((brochure)=>{
-                                result(null,{status:"success",message:"Business Detail Fetched successfully ",data:data,social:socialData,businessTiming:timing,images:image,product:products,service:services,brochure:brochure});
+                                getReviews(model.uid).then((reviews)=>{
+                                    result(null,{status:"success",message:"Business Detail Fetched successfully ",data:data,social:socialData,businessTiming:timing,images:image,product:products,service:services,brochure:brochure,review:reviews});
 
+                        })
                         })
                        
                         })
@@ -61,7 +63,7 @@ BusinessDetail.addRating = ([uid,userid,rating,review],result)=>{
 
 function getDetailFun(model){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT A.name,A.category,A.est,B.streetname,C.phone,C.whatsapp FROM business_info as A,location_master as B,contact_info as C WHERE A.uid = ? AND A.uid = B.uid AND A.uid = C.uid;;",[model.uid],(err,res)=>{
+        sql.query("SELECT A.name,A.category,A.est,B.streetname,B.doorno,B.landmark,B.city,B.postalcode,B.area,B.state,C.phone,C.whatsapp,D.rating as userRating,D.review as userReview,COUNT(D.bratingid) as reviewCount,SUM(D.rating)/COUNT(D.bratingid) as totalRating FROM business_info as A,location_master as B,contact_info as C,business_rating_master as D WHERE A.uid = ? AND A.uid = B.uid AND D.uid = A.uid AND A.uid = C.uid;",[model.uid],(err,res)=>{
             if(err){
                 
                 console.log('Business Detail Failed '+err+'\n'+model);
@@ -69,10 +71,14 @@ function getDetailFun(model){
                 return;
             }
             console.log('Business Detail Fetched successfully :'+model);
-            for(let i=0;i< res.length; i++){
-                res[i]['rating'] = 0;
-                res[i]['review'] = 0;
+            // for(let i=0;i< res.length; i++){
+            //     res[i]['rating'] = 0;
+            //     res[i]['review'] = 0;
+            // }
+            if(res[0]['totalRating'] != null){
+                res[0]['totalRating'] = res[0]['totalRating'].toFixed(1);
             }
+            
             resolve(res);
         })
     })
@@ -88,6 +94,20 @@ function getSocialMedia(uid){
             }
             console.log('Social Media Fetched successfully');
             resolve(res[0]);
+        })
+    })
+}
+function getReviews(uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT A.name,B.rating,B.review,B.createdon FROM user_master as A,business_rating_master as B WHERE B.userid = A.uid AND B.uid = ? LIMIT 20",[uid],(err,res)=>{
+            if(err){
+                
+                console.log('Review Fail due to '+err);
+                reject();
+                return;
+            }
+            console.log('Review Fetched successfully');
+            resolve(res);
         })
     })
 }
