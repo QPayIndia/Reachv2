@@ -509,7 +509,7 @@ exports.addService = (req,res)=>{
     uid : req.body.uid,
     serviceimg : req.body.serviceimg,
     name : req.body.name,
-    
+    description : req.body.description,
     category : req.body.category,
    
     pricetype : req.body.pricetype,

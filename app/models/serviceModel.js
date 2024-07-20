@@ -6,7 +6,7 @@ const ServiceModel = function(model){
     // this.socialid = model.socialid,
     this.serviceimg = model.serviceimg,
     this.name = model.name,
-   
+    this.description = model.description,
     this.category = model.category,
    
     this.pricetype = model.pricetype,
