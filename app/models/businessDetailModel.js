@@ -91,8 +91,8 @@ function getDetailFun(model){
                 res[0]['totalRating'] = rating.toFixed(1);
             }
 
-            res[0]['yourRating'] = 0;
-            res[0]['yourReview'] = 0;
+            res[0]['userRating'] = 0;
+            res[0]['userReview'] = "";
            }
             
             resolve(res);
