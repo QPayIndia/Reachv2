@@ -24,6 +24,7 @@ BusinessListing.getListing = (model,result)=>{
 
 function getAll(model){
     return new Promise((resolve,reject)=>{
+        console.log(model);
         var query = "SELECT DISTINCT business_info.uid as bid,business_info.name,streetname,whatsapp,phone,p1 as thumb,D.totalRating as rating,D.reviewCount as review FROM business_info,location_master,contact_info,business_photo_master,business_master as D WHERE business_info.name LIKE '"+model.search+"%' AND D.bid = business_info.uid AND  location_master.uid = business_info.uid AND contact_info.uid = business_info.uid AND business_info.uid = business_photo_master.uid AND location_master.areaid = "+model.districtid+";";
         if(model.sort == "rating"){
             query = "SELECT DISTINCT business_info.uid as bid,business_info.name,streetname,whatsapp,phone,p1 as thumb,D.totalRating as rating,D.reviewCount as review FROM business_info,location_master,contact_info,business_photo_master,business_master as D WHERE business_info.name LIKE '"+model.search+"%' AND D.bid = business_info.uid AND  location_master.uid = business_info.uid AND contact_info.uid = business_info.uid AND business_info.uid = business_photo_master.uid AND location_master.areaid = "+model.districtid+" ORDER BY D.totalRating/D.reviewCount DESC;";
