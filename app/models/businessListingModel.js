@@ -22,7 +22,7 @@ BusinessListing.getListing = (model,result)=>{
 
 function getAll(model){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT DISTINCT business_info.uid as bid,business_info.name,streetname,phone,p1 as thumb,D.totalRating as rating,D.reviewCount as review FROM business_info,location_master,contact_info,business_photo_master,business_master as D WHERE business_info.name LIKE '"+model.search+"%' AND D.bid = business_info.uid AND  location_master.uid = business_info.uid AND contact_info.uid = business_info.uid AND business_info.uid = business_photo_master.uid AND location_master.areaid = ?;",[model.districtid],(err,res)=>{
+        sql.query("SELECT DISTINCT business_info.uid as bid,business_info.name,streetname,whatsapp,phone,p1 as thumb,D.totalRating as rating,D.reviewCount as review FROM business_info,location_master,contact_info,business_photo_master,business_master as D WHERE business_info.name LIKE '"+model.search+"%' AND D.bid = business_info.uid AND  location_master.uid = business_info.uid AND contact_info.uid = business_info.uid AND business_info.uid = business_photo_master.uid AND location_master.areaid = ?;",[model.districtid],(err,res)=>{
             if(err){
                 
                 console.log('Business Listing Failed '+err+'\n'+model);
