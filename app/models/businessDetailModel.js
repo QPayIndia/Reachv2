@@ -52,18 +52,28 @@ BusinessDetail.addRating = ([uid,userid,rating,review],result)=>{
         review:review
     });
 
-    addRating(model).then((id)=>{
-        result(null,{status:"success",message:"Rating  Inserted Successfully",data:id});
-    }).catch((err)=>{
-        result(null,{status:"failure",message:err});
-    });
+    getBusinessRating(model).then((data)=>{
+        if(data.length > 0){
+            updateBusinessRating(model).then((id)=>{
+                result(null,{status:"success",message:"Rating  Updated Successfully"});
+            }).catch((err)=>{
+                result(null,{status:"failure",message:err});
+            });
+        }else{
+            addRating(model).then((id)=>{
+                result(null,{status:"success",message:"Rating  Inserted Successfully",data:id});
+            }).catch((err)=>{
+                result(null,{status:"failure",message:err});
+            });
+        }
+    })
 }
 
 
 
 function getDetailFun(model){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT A.name,A.category,A.est,B.streetname,B.doorno,B.landmark,B.city,B.postalcode,B.area,B.state,C.phone,C.whatsapp,D.rating as userRating,D.review as userReview,COUNT(D.bratingid) as reviewCount,SUM(D.rating)/COUNT(D.bratingid) as totalRating FROM business_info as A,location_master as B,contact_info as C,business_rating_master as D WHERE A.uid = ? AND A.uid = B.uid AND D.uid = A.uid AND A.uid = C.uid;",[model.uid],(err,res)=>{
+        sql.query("SELECT A.name,A.category,A.est,B.streetname,B.doorno,B.landmark,B.city,B.postalcode,B.area,B.state,C.phone,C.whatsapp,D.reviewCount as reviewCount,D.totalRating as totalRating  FROM business_info as A,location_master as B,contact_info as C,business_master as D WHERE D.bid = ? AND D.bid = A.uid AND D.bid = B.uid AND D.bid = C.uid;",[model.uid],(err,res)=>{
             if(err){
                 
                 console.log('Business Detail Failed '+err+'\n'+model);
@@ -75,9 +85,12 @@ function getDetailFun(model){
             //     res[i]['rating'] = 0;
             //     res[i]['review'] = 0;
             // }
+           if(res.length > 0){
             if(res[0]['totalRating'] != null){
-                res[0]['totalRating'] = res[0]['totalRating'].toFixed(1);
+                let rating = res[0]['totalRating'] / res[0]['reviewCount'];
+                res[0]['totalRating'] = rating.toFixed(1);
             }
+           }
             
             resolve(res);
         })
@@ -113,7 +126,7 @@ function getReviews(uid){
 }
 function getProducts(uid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT productid,name,price,productimg,pricetype,offerprice,minprice,maxprice FROM product_master WHERE uid = ?",[uid],(err,res)=>{
+        sql.query("SELECT productid,name,price,productimg,pricetype,offerprice,minprice,maxprice,minqty,maxqty FROM product_master WHERE uid = ?",[uid],(err,res)=>{
             if(err){
                 
                 console.log('Product Fetch Fail due to '+err);
@@ -198,9 +211,25 @@ function getBusinessHour(uid){
         })
     })
 }
+
+function getBusinessRating(model){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT * FROM business_rating_master WHERE uid = ? AND userid = ?",[model.uid,model.userid],(err,res)=>{
+            if(err){
+                
+                console.log('Business Timings Fail due to '+err);
+                reject();
+                return;
+            }
+            console.log('Business Timings Fetched successfully');
+            resolve(res);
+        })
+    })
+}
 function addRating(model){
     return new Promise((resolve,reject)=>{
-        sql.query("INSERT INTO  business_rating_master SET ?",[model],(err,res)=>{
+        console.log(model)
+        sql.query("INSERT INTO  business_rating_master SET ?;UPDATE business_master SET reviewCount = reviewCount + 1,totalRating = totalRating + ? WHERE bid = ?;",[model,model.rating,model.uid],(err,res)=>{
             if(err){
                 
                 console.log('Rating Insert Fail due to '+err);
@@ -209,6 +238,22 @@ function addRating(model){
             }
             console.log('Rating Inserted successfully');
             resolve(res.insertId);
+        })
+    })
+}
+function updateBusinessRating(model){
+    return new Promise((resolve,reject)=>{
+        getBusinessRating(model).then((data)=>{
+            sql.query("UPDATE business_rating_master SET rating = ?,review = ? WHERE uid = ? AND userid = ?;UPDATE business_master SET totalRating = totalRating - ? + ? WHERE bid = ?;",[model.rating,model.review,model.uid,model.userid,data[0]['rating'],model.rating,model.uid],(err,res)=>{
+                if(err){
+                    
+                    console.log('Rating Update Fail due to '+err);
+                    reject();
+                    return;
+                }
+                console.log('Rating Updated successfully');
+                resolve();
+            })
         })
     })
 }
