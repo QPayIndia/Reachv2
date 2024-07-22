@@ -1,7 +1,8 @@
 const sql = require('./db.js');
 
 const BusinessDetail = function(model){
-    this.uid = model.uid
+    this.uid = model.uid,
+    this.userid = model.userid
     // this.search = model.search,
     // this.stateid = model.stateid,
     // this.districtid = model.districtid

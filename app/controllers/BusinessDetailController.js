@@ -5,6 +5,7 @@ exports.getDetail = (req,res)=>{
    
     const model = new BusinessDetail({
         uid:req.body.uid,
+        userid : req.body.userid
         
     });
 
