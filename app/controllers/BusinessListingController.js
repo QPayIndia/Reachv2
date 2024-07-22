@@ -6,6 +6,8 @@ exports.getListing = (req,res)=>{
     const model = new BusinessListing({
         uid:req.body.uid,
         search:req.body.search,
+        sort:req.body.sort,
+        rating:req.body.rating,
         stateid:req.body.stateid,
         districtid:req.body.districtid,
     });

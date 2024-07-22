@@ -3,6 +3,8 @@ const sql = require('./db.js');
 const BusinessListing = function(model){
     this.uid = model.uid,
     this.search = model.search,
+    this.sort = model.sort,
+    this.rating = model.rating,
     this.stateid = model.stateid,
     this.districtid = model.districtid
     
@@ -22,7 +24,17 @@ BusinessListing.getListing = (model,result)=>{
 
 function getAll(model){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT DISTINCT business_info.uid as bid,business_info.name,streetname,whatsapp,phone,p1 as thumb,D.totalRating as rating,D.reviewCount as review FROM business_info,location_master,contact_info,business_photo_master,business_master as D WHERE business_info.name LIKE '"+model.search+"%' AND D.bid = business_info.uid AND  location_master.uid = business_info.uid AND contact_info.uid = business_info.uid AND business_info.uid = business_photo_master.uid AND location_master.areaid = ?;",[model.districtid],(err,res)=>{
+        var query = "SELECT DISTINCT business_info.uid as bid,business_info.name,streetname,whatsapp,phone,p1 as thumb,D.totalRating as rating,D.reviewCount as review FROM business_info,location_master,contact_info,business_photo_master,business_master as D WHERE business_info.name LIKE '"+model.search+"%' AND D.bid = business_info.uid AND  location_master.uid = business_info.uid AND contact_info.uid = business_info.uid AND business_info.uid = business_photo_master.uid AND location_master.areaid = "+model.districtid+";";
+        if(model.sort == " rating"){
+            query = "SELECT DISTINCT business_info.uid as bid,business_info.name,streetname,whatsapp,phone,p1 as thumb,D.totalRating as rating,D.reviewCount as review FROM business_info,location_master,contact_info,business_photo_master,business_master as D WHERE business_info.name LIKE '"+model.search+"%' AND D.bid = business_info.uid AND  location_master.uid = business_info.uid AND contact_info.uid = business_info.uid AND business_info.uid = business_photo_master.uid AND location_master.areaid = "+model.districtid+" ORDER BY D.totalRating/D.reviewCount DESC;";
+        }else if (model.sort == " popular"){
+            query = "SELECT DISTINCT business_info.uid as bid,business_info.name,streetname,whatsapp,phone,p1 as thumb,D.totalRating as rating,D.reviewCount as review FROM business_info,location_master,contact_info,business_photo_master,business_master as D WHERE business_info.name LIKE '"+model.search+"%' AND D.bid = business_info.uid AND  location_master.uid = business_info.uid AND contact_info.uid = business_info.uid AND business_info.uid = business_photo_master.uid AND location_master.areaid = "+model.districtid+" ORDER BY D.reviewCount DESC;";
+        }else if (model.rating != ""){
+            query = "SELECT DISTINCT business_info.uid as bid,business_info.name,streetname,whatsapp,phone,p1 as thumb,D.totalRating as rating,D.reviewCount as review FROM business_info,location_master,contact_info,business_photo_master,business_master as D WHERE business_info.name LIKE '"+model.search+"%' AND D.bid = business_info.uid AND  location_master.uid = business_info.uid AND contact_info.uid = business_info.uid AND business_info.uid = business_photo_master.uid AND location_master.areaid = "+model.districtid+" AND D.totalRating/D.reviewCount = "+model.rating+" ORDER BY D.reviewCount DESC;";
+
+        }
+        
+        sql.query(query,(err,res)=>{
             if(err){
                 
                 console.log('Business Listing Failed '+err+'\n'+model);
