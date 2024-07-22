@@ -80,7 +80,7 @@ BusinessDetail.addRating = ([uid,userid,rating,review],result)=>{
 
 function getDetailFun(model){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT A.name,A.category,A.est,B.streetname,B.doorno,B.landmark,B.city,B.postalcode,B.area,B.state,C.phone,C.whatsapp,D.reviewCount as reviewCount,D.totalRating as totalRating  FROM business_info as A,location_master as B,contact_info as C,business_master as D WHERE D.bid = ? AND D.bid = A.uid AND D.bid = B.uid AND D.bid = C.uid;",[model.uid],(err,res)=>{
+        sql.query("SELECT DISTINCT A.name,A.category,A.est,B.streetname,B.doorno,B.landmark,B.city,B.postalcode,B.area,B.state,C.phone,C.whatsapp,D.reviewCount as reviewCount,D.totalRating as totalRating  FROM business_info as A,location_master as B,contact_info as C,business_master as D WHERE D.bid = ? AND D.bid = A.uid AND D.bid = B.uid AND D.bid = C.uid;",[model.uid],(err,res)=>{
             if(err){
                 
                 console.log('Business Detail Failed '+err+'\n'+model);
