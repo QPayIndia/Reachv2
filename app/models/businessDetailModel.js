@@ -90,6 +90,9 @@ function getDetailFun(model){
                 let rating = res[0]['totalRating'] / res[0]['reviewCount'];
                 res[0]['totalRating'] = rating.toFixed(1);
             }
+
+            res[0]['yourRating'] = 0;
+            res[0]['yourReview'] = 0;
            }
             
             resolve(res);
