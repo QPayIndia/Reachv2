@@ -22,7 +22,7 @@ BusinessListing.getListing = (model,result)=>{
 
 function getAll(model){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT DISTINCT business_info.uid as bid,business_info.name,streetname,phone,p1 as thumb,D.totalRating / D.reviewCount as rating,D.reviewCount as review FROM business_info,location_master,contact_info,business_photo_master,business_master as D WHERE business_info.name LIKE '"+model.search+"%' AND D.bid = business_info.uid AND  location_master.uid = business_info.uid AND contact_info.uid = business_info.uid AND business_info.uid = business_photo_master.uid AND location_master.areaid = ?;",[model.districtid],(err,res)=>{
+        sql.query("SELECT DISTINCT business_info.uid as bid,business_info.name,streetname,phone,p1 as thumb,D.totalRating as rating,D.reviewCount as review FROM business_info,location_master,contact_info,business_photo_master,business_master as D WHERE business_info.name LIKE '"+model.search+"%' AND D.bid = business_info.uid AND  location_master.uid = business_info.uid AND contact_info.uid = business_info.uid AND business_info.uid = business_photo_master.uid AND location_master.areaid = ?;",[model.districtid],(err,res)=>{
             if(err){
                 
                 console.log('Business Listing Failed '+err+'\n'+model);
@@ -32,7 +32,8 @@ function getAll(model){
             console.log('Business Listing Fetched successfully :'+model);
             for(let i=0;i< res.length; i++){
                 res[i]['thumb'] = "http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080"+    res[i]['thumb'];
-                // res[i]['rating'] = 0;
+                let rating = res[i]['rating'] / res[i]['review'];
+                res[i]['rating'] = rating.toFixed(1);
                 // res[i]['review'] = 0;
             }
             resolve(res);
