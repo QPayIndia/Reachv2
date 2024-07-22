@@ -29,8 +29,15 @@ BusinessDetail.getDetail = (model,result)=>{
                         getService(model.uid).then((services)=>{
                              getBrochure(model.uid).then((brochure)=>{
                                 getReviews(model.uid).then((reviews)=>{
-                                    result(null,{status:"success",message:"Business Detail Fetched successfully ",data:data,social:socialData,businessTiming:timing,images:image,product:products,service:services,brochure:brochure,review:reviews});
+                                    getBusinessRating(model).then((userReview)=>{
+                                        let userRating = {"rating":0,review:""};
+                                        if(userReview.length > 0){
+                                            userRating = {"rating":userReview[0]['rating'],review:userReview[0]['review']}
+                                        }
 
+                                    result(null,{status:"success",message:"Business Detail Fetched successfully ",data:data,userRating:userRating,social:socialData,businessTiming:timing,images:image,product:products,service:services,brochure:brochure,review:reviews});
+
+                        })
                         })
                         })
                        
