@@ -86,7 +86,7 @@ function getDetailFun(model){
             //     res[i]['review'] = 0;
             // }
            if(res.length > 0){
-            if(res[0]['totalRating'] != null){
+            if(res[0]['totalRating'] != 0){
                 let rating = res[0]['totalRating'] / res[0]['reviewCount'];
                 res[0]['totalRating'] = rating.toFixed(1);
             }
