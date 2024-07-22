@@ -89,6 +89,8 @@ function getDetailFun(model){
             if(res[0]['totalRating'] != 0){
                 let rating = res[0]['totalRating'] / res[0]['reviewCount'];
                 res[0]['totalRating'] = rating.toFixed(1);
+            }else{
+                res[i]['totalRating'] = "0";
             }
 
             res[0]['userRating'] = 0;
