@@ -40,14 +40,16 @@ ProductDetail.getDetail = (model,result)=>{
             //                 getService(model.uid).then((services)=>{
             //                      getBrochure(model.uid).then((brochure)=>{
                                    getProductReview(model.productid).then((reviews)=>{
+                                    getProductSpec(model.productid).then((specs)=>{
                                     getProductReviewCount(model).then((userReview)=>{
                                         let userRating = {"rating":0,review:""};
                                         if(userReview.length > 0){
                                             userRating = {"rating":userReview[0]['rating'],review:userReview[0]['review']}
                                         }
 
-                                        result(null,{status:"success",message:"Product Detail Fetched successfully ",data:data,userRating: userRating,review:reviews});
+                                        result(null,{status:"success",message:"Product Detail Fetched successfully ",data:data,userRating: userRating,specs:specs,review:reviews});
 
+                                    })
                                     })
     
                             })
@@ -244,6 +246,20 @@ function getServiceReviewCount(userid,serviceid){
                 return;
             }
             console.log('Review Fetched successfully');
+            resolve(res);
+        })
+    })
+}
+function getProductSpec(productid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT title,value FROM product_spec_master as B WHERE B.productid = ? ",[productid],(err,res)=>{
+            if(err){
+                
+                console.log('Spec Fail due to '+err);
+                reject();
+                return;
+            }
+            console.log('Spec Fetched successfully');
             resolve(res);
         })
     })
