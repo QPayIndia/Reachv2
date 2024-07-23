@@ -523,10 +523,30 @@ exports.getProducts = (req,res)=>{
           res.status(200).json(data);
   })
 }
+exports.getProductSpec = (req,res)=>{
+    
+  ProductModel.getProductSpec(req.body.productid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
 
 exports.deleteProduct = (req,res)=>{
     
   ProductModel.deleteProduct(req.body.uid,req.body.productid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+exports.deleteProductSpec = (req,res)=>{
+    
+  ProductModel.deleteProductSpec(req.body.productid,req.body.pspecid,(err,data)=>{
       if(err){
           res.status(500).send(data);
       }

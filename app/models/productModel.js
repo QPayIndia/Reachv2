@@ -118,11 +118,21 @@ function updateProductData(model,productid){
     });
 }
 
+ProductModel.getProductSpec = (uid,result)=>{
+    
+    getProductSpec(uid).then((data)=>{
+       
+        result(null,{status:"success",message:"Product Spec Fetched Successfully",data:data});
+    })
+
+    
+}
 
 
 ProductModel.getData = (uid,result)=>{
     
     getProductData(uid).then((data)=>{
+       
         result(null,{status:"success",message:"Product Data Fetched Successfully",data:data});
     })
 
@@ -137,10 +147,18 @@ ProductModel.deleteProduct = (uid,productid,result)=>{
 
     
 }
+ProductModel.deleteProductSpec = (productid,pspecid,result)=>{
+    
+    deleteProductSpec(pspecid).then(()=>{
+        result(null,{status:"success",message:"Product Spec Deleted Successfully",});
+    })
+
+    
+}
 
 function getProductData(uid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT * FROM product_master WHERE uid = ?",[uid],(err,data)=>{
+        sql.query("SELECT * FROM product_master WHERE product_master.uid = ?",[uid],(err,data)=>{
             if(err){
                 result(err,{status:"failure",message:err,data:{}});
                 
@@ -157,10 +175,39 @@ function getProductData(uid){
         })
     })
 }
+function getProductSpec(uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT pspecid,title,value FROM product_spec_master WHERE productid = ?",[uid],(err,data)=>{
+            if(err){
+                result(err,{status:"failure",message:err,data:{}});
+                
+                return;
+            }
+
+            resolve(data);
+    
+  
+        })
+    })
+}
 
 function deleteData(uid,productid){
     return new Promise((resolve,reject)=>{
         sql.query("DELETE FROM product_master WHERE productid = ? AND uid = ?",[productid,uid],(err,data)=>{
+            if(err){
+                reject();
+                
+                return;
+            }
+    
+    
+            resolve();
+        })
+    })
+}
+function deleteProductSpec(pspecid){
+    return new Promise((resolve,reject)=>{
+        sql.query("DELETE FROM product_spec_master WHERE pspecid = ?",[pspecid],(err,data)=>{
             if(err){
                 reject();
                 

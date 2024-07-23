@@ -39,6 +39,8 @@ module.exports = app =>{
     router.post('/addproduct',business.addProduct);
     router.post('/updateproduct',business.updateProduct);
     router.post('/getproduct',business.getProducts);
+    router.post('/getproductspec',business.getProductSpec);
+    router.post('/deleteproductspec',business.deleteProductSpec);
     router.post('/deleteproduct',business.deleteProduct);
     router.post('/addservice',business.addService);
     router.post('/updateservice',business.updateService);
