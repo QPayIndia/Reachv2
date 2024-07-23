@@ -135,7 +135,8 @@ function getData(uid){
         var data = {};
         sql.query("SELECT * FROM certificate_master WHERE uid = ?",[uid],(err,rows)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
+                
+                console.log("Get Certfificate :"+err);
                 
                 return;
             }
@@ -144,7 +145,8 @@ function getData(uid){
            
             sql.query("SELECT * FROM award_master WHERE uid = ?",[uid],(err,rows)=>{
                 if(err){
-                    result(err,{status:"failure",message:err,data:{}});
+                    
+                    console.log("Get Award Data :"+err);
                     
                     return;
                 }

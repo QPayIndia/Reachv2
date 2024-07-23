@@ -92,25 +92,29 @@ function addProductSpec(specs,id,uid){
     return new Promise((resolve,reject)=>{
         
         specs.forEach(temp => {
-
-            const model = new SpecModel({
-                title: temp['title'],
-                value:temp['value'],
-                productid:id,
-                uid:uid
-            });
-            sql.query("INSERT INTO product_spec_master SET ?",model,(err,res)=>{
-                if(err){
+            if(temp['title'] != "" && temp['value'] != ""){
+                const model = new SpecModel({
+                    title: temp['title'],
+                    value:temp['value'],
+                    productid:id,
+                    uid:uid
+                });
+                sql.query("INSERT INTO product_spec_master SET ?",model,(err,res)=>{
+                    if(err){
+                        
+                        console.log('Product Data Insert Failed due to '+err);
+                        return;
+                    }
+                    console.log('Product Spec Data Inserted successfully');
                     
-                    console.log('Product Data Insert Failed due to '+err);
-                    return;
-                }
-                console.log('Product Spec Data Inserted successfully');
-                
-            })
+                })
+            }
 
-            resolve();
+            
+
+            
         })
+        resolve();
         
     });
 }
@@ -170,7 +174,8 @@ function getProductData(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM product_master WHERE product_master.uid = ?",[uid],(err,data)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
+                resolve([]);
+                console.log("Get Product Data :"+err);
                 
                 return;
             }
@@ -189,8 +194,8 @@ function getProductSpec(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT pspecid,title,value FROM product_spec_master WHERE productid = ?",[uid],(err,data)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
-                
+                resolve([]);
+                console.log("Get Product Spec :"+err);
                 return;
             }
 

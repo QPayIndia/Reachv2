@@ -81,7 +81,8 @@ function getBrochureData(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM brochure_master WHERE uid = ?",[uid],(err,data)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
+                resolve([]);
+                console.log("Get Brochure Data :"+err);
                 
                 return;
             }

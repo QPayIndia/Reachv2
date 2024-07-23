@@ -80,7 +80,7 @@ function getSocialData(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM social_media WHERE uid = ? LIMIT 1",[uid],(err,data)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
+                console.log("Get Social Media Master : "+err);
                 
                 return;
             }

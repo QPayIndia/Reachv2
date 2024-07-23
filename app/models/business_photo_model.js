@@ -88,7 +88,7 @@ function getData(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM business_photo_master WHERE uid = ? LIMIT 1",[uid],(err,data)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
+                console.log('Get Business Photo Master '+err);
                 
                 return;
             }

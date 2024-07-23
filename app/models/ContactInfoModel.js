@@ -41,42 +41,7 @@ const PhoneInfo = function(model){
 }
 
 ContactInfo.create = (model,result)=>{
-    // sql.query("INSERT INTO contact_info SET ?",model,(err,res)=>{
-    //     if(err){
-    //         result(err,{status:"success",message:err,data:{}});
-    //         console.log('Contact Info Failed due to '+err);
-    //         return;
-    //     }
-    //     console.log('Contact Info Inserted successfully');
-    //     result(null,{status:"success",message:"News Inserted Successfully",data:{id:res.insertId}});
-    // })
-
-    // var parsedOwner = owners;
-    // parsedOwner.forEach(item => {
-        
-    //     const owner = new OwnerInfo(
-    //         {
-    //             uid:model.uid,
-    //             isprimary:item['isprimary'],
-    //             nameprefix:item['name_prefix'],
-    //             name:item['name'],
-    //             designation:item['designation'],
-    //             createdby:model.uid
-    //         }
-    //     )
-
-       
-
-    //     sql.query("INSERT INTO owner_master SET ?",owner,(err,res)=>{
-    //         if(err){
-    //             result(err,{status:"success",message:err,data:{}});
-    //             console.log('Owner Info Failed due to '+err);
-    //             return;
-    //         }
-    //         console.log('Owner Info Inserted successfully');
-    //         // result(null,{status:"success",message:"News Inserted Successfully",data:{id:res.insertId}});
-    //     })
-    // });
+    
 
     let contact = false;
     let owner = false;
@@ -100,17 +65,7 @@ ContactInfo.create = (model,result)=>{
     })
 
     
-    // addOwners(owners,model.uid).then(()=>{
-    //     owner = true
-    // }).catch(({
-
-    // }));
     
-    // addNumbers(numbers,model.uid).then(()=>{
-    //     number = true
-    // }).catch(({
-
-    // }));
 }
 
 function addContactInfo(model){
@@ -200,7 +155,7 @@ function getContact(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM contact_info WHERE uid = ? LIMIT 1",[uid],(err,data)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
+                console.log("Get Contact : "+err);
                 
                 return;
             }

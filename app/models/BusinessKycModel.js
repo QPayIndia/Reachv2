@@ -86,7 +86,7 @@ function getData(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM business_kyc WHERE uid = ? LIMIT 1",[uid],(err,data)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
+                console.log('business_kyc Failed due to '+err);
                 
                 return;
             }

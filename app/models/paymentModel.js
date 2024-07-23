@@ -86,7 +86,7 @@ function getData(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM payment_info_master WHERE uid = ? LIMIT 1",[uid],(err,data)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
+                console.log("Get Payment Info Master : "+err);
                 
                 return;
             }

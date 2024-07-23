@@ -41,72 +41,9 @@ Category.delete = (id,result)=>{
     })
 }
 
-Category.addTeamPlayer = (playerid,teamid,result)=>{
-    sql.query("INSERT INTO team_players SET playerid = ? , teamid = ?",[playerid,teamid],(err,res)=>{
-        if(err){
-            result(err,null);
-            console.log('Team Created Failer due to '+err);
-            return;
-        }
-        console.log('Player Created successfully');
-        result(null,{id:res.insertId});
-    })
-}
 
-Category.addPlayerAndAddIntoTeam = (player,teamid,result)=>{
-    
-    checkPlayerExistsinPlayerMaster(player.phone).then(([exists,pid])=>{
-        
-        if(!exists){
-            Category.create(player,(err,pdata)=>{
-                if(err){
-                    console.log("Player Cannot be created");
-                    result(err,{message: "Player not created"})
-                }else{
-                    console.log(pdata);
-                    Category.addTeamPlayer(pdata.id,teamid,(err,tdata)=>{
-                            if(err){
-                                console.log("Player Cannot be added to the team");
-                                result(err,{message: "Player not added to the team"})
-                            }else{
-                                console.log(tdata)
-                                result(null,{id:tdata.id,player});
-                            }
-                        })
-                        
-                }
-            })
-        }
-        
-    else{
-        console.log("Player already exists")
-        checkPlayerExistsinTeamMaster(pid).then((exists)=>{
-            if(!exists)  {
-                Category.addTeamPlayer(pid,teamid,(err,tdata)=>{
-                    if(err){
-                        console.log("Player Cannot be added to the team");
-                        result(err,{message: "Player not added to the team"})
-                    }else{
-                        console.log(tdata)
-                        result(null,{id:tdata.id,player});
-                    }
-                })
-            }
-              else{
-                console.log("Player already in the team");
-                  result(null,{message : "Player already in the team"})
-              }
-                    
-          }).catch((err)=>{
-            result(null,{message:err});
-          });
-    }
-    
-    }).catch((err)=>{
-        result(null,{message:err})
-    });
-    
-}
+
+
 
 
 Category.getAll = (result)=>{

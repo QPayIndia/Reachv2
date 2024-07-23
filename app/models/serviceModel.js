@@ -101,7 +101,7 @@ function getServiceData(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM service_master WHERE uid = ?",[uid],(err,data)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
+                console.log("Get Service Master : "+err);
                 
                 return;
             }

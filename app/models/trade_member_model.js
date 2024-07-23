@@ -88,7 +88,7 @@ function getData(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM trade_member_master WHERE uid = ?",[uid],(err,data)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
+                console.log("Get Trade Member Master : "+err);
                 
                 return;
             }

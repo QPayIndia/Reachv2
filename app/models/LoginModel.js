@@ -106,7 +106,7 @@ function getData(phone){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM user_master WHERE phone = ? LIMIT 1",[phone],(err,data)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
+                console.log("Get User Master : "+err);
                 
                 return;
             }

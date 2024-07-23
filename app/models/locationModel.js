@@ -102,7 +102,7 @@ function getState(){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT state,stateid FROM state_master",(err,data)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
+                console.log("Get State Master : "+err);
                 
                 return;
             }
@@ -118,7 +118,7 @@ function getDistricts(stateid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT stateid,district,districtid FROM district_master WHERE stateid = ?",[stateid],(err,data)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
+                console.log("Get District Master : "+err);
                 
                 return;
             }

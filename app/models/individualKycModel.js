@@ -83,7 +83,7 @@ function getData(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM kyc_master WHERE uid = ? LIMIT 1",[uid],(err,data)=>{
             if(err){
-                result(err,{status:"failure",message:err,data:{}});
+                console.log("Get KYC Data : "+err);
                 
                 return;
             }
