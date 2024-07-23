@@ -38,9 +38,15 @@ ProductModel.create = (model,specs,result)=>{
 
     addProductData(model).then((id)=>{
 
-        addProductSpec(specs,id,model.uid).then(()=>{
-            result(null,{status:"success",message:"Product Data Inserted Successfully",data:id});
-        })
+        if(specs != null){
+            addProductSpec(specs,id,model.uid).then(()=>{
+                result(null,{status:"success",message:"Product Data Inserted Successfully",data:id});
+            })
+        }else{
+            result(null,{status:"success",message:"Product Data Inserted Successfully"});
+        }
+
+        
         
     }).catch(({
 
@@ -52,9 +58,13 @@ ProductModel.create = (model,specs,result)=>{
 ProductModel.updateProduct = (model,productid,specs,result)=>{
 
     updateProductData(model,productid).then(()=>{
-        addProductSpec(specs,productid,model.uid).then(()=>{
+        if(specs != null){
+            addProductSpec(specs,productid,model.uid).then(()=>{
+                result(null,{status:"success",message:"Product Data Inserted Successfully"});
+            })
+        }else{
             result(null,{status:"success",message:"Product Data Inserted Successfully"});
-        })
+        }
         
     }).catch(({
 
