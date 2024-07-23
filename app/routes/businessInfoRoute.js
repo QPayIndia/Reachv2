@@ -37,9 +37,11 @@ module.exports = app =>{
     router.post('/getsubcategory',business.getSubCategory);
     router.post('/addbusinesstimings',business.addBusinessTiming);
     router.post('/addproduct',business.addProduct);
+    router.post('/updateproduct',business.updateProduct);
     router.post('/getproduct',business.getProducts);
     router.post('/deleteproduct',business.deleteProduct);
     router.post('/addservice',business.addService);
+    router.post('/updateservice',business.updateService);
     router.post('/getservice',business.getService);
     router.post('/deleteservice',business.deleteService);
     router.post('/addbrochure',business.addBrochure);

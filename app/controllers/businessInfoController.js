@@ -471,7 +471,39 @@ exports.addProduct = (req,res)=>{
   })
 
 
-  ProductModel.create((model),(err,data)=>{
+  
+  ProductModel.create(model,req.body.specs,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+exports.updateProduct = (req,res)=>{
+
+  const model = new ProductModel({
+    uid : req.body.uid,
+    productimg : req.body.productimg,
+    name : req.body.name,
+    description : req.body.description,
+    category : req.body.category,
+    businesstype : req.body.businesstype,
+    brandname : req.body.brandname,
+    origin : req.body.origin,
+    pricetype : req.body.pricetype,
+    price : req.body.price,
+    offerprice : req.body.offerprice,
+    units : req.body.units,
+    minprice : req.body.minprice,
+    maxprice : req.body.maxprice,
+    minqty : req.body.minqty,
+    maxqty : req.body.maxqty,
+    createdby : req.body.uid
+  })
+
+
+  ProductModel.updateProduct(model,req.body.productid,req.body.specs,(err,data)=>{
       if(err){
           res.status(500).send(data);
       }
@@ -524,6 +556,34 @@ exports.addService = (req,res)=>{
 
 
   ServiceModel.create((model),(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+exports.updateService = (req,res)=>{
+
+  const model = new ServiceModel({
+    uid : req.body.uid,
+    serviceimg : req.body.serviceimg,
+    name : req.body.name,
+    description : req.body.description,
+    category : req.body.category,
+   
+    pricetype : req.body.pricetype,
+    price : req.body.price,
+    
+    units : req.body.units,
+    minprice : req.body.minprice,
+    maxprice : req.body.maxprice,
+   
+    createdby : req.body.uid
+  })
+
+
+  ServiceModel.updateService(model,req.body.serviceid,(err,data)=>{
       if(err){
           res.status(500).send(data);
       }

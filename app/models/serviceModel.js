@@ -35,6 +35,19 @@ ServiceModel.create = (model,result)=>{
     
     
 }
+ServiceModel.updateService = (model,serviceid,result)=>{
+   
+   
+
+    updateServiceData(model,serviceid).then(()=>{
+        result(null,{status:"success",message:"Service Inserted Successfully"});
+    }).catch(({
+
+    }));
+    
+    
+    
+}
 
 function addService(model){
     console.log(model);
@@ -50,16 +63,16 @@ function addService(model){
             })
     });
 }
-function updateServiceData(model,productid){
+function updateServiceData(model,serviceid){
     return new Promise((resolve,reject)=>{
-        sql.query("UPDATE service_master SET ? WHERE serviceid = ?",[model,productid],(err,res)=>{
+        sql.query("UPDATE service_master SET ? WHERE serviceid = ?",[model,serviceid],(err,res)=>{
                 if(err){
                     
                     console.log('Service Update Failed due to '+err);
                     return;
                 }
                 console.log('Service Updated successfully');
-                resolve(res.insertId);
+                resolve();
             })
     });
 }

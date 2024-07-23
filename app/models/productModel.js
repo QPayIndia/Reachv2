@@ -23,25 +23,39 @@ const ProductModel = function(model){
     // this.createdon = model.createdon
 }
 
-
-
-ProductModel.create = (model,result)=>{
+const SpecModel = function(model){
    
-    // getProductData(model.uid).then((data)=>{
-    //     if(data.length > 0){
-    //         console.log("Info Already present")
-    //         updateProductData(model).then((id)=>{
-    //             result(null,{status:"success",message:"Product Data Updated Successfully",data:id});
-    //         }).catch(({
-        
-    //         }));
-    //     }else{
-           
-    //     }
-    // })
+    this.title = model.title,
+    this.productid = model.productid,
+    this.value = model.value,
+    this.uid = model.uid
+    
+}
+
+
+
+ProductModel.create = (model,specs,result)=>{
 
     addProductData(model).then((id)=>{
-        result(null,{status:"success",message:"Product Data Inserted Successfully",data:id});
+
+        addProductSpec(specs,id,model.uid).then(()=>{
+            result(null,{status:"success",message:"Product Data Inserted Successfully",data:id});
+        })
+        
+    }).catch(({
+
+    }));
+    
+    
+    
+}
+ProductModel.updateProduct = (model,productid,specs,result)=>{
+
+    updateProductData(model,productid).then(()=>{
+        addProductSpec(specs,productid,model.uid).then(()=>{
+            result(null,{status:"success",message:"Product Data Inserted Successfully"});
+        })
+        
     }).catch(({
 
     }));
@@ -64,6 +78,32 @@ function addProductData(model){
             })
     });
 }
+function addProductSpec(specs,id,uid){
+    return new Promise((resolve,reject)=>{
+        
+        specs.forEach(temp => {
+
+            const model = new SpecModel({
+                title: temp['title'],
+                value:temp['value'],
+                productid:id,
+                uid:uid
+            });
+            sql.query("INSERT INTO product_spec_master SET ?",model,(err,res)=>{
+                if(err){
+                    
+                    console.log('Product Data Insert Failed due to '+err);
+                    return;
+                }
+                console.log('Product Spec Data Inserted successfully');
+                
+            })
+
+            resolve();
+        })
+        
+    });
+}
 function updateProductData(model,productid){
     return new Promise((resolve,reject)=>{
         sql.query("UPDATE product_master SET ? WHERE productid = ?",[model,productid],(err,res)=>{
@@ -73,7 +113,7 @@ function updateProductData(model,productid){
                     return;
                 }
                 console.log('Product Data Updated successfully');
-                resolve(res.insertId);
+                resolve();
             })
     });
 }
