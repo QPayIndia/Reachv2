@@ -27,7 +27,7 @@ User.login = (model,result)=>{
     
 }
 
-User.add = (username,result)=>{
+User.add = (username,password,result)=>{
     
     sql.query("INSERT INTO users SET username = ? , createdby = ?",[username,0],(err,res)=>{
         if(err){
