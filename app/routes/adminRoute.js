@@ -3,6 +3,8 @@ module.exports = app =>{
 
     var router = require('express').Router();
     router.post('/getallmerchants',admin.getAllMerchants);
+    router.post('/getpendingmerchants',admin.getPendingMerchants);
+    router.post('/getallusers',admin.getAllUsers);
     //router.post('/addrating',business.addRating);
     
     
