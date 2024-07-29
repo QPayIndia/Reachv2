@@ -37,6 +37,18 @@ exports.getAllUsers = (req,res)=>{
             res.status(200).send(data);
     });
 };
+exports.updateMerchantActiveStatus = (req,res)=>{
+   
+    
+
+    adminModel.updateMerchantActiveStatus(req.body.bid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    });
+};
 
 
 

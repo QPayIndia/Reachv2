@@ -30,6 +30,22 @@ AdminMaster.getPendingMerchants = (uid,result)=>{
     
     
 }
+AdminMaster.updateMerchantActiveStatus = (uid,result)=>{
+   
+    updateMerchantActiveStatus(uid).then(()=>{
+        getMerchantActiveStatus(uid).then((data)=>{
+            result(null,{status:"success",message:"Merchant Data Fetched Successfully",active:data['active']});
+        }).catch((err)=>{
+            result(null,{status:"failure",message:"Merchant Data Fetch Failed"});
+        })
+        
+    }).catch(()=>{
+        result(null,{status:"failure",message:"Merchants Data Fetch Failed"});
+    });
+    
+    
+    
+}
 
 AdminMaster.getAllUsers = (uid,result)=>{
    
@@ -79,6 +95,33 @@ function getAllUsers(){
                 }
                 console.log('Get All Users Fetched');
                 resolve(res);
+            })
+    });
+}
+
+function updateMerchantActiveStatus(bid){
+    return new Promise((resolve,reject)=>{
+        sql.query("UPDATE business_master SET active = CASE WHEN active = 0 THEN 1 WHEN active = 1 THEN 0 ELSE 0 END WHERE bid = ?;",bid,(err,res)=>{
+                if(err){
+                    
+                    console.log('Status Update Failed due to '+err);
+                    return;
+                }
+                console.log('Status Updated Successfully for bid ' + bid);
+                resolve();
+            })
+    });
+}
+function getMerchantActiveStatus(bid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT active FROM business_master WHERE bid = ?;",bid,(err,res)=>{
+                if(err){
+                    
+                    console.log('Status Fetch Failed due to '+err);
+                    return;
+                }
+                console.log('Status Fetched Successfully for bid ' + bid);
+                resolve(res[0]);
             })
     });
 }
