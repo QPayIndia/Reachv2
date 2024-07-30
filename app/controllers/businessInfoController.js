@@ -982,6 +982,34 @@ exports.uploadphoto = (req,res)=>{
           
     });
 }
+exports.uploadKYBPhoto = (req,res)=>{
+
+  const storage = multer.diskStorage({
+      destination: function(req, file, cb) {
+        cb(null, 'uploads/business/kyb');
+      },
+      filename: function(req, file, cb) {
+        cb(null, Date.now() + ".jpg"/*path.extname(file.originalname)*/);
+      }
+    });
+    
+    const upload = multer({ storage: storage });
+    upload.single('file')(req,res,function (err){
+      if (err instanceof multer.MulterError) {
+          return res.status(400).json({status:false, message: 'File upload error', error: err });
+        } else if (err) {
+          return res.status(500).json({status:false, message: 'Server error', error: err });
+        }
+    
+        if (!req.file) {
+          return res.status(400).json({ message: 'No files were uploaded.' });
+        }
+        
+        var thumbimg = "/uploads/business/kyb/"+req.file.filename;
+        res.status(200).send({status:"success",message:"File Uploaded Successfully",data :{thumb: thumbimg}});
+          
+    });
+}
 
 exports.uploadPdfFile = (req,res)=>{
 

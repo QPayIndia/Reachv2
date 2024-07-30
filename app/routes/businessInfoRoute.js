@@ -20,6 +20,7 @@ module.exports = app =>{
     router.post('/getkycdata',business.getKYCInfo);
     router.post('/uploadbphoto',business.uploadphoto);
     router.post('/uploadpdf',business.uploadPdfFile);
+    router.post('/uploadkybphoto',business.uploadKYBPhoto);
     router.post('/addbphotoinfo',business.addBPicture);
     router.post('/getbphotoinfo',business.getBPicture);
     router.post('/uploadbvideo',business.uploadvideo);
