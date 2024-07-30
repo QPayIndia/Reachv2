@@ -990,10 +990,7 @@ exports.uploadPdfFile = (req,res)=>{
         cb(null, 'uploads/business/kyb');
       },
       filename: function(req, file, cb) {
-        let extArray = file.mimetype.split("/");
-        let extension = extArray[extArray.length - 1];
-        cb(null, Date.now() + "."+extension);
-        //cb(null, Date.now() + ".pdf"/*path.extname(file.originalname)*/);
+        cb(null, Date.now() + ".pdf"/*path.extname(file.originalname)*/);
       }
     });
     
