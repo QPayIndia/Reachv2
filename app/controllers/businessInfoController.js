@@ -990,7 +990,7 @@ exports.uploadPdfFile = (req,res)=>{
         cb(null, 'uploads/business/kyb');
       },
       filename: function(req, file, cb) {
-        cb(null, Date.now() + ".pdf"/*path.extname(file.originalname)*/);
+        cb(null, Date.now() +  path.extname(file.originalname)/*path.extname(file.originalname)*/);
       }
     });
     
