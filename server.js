@@ -61,6 +61,13 @@ app.get('/uploads/kyc/:name', (req, res) => {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   res.sendFile("C:/Users/Public/Reach/reach/Reachv2/uploads/kyc/"+imagePath); 
 });
+app.get('/uploads/kyb/:name', (req, res) => { 
+  const imagePath = req.params.name; 
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.sendFile("C:/Users/Public/Reach/reach/Reachv2/uploads/kyb/"+imagePath); 
+});
 
 require("./app/routes/businessInfoRoute.js")(app);
 require("./app/routes/adminRoute.js")(app);
