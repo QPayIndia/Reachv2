@@ -30,6 +30,25 @@ AdminMaster.getPendingMerchants = (uid,result)=>{
     
     
 }
+AdminMaster.addUser = (username,password,usertype,uid,result)=>{
+   
+    getUserByPhone(username).then((data)=>{
+        if(data.length == 0){
+            addUser(username,password,usertype,uid).then((id)=>{
+                result(null,{status:"success",message:"User Created Successfully",uid:id});
+            }).catch(()=>{
+                result(null,{status:"failure",message:"User create Failed"});
+            });
+        }else{
+            result(null,{status:"failure",message:"User already exists"});
+        }
+    }).catch(()=>{
+        result(null,{status:"failure",message:"User create Failed"});
+    });
+    
+    
+    
+}
 AdminMaster.updateMerchantActiveStatus = (uid,result)=>{
    
     updateMerchantActiveStatus(uid).then(()=>{
@@ -57,6 +76,59 @@ AdminMaster.getAllUsers = (uid,result)=>{
  
 }
 
+AdminMaster.deleteBusiness = (bid,result)=>{
+   
+    getBusinessByID(bid).then((data)=>{
+       if(data.length > 0){
+        deleteBusiness(bid).then(()=>{
+            result(null,{status:"success",message:"Business Deleted Successfully"});
+        }).catch(()=>{
+            result(null,{status:"failure",message:"Business Delete Failed"});
+        });
+       }else{
+        result(null,{status:"failure",message:"No Business Found"});
+       }
+    }).catch(()=>{
+        result(null,{status:"failure",message:"Business Delete Failed"});
+    });
+ 
+}
+
+
+AdminMaster.login = (phone,password,result)=>{
+    sql.query("SELECT COUNT(*) as count,phone,password,uid FROM user_master WHERE phone = ? AND usertype = 1",[phone,password],(err,results)=>{
+        if(err){
+            
+            console.log('Cannot find User due to '+err);
+            return;
+        }
+        if(results[0]['password'] == "" || results[0]['password'] == null){
+            result(null,{status:"failure",message:"User doesn't exist"});
+        }
+        else if(results[0]['password'] != password){
+            result(null,{status:"failure",message:"Password doen't match"});
+        }else{
+            result(null,{status:"success",message:"Authentication Successful",uid:results[0]['uid']});
+        }
+    })
+    
+}
+
+function addUser(username,password,usertype,uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("INSERT INTO user_master SET name = ? ,phone = ?,password = ?,usertype = ?",[username,username,password,usertype],(err,res)=>{
+            if(err){
+                reject();
+                console.log('User Insert Failed due to '+err);
+                return;
+            }
+            console.log('User Created successfully');
+            resolve(res.insertId);
+        })
+    })
+}
+
+
 
 
 function getAllMerchants(){
@@ -68,6 +140,32 @@ function getAllMerchants(){
                     return;
                 }
                 console.log('Get All Merchants Fetched');
+                resolve(res);
+            })
+    });
+}
+function getAllUsers(){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT uid, name,phone,active,usertype,DATE_FORMAT(lastlogin, '%d-%m-%Y %h:%i:%s %p') as lastlogin,DATE_FORMAT(createdon, '%d-%m-%Y %h:%i:%s %p') as registeredon FROM user_master;",(err,res)=>{
+                if(err){
+                    
+                    console.log('Get All Users Failed due to '+err);
+                    return;
+                }
+                console.log('Get All Users Fetched');
+                resolve(res);
+            })
+    });
+}
+function getUserByPhone(phone){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT uid, name,phone,active,usertype,DATE_FORMAT(lastlogin, '%d-%m-%Y %h:%i:%s %p') as lastlogin,DATE_FORMAT(createdon, '%d-%m-%Y %h:%i:%s %p') as registeredon FROM user_master WHERE phone = ?;",phone,(err,res)=>{
+                if(err){
+                    
+                    console.log('Get Users Failed due to '+err);
+                    return;
+                }
+                console.log('Get  User Fetched');
                 resolve(res);
             })
     });
@@ -85,19 +183,7 @@ function getPendingMerchants(){
             })
     });
 }
-function getAllUsers(){
-    return new Promise((resolve,reject)=>{
-        sql.query("SELECT A.uid, A.name,A.phone,A.active,DATE_FORMAT(A.lastlogin, '%d-%m-%Y %h:%i:%s %p') as lastlogin,DATE_FORMAT(A.createdon, '%d-%m-%Y %h:%i:%s %p') as createdon FROM user_master as A;",(err,res)=>{
-                if(err){
-                    
-                    console.log('Get All Users Failed due to '+err);
-                    return;
-                }
-                console.log('Get All Users Fetched');
-                resolve(res);
-            })
-    });
-}
+
 
 function updateMerchantActiveStatus(bid){
     return new Promise((resolve,reject)=>{
@@ -128,17 +214,31 @@ function getMerchantActiveStatus(bid){
 
 
 
-function deleteData(uid,ownerid){
+function deleteBusiness(bid){
     return new Promise((resolve,reject)=>{
-        sql.query("DELETE FROM owner_master WHERE ownerid = ? AND uid = ?",[ownerid,uid],(err,data)=>{
+        sql.query("DELETE FROM business_master WHERE bid = ?",[bid],(err,data)=>{
             if(err){
                 reject();
-                
+                console.log("Delete Business Failed " +err);
                 return;
             }
     
     
             resolve();
+        })
+    })
+}
+function getBusinessByID(bid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT * FROM business_master WHERE bid = ?",[bid],(err,data)=>{
+            if(err){
+                reject();
+                console.log(" Business Fetch Failed " +err);
+                return;
+            }
+    
+    
+            resolve(data);
         })
     })
 }

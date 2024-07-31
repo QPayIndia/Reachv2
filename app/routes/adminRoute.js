@@ -6,6 +6,9 @@ module.exports = app =>{
     router.post('/getpendingmerchants',admin.getPendingMerchants);
     router.post('/getallusers',admin.getAllUsers);
     router.post('/updatemerchantstatus',admin.updateMerchantActiveStatus);
+    router.post('/login',admin.login);
+    router.post('/adduser',admin.addUser);
+    router.post('/deletebusiness',admin.deleteBusiness);
     //router.post('/addrating',business.addRating);
     
     
