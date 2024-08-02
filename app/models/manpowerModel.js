@@ -35,7 +35,7 @@ getData(bid).then((data)=>{
   
 }
 ManPowerModel.addData = (model,manreqid,result)=>{
-    console.log(model)
+    
 	if(manreqid == 0){
 		addData(model).then((id)=>{
 			result(null,{status:"success",message:"Manpower Req Inserted Successfully",manreqid:id});
@@ -45,10 +45,43 @@ ManPowerModel.addData = (model,manreqid,result)=>{
 
   
 }
+ManPowerModel.deleteData = (manreqid,result)=>{
+   
+	getDataByID(manreqid).then((data)=>{
+		if(data.length > 0){
+			deleteData(manreqid).then(()=>{
+				result(null,{status:"success",message:"Manpower Req Deleted Successfully"});
+			}).catch((err)=>{
+				result(err,{status:"failure",message:"Manpower Req Delete Failed"});
+			});
+			   
+		}else{
+			result(null,{status:"failure",message:"No Data Found"});
+		}
+	});
+	
+
+  
+}
 
 function getData(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM manpower_req_master WHERE bid = ?",[uid],(err,data)=>{
+                if(err){
+                    reject();
+                    console.log('Manpower Req Fetch Failed due to '+err);
+                    return;
+                }
+                console.log('Manpower Req Fetched successfully');
+				
+			
+                resolve(data);
+            })
+    });
+}
+function getDataByID(uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT * FROM manpower_req_master WHERE manreqid = ?",[uid],(err,data)=>{
                 if(err){
                     reject();
                     console.log('Manpower Req Fetch Failed due to '+err);
@@ -73,6 +106,21 @@ function addData(model){
 				
 			
                 resolve(data.insertId);
+            })
+    });
+}
+function deleteData(uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("DELETE FROM manpower_req_master WHERE manreqid = ?",[uid],(err,data)=>{
+                if(err){
+                    reject();
+                    console.log('Manpower Req Delete Failed due to '+err);
+                    return;
+                }
+                console.log('Manpower Req Delete successfully');
+				
+			
+                resolve();
             })
     });
 }

@@ -59,6 +59,7 @@ module.exports = app =>{
 	router.post('/getbusinessinfoprogress',business.getBusinessInfoProgress);
 	router.post('/addmanpower',business.addManPowerData);
 	router.post('/getmanpower',business.getManPowerData);
+	router.post('/deletemanpower',business.deleteManPowerData);
 
     
 

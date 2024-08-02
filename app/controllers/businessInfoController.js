@@ -1199,6 +1199,16 @@ exports.getManPowerData = (req,res)=>{
           res.status(200).json(data);
   })
 }
+exports.deleteManPowerData = (req,res)=>{
+    
+  ManPowerModel.deleteData(req.body.manreqid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
 
 
 exports.addManPowerData = (req,res)=>{
