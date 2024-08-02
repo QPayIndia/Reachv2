@@ -20,6 +20,7 @@ const BrochureModel = require("../models/brochureModel.js");
 const OwnerModel = require("../models/ownerModel.js");
 const PhoneNumberModel = require("../models/phonenumberModel.js");
 const BusinessInfoProgress = require("../models/business_info_progressModel.js");
+const ManPowerModel = require("../models/manpowerModel.js");
 exports.create = (req,res)=>{
     if(!req.body){
         res.status(400).send({
@@ -1187,4 +1188,50 @@ exports.getBookmark = (req,res)=>{
       else
           res.status(200).json(data);
   })
+}
+exports.getManPowerData = (req,res)=>{
+    
+  ManPowerModel.getData(req.body.bid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+
+exports.addManPowerData = (req,res)=>{
+  
+  const model = new ManPowerModel(
+            {
+              bid :req.body.bid,
+              title :req.body.title,
+              jobtype :req.body.jobtype,
+              description :req.body.description,
+              skill :req.body.skill,
+              qualification :req.body.qualification,
+              experience :req.body.experience,
+              salaryfrom :req.body.salaryfrom,
+              salaryto :req.body.salaryto,
+              gender :req.body.gender,
+              age :req.body.age,
+              employementtype :req.body.employementtype,
+              noofvacancies :req.body.noofvacancies,
+              startdate :req.body.startdate,
+              active :req.body.active,
+              enddate :req.body.enddate
+            }
+        )
+  
+        
+ 
+    ManPowerModel.addData(model,req.body.manreqid,(err,data)=>{
+    
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).json(data);
+    })
 }
