@@ -39,8 +39,16 @@ ManPowerModel.addData = (model,manreqid,result)=>{
 	if(manreqid == 0){
 		addData(model).then((id)=>{
 			result(null,{status:"success",message:"Manpower Req Inserted Successfully",manreqid:id});
+		}).catch((err)=>{
+			result(err,{status:"failure",message:"Manpower Req Insert Failed"});
 		});
 		   
+	}else{
+		updateData(model,manreqid).then(()=>{
+			result(null,{status:"success",message:"Manpower Req Updated Successfully",manreqid:manreqid});
+		}).catch((err)=>{
+			result(err,{status:"failure",message:"Manpower Req Update Failed"});
+		});
 	}
 
   
@@ -99,13 +107,28 @@ function addData(model){
         sql.query("INSERT INTO manpower_req_master SET ?",[model],(err,data)=>{
                 if(err){
                     reject();
-                    console.log('Manpower Req Fetch Failed due to '+err);
+                    console.log('Manpower Req Insert Failed due to '+err);
                     return;
                 }
-                console.log('Manpower Req Fetched successfully');
+                console.log('Manpower Req Inserted successfully');
 				
 			
                 resolve(data.insertId);
+            })
+    });
+}
+function updateData(model,manreqid){
+    return new Promise((resolve,reject)=>{
+        sql.query("UPDATE manpower_req_master SET ? WHERE manreqid = ?",[model,manreqid],(err,data)=>{
+                if(err){
+                    reject();
+                    console.log('Manpower Req Updated Failed due to '+err);
+                    return;
+                }
+                console.log('Manpower Req Updated successfully');
+				
+			
+                resolve();
             })
     });
 }
