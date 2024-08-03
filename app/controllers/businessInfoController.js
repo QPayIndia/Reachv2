@@ -22,6 +22,7 @@ const PhoneNumberModel = require("../models/phonenumberModel.js");
 const BusinessInfoProgress = require("../models/business_info_progressModel.js");
 const ManPowerModel = require("../models/manpowerModel.js");
 const Category = require("../models/categoryModel.js");
+const SubCategory = require("../models/subCategoryModel.js");
 exports.create = (req,res)=>{
     if(!req.body){
         res.status(400).send({
@@ -1288,6 +1289,51 @@ exports.getAllBusinessCategory = (req,res)=>{
           res.status(200).json(data);
   })
 }
+
+
+exports.addBusinessSubCategory = (req,res)=>{
+
+  const model = new SubCategory(
+            {
+                name:req.body.name,
+                categoryid:req.body.categoryid,
+                createdby:req.body.uid
+            }
+        )
+  
+
+ 
+        SubCategory.create(model,req.body.subcategoryid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).json(data);
+    })
+}
+
+exports.deleteSubCategory = (req,res)=>{
+    
+  SubCategory.delete(req.body.subcategoryid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+exports.getBusinessSubCategory = (req,res)=>{
+    
+  SubCategory.getAllCategory(req.body.categoryid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
 exports.getBusinessPhoneNumbers = (req,res)=>{
     
   ContactInfo.getNumbers(req.body.uid,(err,data)=>{
