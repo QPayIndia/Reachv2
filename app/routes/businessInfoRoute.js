@@ -4,6 +4,8 @@ module.exports = app =>{
 
     var router = require('express').Router();
     router.post('/contactinfo',business.create);
+    router.post('/getcontactnumbers',business.getBusinessPhoneNumbers);
+    router.post('/getbusinessowners',business.getBusinessOwners);
     router.post('/login',business.Login);
     router.post('/signup',business.Signup);
     router.post('/getdata',business.getDtaa);
@@ -60,6 +62,9 @@ module.exports = app =>{
 	router.post('/addmanpower',business.addManPowerData);
 	router.post('/getmanpower',business.getManPowerData);
 	router.post('/deletemanpower',business.deleteManPowerData);
+	router.post('/addbusinesscategory',business.addBusinessCategory);
+	router.post('/getbusinesscategory',business.getAllBusinessCategory);
+	router.post('/deletebusinesscategory',business.deleteBusinessCategory);
 
     
 

@@ -21,6 +21,7 @@ const OwnerModel = require("../models/ownerModel.js");
 const PhoneNumberModel = require("../models/phonenumberModel.js");
 const BusinessInfoProgress = require("../models/business_info_progressModel.js");
 const ManPowerModel = require("../models/manpowerModel.js");
+const Category = require("../models/categoryModel.js");
 exports.create = (req,res)=>{
     if(!req.body){
         res.status(400).send({
@@ -1245,3 +1246,66 @@ exports.addManPowerData = (req,res)=>{
             res.status(200).json(data);
     })
 }
+
+exports.addBusinessCategory = (req,res)=>{
+
+  const model = new Category(
+            {
+                name:req.body.name,
+                createdby:req.body.uid
+            }
+        )
+  
+
+ 
+  Category.create(model,req.body.categoryid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).json(data);
+    })
+}
+
+exports.deleteBusinessCategory = (req,res)=>{
+    
+  Category.delete(req.body.categoryid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+exports.getAllBusinessCategory = (req,res)=>{
+    
+  Category.getAllCategory((err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+exports.getBusinessPhoneNumbers = (req,res)=>{
+    
+  ContactInfo.getNumbers(req.body.uid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+exports.getBusinessOwners = (req,res)=>{
+    
+  ContactInfo.getOwners(req.body.uid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+

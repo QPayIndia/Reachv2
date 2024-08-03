@@ -68,6 +68,28 @@ ContactInfo.create = (model,result)=>{
     
 }
 
+
+
+ContactInfo.getNumbers = (bid,result)=>{
+
+    getNumbers(bid).then((data)=>{
+        result(null,{status:"success",message:"Contact Number Fetched Successfully",data:data});
+    
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Something went wrong",data:[]});
+    });  
+}
+ContactInfo.getOwners = (bid,result)=>{
+
+    getOwners(bid).then((data)=>{
+        result(null,{status:"success",message:"Owners Fetched Successfully",data:data});
+    
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Something went wrong",data:[]});
+    });  
+}
+
+
 function addContactInfo(model){
     return new Promise((resolve,reject)=>{
         sql.query("INSERT INTO contact_info SET ?",model,(err,res)=>{
@@ -199,10 +221,12 @@ function getNumbers(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM phone_master WHERE uid = ?",[uid],(err,data)=>{
             if(err){
-                
+                reject(err);
+                console.log("Phone Number Fetch Failed "+ err);
                 return;
             }
     
+            console.log("Phone Number Fetched Successfully");
             resolve(data)
         })
     
