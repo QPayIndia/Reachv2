@@ -35,7 +35,8 @@ getData(bid).then((data)=>{
                  four: false,
                  five:false,
                  six: false,
-                 seven: false
+                 seven: false,
+                 partpercentage : 10
     
                 }
             )
