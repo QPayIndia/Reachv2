@@ -1,3 +1,4 @@
+const controller = require('../controllers/businessInfoController.js');
 const sql = require('./db.js');
 
 const BusinessDetail = function(model){
@@ -35,9 +36,10 @@ BusinessDetail.getDetail = (model,result)=>{
                                         if(userReview.length > 0){
                                             userRating = {"rating":userReview[0]['rating'],review:userReview[0]['review']}
                                         }
+                                        getFAQ(model.uid).then((faq)=>{
+                                            result(null,{status:"success",message:"Business Detail Fetched successfully ",data:data,userRating:userRating,social:socialData,businessTiming:timing,images:image,product:products,service:services,brochure:brochure,review:reviews,faq:faq});
 
-                                    result(null,{status:"success",message:"Business Detail Fetched successfully ",data:data,userRating:userRating,social:socialData,businessTiming:timing,images:image,product:products,service:services,brochure:brochure,review:reviews});
-
+                        })
                         })
                         })
                         })
@@ -120,6 +122,20 @@ function getSocialMedia(uid){
             }
             console.log('Social Media Fetched successfully');
             resolve(res[0]);
+        })
+    })
+}
+function getFAQ(uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT question,answer FROM faq_master WHERE bid = ?",[uid],(err,res)=>{
+            if(err){
+                
+                console.log('FAQ Fetch Fail due to '+err);
+                reject();
+                return;
+            }
+            console.log('FAQ Fetched successfully');
+            resolve(res);
         })
     })
 }
