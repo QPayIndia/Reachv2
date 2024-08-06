@@ -10,7 +10,8 @@ const PaymentDeliveryModel = function(model){
     this.four = model.four,
     this.five = model.five,
     this.six = model.six,
-    this.seven = model.seven
+    this.seven = model.seven,
+    this.partpercentage = model.partpercentage
     
     
     

@@ -1419,21 +1419,22 @@ exports.getPaymentDelivery = (req,res)=>{
 
 exports.addPaymentDeliveryModel = (req,res)=>{
   
-  const model = new PaymentDeliveryModel(
-            {
-              bid :req.body.bid,
-             one: req.body.one,
-             two: req.body.two,
-             three: req.body.three,
-             four: req.body.four,
-             five: req.body.five,
-             six: req.body.six,
-             seven: req.body.seven
+    const model = new PaymentDeliveryModel(
+              {
+                bid :req.body.bid,
+              one: req.body.one,
+              two: req.body.two,
+              three: req.body.three,
+              four: req.body.four,
+              five: req.body.five,
+              six: req.body.six,
+              seven: req.body.seven,
+              partpercentage: req.body.partpercentage
 
-            }
-        )
-  
-        
+              }
+          )
+    
+          
  
       PaymentDeliveryModel.addData(model,req.body.paytypeid,(err,data)=>{
     
