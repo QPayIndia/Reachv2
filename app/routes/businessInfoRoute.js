@@ -71,6 +71,8 @@ module.exports = app =>{
     router.post('/addfaq',business.addFAQ);
 	router.post('/getfaq',business.getFAQ);
 	router.post('/deletefaq',business.deleteFAQ);
+    router.post('/addpaymentdeliverymode',business.addPaymentDeliveryModel);
+	router.post('/getpaymentdeliverymode',business.getPaymentDelivery);
 
     
 

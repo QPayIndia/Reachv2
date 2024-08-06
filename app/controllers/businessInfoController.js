@@ -24,6 +24,7 @@ const ManPowerModel = require("../models/manpowerModel.js");
 const Category = require("../models/categoryModel.js");
 const SubCategory = require("../models/subCategoryModel.js");
 const FAQModel = require("../models/faqModel.js");
+const PaymentDeliveryModel = require("../models/paymentdeliveryModel.js");
 exports.create = (req,res)=>{
     if(!req.body){
         res.status(400).send({
@@ -1393,6 +1394,48 @@ exports.addFAQ = (req,res)=>{
         
  
         FAQModel.addData(model,req.body.faqid,(err,data)=>{
+    
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).json(data);
+    })
+}
+
+
+exports.getPaymentDelivery = (req,res)=>{
+    
+  PaymentDeliveryModel.getData(req.body.bid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+
+
+exports.addPaymentDeliveryModel = (req,res)=>{
+  
+  const model = new PaymentDeliveryModel(
+            {
+              bid :req.body.bid,
+             one: req.body.one,
+             two: req.body.two,
+             three: req.body.three,
+             four: req.body.four,
+             five: req.body.five,
+             six: req.body.six,
+             seven: req.body.seven
+
+            }
+        )
+  
+        
+ 
+      PaymentDeliveryModel.addData(model,req.body.paytypeid,(err,data)=>{
     
         if(err){
             res.status(500).send(data);
