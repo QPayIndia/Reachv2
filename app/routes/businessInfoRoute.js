@@ -68,6 +68,9 @@ module.exports = app =>{
 	router.post('/addbusinesssubcategory',business.addBusinessSubCategory);
 	router.post('/getbusinesssubcategory',business.getBusinessSubCategory);
 	router.post('/deletebusinesssubcategory',business.deleteSubCategory);
+    router.post('/addfaq',business.addFAQ);
+	router.post('/getfaq',business.getFAQ);
+	router.post('/deletefaq',business.deleteFAQ);
 
     
 

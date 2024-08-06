@@ -23,6 +23,7 @@ const BusinessInfoProgress = require("../models/business_info_progressModel.js")
 const ManPowerModel = require("../models/manpowerModel.js");
 const Category = require("../models/categoryModel.js");
 const SubCategory = require("../models/subCategoryModel.js");
+const FAQModel = require("../models/faqModel.js");
 exports.create = (req,res)=>{
     if(!req.body){
         res.status(400).send({
@@ -1353,5 +1354,51 @@ exports.getBusinessOwners = (req,res)=>{
       else
           res.status(200).json(data);
   })
+}
+
+
+exports.getFAQ = (req,res)=>{
+    
+  FAQModel.getData(req.body.bid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+exports.deleteFAQ = (req,res)=>{
+    
+  FAQModel.deleteData(req.body.faqid,(err,data)=>{
+      if(err){
+          res.status(500).send(data);
+      }
+      else
+          res.status(200).json(data);
+  })
+}
+
+
+exports.addFAQ = (req,res)=>{
+  
+  const model = new FAQModel(
+            {
+              bid :req.body.bid,
+              question : req.body.question,
+              answer : req.body.answer
+
+            }
+        )
+  
+        
+ 
+        FAQModel.addData(model,req.body.faqid,(err,data)=>{
+    
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).json(data);
+    })
 }
 
