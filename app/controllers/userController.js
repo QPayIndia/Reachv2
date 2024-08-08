@@ -108,6 +108,45 @@ exports.deleteAddress = (req,res)=>{
     })
 }
 
+
+exports.addUser = (req,res)=>{
+
+
+    const model = new User(
+        {
+            name : req.body.name,
+            lastname : req.body.lastname,
+            phone : req.body.phone,
+            photo : req.body.photo,
+            occupation : req.body.occupation,
+            dob : req.body.dob
+        });
+   
+
+    User.addUser(model,req.body.uid,(err,data)=>{
+        if(err)
+            res.status(500).send(data);
+        else
+            res.status(200).send(data);
+    });
+
+   
+};
+
+exports.getUser = (req,res)=>{
+    
+    User.getUserById(req.body.uid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
+
+
+
+
 // exports.getMyTeams = (req,res)=>{
    
 //     User.getMyTeams(req.body.userId,(err,rows)=>{
