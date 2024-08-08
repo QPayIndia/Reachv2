@@ -76,7 +76,7 @@ exports.addUserAddress = (req,res)=>{
 
     AddressModel.create(model,req.body.addressid,(err,data)=>{
         if(err)
-            res.status(403).send(data);
+            res.status(500).send(data);
         else
             res.status(200).send(data);
     });
@@ -85,21 +85,16 @@ exports.addUserAddress = (req,res)=>{
 };
 
 
-// exports.getAllTeams = (req,res)=>{
+exports.getAllAddress = (req,res)=>{
     
-//     User.getAllTeams(req.body.location,(err,data)=>{
-//         if(err){
-//             res.status(500).send({
-//                 message:
-//                   err.message || "Something went wrong."
-//               });
-//         }
-//         else
-//             res.status(200).json({
-//         teams : data
-//         });
-//     })
-// }
+    AddressModel.getLocationData(req.body.userid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
 
 // exports.getMyTeams = (req,res)=>{
    
