@@ -1,3 +1,4 @@
+const AddressModel = require("../models/addressModel.js");
 const User = require("../models/userModel.js");
 
 
@@ -48,6 +49,36 @@ exports.add = (req,res)=>{
             res.status(403).send(data);
         else
         res.status(200).send(data);
+    });
+
+   
+};
+exports.addUserAddress = (req,res)=>{
+
+
+    const model = new AddressModel(
+        {
+            userid : req.body.userid,
+            contactname : req.body.contactname,
+            contactphone : req.body.contactphone,
+            doorno : req.body.doorno,
+            streetname : req.body.streetname,
+            landmark : req.body.landmark,
+            city : req.body.city,
+            postalcode : req.body.postalcode,
+            area : req.body.area,
+            state : req.body.state,
+            areaid : req.body.areaid,
+            stateid : req.body.stateid,
+            country : req.body.country
+        });
+   
+
+    AddressModel.create(model,req.body.addressid,(err,data)=>{
+        if(err)
+            res.status(403).send(data);
+        else
+            res.status(200).send(data);
     });
 
    
