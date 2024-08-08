@@ -25,7 +25,7 @@ AddressModel.create = (model,addressid,result)=>{
    
         if(addressid > 0){
             
-            updateInfo(model).then((id)=>{
+            updateInfo(model,addressid).then((id)=>{
                 getLocationData(model.userid).then((data)=>{
                     result(null,{status:"success",message:"Location Info Updated Successfully",data:data});
                 }).catch((err)=>{
@@ -68,9 +68,9 @@ function addLocationInfo(model){
     });
 }
 
-function updateInfo(model){
+function updateInfo(model,addressid){
     return new Promise((resolve,reject)=>{
-        sql.query("UPDATE address_master SET ? WHERE userid = ?",[model,model.userid],(err,res)=>{
+        sql.query("UPDATE address_master SET ? WHERE addressid = ?",[model,addressid],(err,res)=>{
                 if(err){
                     reject(err);
                     console.log('Location Info Failed due to '+err);
