@@ -99,6 +99,25 @@ AddressModel.getLocationData = (userid,result)=>{
     
 }
 
+
+AddressModel.deleteData = (addressid,result)=>{
+    
+    getDataByID(addressid).then((data)=>{
+		if(data.length > 0){
+			deleteData(addressid).then(()=>{
+				result(null,{status:"success",message:"Address Deleted Successfully"});
+			}).catch((err)=>{
+				result(err,{status:"failure",message:"Address Delete Failed"});
+			});
+			   
+		}else{
+			result(null,{status:"failure",message:"No Data Found"});
+		}
+	});
+    
+}
+
+
 AddressModel.getDistricts = (stateid,result)=>{
     
     
@@ -162,6 +181,37 @@ function getLocationData(userid){
         })
     })
 }
+
+function getDataByID(uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT * FROM address_master WHERE addressid = ?",[uid],(err,data)=>{
+                if(err){
+                    reject();
+                    console.log('Address Fetch Failed due to '+err);
+                    return;
+                }
+                console.log('Address Fetched successfully');
+				
+			
+                resolve(data);
+            })
+    });
+}
+
+function deleteData(uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("DELETE FROM address_master WHERE addressid = ?",[uid],(err,data)=>{
+                if(err){
+                    reject();
+                    console.log('Address Delete Failed due to '+err);
+                    return;
+                }
+                console.log('Address Delete successfully');
+                resolve();
+            })
+    });
+}
+
 
 
 

@@ -96,6 +96,18 @@ exports.getAllAddress = (req,res)=>{
     })
 }
 
+
+exports.deleteAddress = (req,res)=>{
+    
+    AddressModel.deleteData(req.body.addressid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
+
 // exports.getMyTeams = (req,res)=>{
    
 //     User.getMyTeams(req.body.userId,(err,rows)=>{
