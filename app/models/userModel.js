@@ -67,7 +67,7 @@ User.getUserById = (uid,result)=>{
    
     getUserById(uid).then((data)=>{
         if(data.length >0){
-            result(null,{status:"success",message:"User Fetched Successfully",data:data});
+            result(null,{status:"success",message:"User Fetched Successfully",data:data[0]});
         }else{
             result(null,{status:"failure",message:"User does not Exist"});
         }
