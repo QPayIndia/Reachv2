@@ -4,6 +4,7 @@ const User = function(model){
     // this.userid = model.userid,
     this.name = model.name,
     this.lastname = model.lastname,
+    this.email = model.email,
     this.phone = model.phone,
     this.photo = model.photo,
     this.occupation = model.occupation,
@@ -79,6 +80,35 @@ User.getUserById = (uid,result)=>{
     
 }
 
+
+User.updateName = (name,lastname,uid,result)=>{
+   
+    updateName(name,lastname,uid).then(()=>{
+        result(null,{status:"success",message:"User Updated Successfully",uid:uid});
+    }).catch(()=>{
+        result(null,{status:"failure",message:"User Fetch Failed"});
+    });
+    
+}
+User.updateEmail = (email,uid,result)=>{
+   
+    updateEmail(email,uid).then(()=>{
+        result(null,{status:"success",message:"User Updated Successfully",uid:uid});
+    }).catch(()=>{
+        result(null,{status:"failure",message:"User Fetch Failed"});
+    });
+    
+}
+User.updateDOB = (dob,uid,result)=>{
+   
+    updateDOB(dob,uid).then(()=>{
+        result(null,{status:"success",message:"User Updated Successfully",uid:uid});
+    }).catch(()=>{
+        result(null,{status:"failure",message:"User Fetch Failed"});
+    });
+    
+}
+
 function addUser(model){
     return new Promise((resolve,reject)=>{
         sql.query("INSERT INTO user_master SET ?",[model],(err,res)=>{
@@ -132,6 +162,49 @@ function getUserById(uid){
                 resolve(res);
             })
     });
+}
+
+function updateName(name,lastname,uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("UPDATE user_master SET name = ?,lastname = ? WHERE uid = ?",[name,lastname,uid],(err,res)=>{
+            if(err){
+                reject();
+                console.log('User Update Failed due to '+err);
+                return;
+            }
+            console.log('User Updated successfully');
+            resolve();
+        })
+    })
+}
+
+function updateEmail(email,uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("UPDATE user_master SET email = ? WHERE uid = ?",[email,uid],(err,res)=>{
+            if(err){
+                reject();
+                console.log('User Update Failed due to '+err);
+                return;
+            }
+            console.log('User Updated successfully');
+            resolve();
+        })
+    })
+}
+
+
+function updateDOB(dob,uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("UPDATE user_master SET dob = ? WHERE uid = ?",[dob,uid],(err,res)=>{
+            if(err){
+                reject();
+                console.log('User Update Failed due to '+err);
+                return;
+            }
+            console.log('User Updated successfully');
+            resolve();
+        })
+    })
 }
 
 

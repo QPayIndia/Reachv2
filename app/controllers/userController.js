@@ -108,6 +108,39 @@ exports.deleteAddress = (req,res)=>{
     })
 }
 
+exports.updateName = (req,res)=>{
+    
+    User.updateName(req.body.name,req.body.lastname,req.body.uid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
+
+exports.updateEmail = (req,res)=>{
+    
+    User.updateEmail(req.body.email,req.body.uid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
+
+exports.updateDOB = (req,res)=>{
+    
+    User.updateDOB(req.body.dob,req.body.uid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
+
 
 exports.addUser = (req,res)=>{
 
@@ -116,6 +149,7 @@ exports.addUser = (req,res)=>{
         {
             name : req.body.name,
             lastname : req.body.lastname,
+            email : req.body.email,
             phone : req.body.phone,
             photo : req.body.photo,
             occupation : req.body.occupation,

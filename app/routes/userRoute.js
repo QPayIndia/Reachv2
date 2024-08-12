@@ -9,6 +9,9 @@ module.exports = app =>{
     router.post('/getaddress',users.getAllAddress);
     router.post('/deleteaddress',users.deleteAddress);
     router.post('/adduser',users.addUser);
+    router.post('/updatename',users.updateName);
+    router.post('/updateemail',users.updateEmail);
+    router.post('/updatedob',users.updateDOB);
     router.post('/getuser',users.getUser);
     app.use('/api/user',router);
 }
