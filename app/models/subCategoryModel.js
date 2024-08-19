@@ -12,7 +12,7 @@ SubCategory.create = (model,subcategoryid,result)=>{
     
     if(subcategoryid == 0){
       addCategory(model).then(()=>{
-        getAllCategory().then((data)=>{
+        getAllCategory(model.categoryid).then((data)=>{
           result(null,{status:"success",message:"Category Inserted Successfully",data:data})
         }).catch((err)=>{
           result(null,{status:"success",message:"Category Inserted Successfully",data:[]})
@@ -21,8 +21,8 @@ SubCategory.create = (model,subcategoryid,result)=>{
         result(err,{status:"failure",message:"Category Insert Failed"})
       })
     }else{
-      updateCategory(model,categoryid).then(()=>{
-        getAllCategory().then((data)=>{
+      updateCategory(model,subcategoryid).then(()=>{
+        getAllCategory(model.categoryid).then((data)=>{
           result(null,{status:"success",message:"Category Updated Successfully",data:data})
         }).catch((err)=>{
           result(null,{status:"success",message:"Category Updated Successfully",data:[]})
@@ -36,7 +36,7 @@ SubCategory.create = (model,subcategoryid,result)=>{
 SubCategory.delete = (id,result)=>{
   
   deleteCategory(id).then(()=>{
-    getAllCategory().then((data)=>{
+    getAllCategory(model.categoryid).then((data)=>{
       result(null,{status:"success",message:"Category Deleted Successfully",data:data});
     }).catch((err)=>{
       result(null,{status:"success",message:"Category Deleted Successfully",data:[]});
@@ -103,7 +103,7 @@ function updateCategory(model,categoryid){
 function getAllCategory(id){
   return new Promise((resolve,reject)=>{
 
-      sql.query("SELECT categoryid,name,DATE_FORMAT(createdon, '%d-%m-%Y %h:%i:%s %p') as createdon FROM sub_category_master WHERE categoryid = ?",id,(err,rows)=>{
+      sql.query("SELECT ,subcategoryid,categoryid,name,DATE_FORMAT(createdon, '%d-%m-%Y %h:%i:%s %p') as createdon FROM sub_category_master WHERE categoryid = ?",id,(err,rows)=>{
           if(err){
               reject(err);
               console.log("Get Category Failed");
