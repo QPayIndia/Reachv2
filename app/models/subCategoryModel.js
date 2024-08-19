@@ -33,10 +33,10 @@ SubCategory.create = (model,subcategoryid,result)=>{
     }
    
 }
-SubCategory.delete = (id,result)=>{
+SubCategory.delete = (categoryid,id,result)=>{
   
   deleteCategory(id).then(()=>{
-    getAllCategory(model.categoryid).then((data)=>{
+    getAllCategory(categoryid).then((data)=>{
       result(null,{status:"success",message:"Category Deleted Successfully",data:data});
     }).catch((err)=>{
       result(null,{status:"success",message:"Category Deleted Successfully",data:[]});

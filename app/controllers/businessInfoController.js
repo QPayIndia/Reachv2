@@ -1316,7 +1316,7 @@ exports.addBusinessSubCategory = (req,res)=>{
 
 exports.deleteSubCategory = (req,res)=>{
     
-  SubCategory.delete(req.body.subcategoryid,(err,data)=>{
+  SubCategory.delete(req.body.categoryid,req.body.subcategoryid,(err,data)=>{
       if(err){
           res.status(500).send(data);
       }
