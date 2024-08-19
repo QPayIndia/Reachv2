@@ -103,7 +103,7 @@ function updateCategory(model,categoryid){
 function getAllCategory(id){
   return new Promise((resolve,reject)=>{
 
-      sql.query("SELECT ,subcategoryid,categoryid,name,DATE_FORMAT(createdon, '%d-%m-%Y %h:%i:%s %p') as createdon FROM sub_category_master WHERE categoryid = ?",id,(err,rows)=>{
+      sql.query("SELECT subcategoryid,categoryid,name,DATE_FORMAT(createdon, '%d-%m-%Y %h:%i:%s %p') as createdon FROM sub_category_master WHERE categoryid = ?",id,(err,rows)=>{
           if(err){
               reject(err);
               console.log("Get Category Failed");
