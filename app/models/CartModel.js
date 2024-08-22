@@ -113,6 +113,8 @@ function getProductCart(uid){
                 }else{
                     data[i]['rating'] = "0";
                 }
+
+                data[i]['ischecked'] = data[i]['ischecked'] === 1 ? true : false;
             }
             console.log('Product Data Fetched successfully');
     
