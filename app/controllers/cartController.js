@@ -40,36 +40,6 @@ exports.add = (req,res)=>{
    
 };
 
-exports.addUserAddress = (req,res)=>{
-
-
-    const model = new AddressModel(
-        {
-            userid : req.body.userid,
-            contactname : req.body.contactname,
-            contactphone : req.body.contactphone,
-            doorno : req.body.doorno,
-            streetname : req.body.streetname,
-            landmark : req.body.landmark,
-            city : req.body.city,
-            postalcode : req.body.postalcode,
-            area : req.body.area,
-            state : req.body.state,
-            areaid : req.body.areaid,
-            stateid : req.body.stateid,
-            country : req.body.country
-        });
-   
-
-    AddressModel.create(model,req.body.addressid,(err,data)=>{
-        if(err)
-            res.status(500).send(data);
-        else
-            res.status(200).send(data);
-    });
-
-   
-};
 
 
 exports.getCartData = (req,res)=>{
@@ -84,9 +54,9 @@ exports.getCartData = (req,res)=>{
 }
 
 
-exports.deleteAddress = (req,res)=>{
+exports.updateCart = (req,res)=>{
     
-    AddressModel.deleteData(req.body.addressid,(err,data)=>{
+    CartModel.updateCart(req.body.uid,req.body.productid,req.body.ischecked,req.body.qty,req.body.type,(err,data)=>{
         if(err){
             res.status(500).send(data);
         }
@@ -94,78 +64,6 @@ exports.deleteAddress = (req,res)=>{
             res.status(200).send(data);
     })
 }
-
-exports.updateName = (req,res)=>{
-    
-    User.updateName(req.body.name,req.body.lastname,req.body.uid,(err,data)=>{
-        if(err){
-            res.status(500).send(data);
-        }
-        else
-            res.status(200).send(data);
-    })
-}
-
-exports.updateEmail = (req,res)=>{
-    
-    User.updateEmail(req.body.email,req.body.uid,(err,data)=>{
-        if(err){
-            res.status(500).send(data);
-        }
-        else
-            res.status(200).send(data);
-    })
-}
-
-exports.updateDOB = (req,res)=>{
-    
-    User.updateDOB(req.body.dob,req.body.uid,(err,data)=>{
-        if(err){
-            res.status(500).send(data);
-        }
-        else
-            res.status(200).send(data);
-    })
-}
-
-
-exports.addUser = (req,res)=>{
-
-
-    const model = new User(
-        {
-            name : req.body.name,
-            lastname : req.body.lastname,
-            email : req.body.email,
-            phone : req.body.phone,
-            photo : req.body.photo,
-            occupation : req.body.occupation,
-            dob : req.body.dob
-        });
-   
-
-    User.addUser(model,req.body.uid,(err,data)=>{
-        if(err)
-            res.status(500).send(data);
-        else
-            res.status(200).send(data);
-    });
-
-   
-};
-
-exports.getUser = (req,res)=>{
-    
-    User.getUserById(req.body.uid,(err,data)=>{
-        if(err){
-            res.status(500).send(data);
-        }
-        else
-            res.status(200).send(data);
-    })
-}
-
-
 
 
 // exports.getMyTeams = (req,res)=>{

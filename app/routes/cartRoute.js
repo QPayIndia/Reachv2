@@ -7,6 +7,7 @@ module.exports = app =>{
     // router.post('/getall');
     router.post('/addtocart',cart.add);
     router.post('/getcart',cart.getCartData);
+    router.post('/updatecart',cart.updateCart);
     
     app.use('/api/cart',router);
 }
