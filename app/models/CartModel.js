@@ -37,19 +37,19 @@ CartModel.create = (model,type,result)=>{
 }
 
 
-CartModel.updateCart = (uid,productid,ischecked,qty,type,result)=>{
+CartModel.updateCart = (uid,cartid,ischecked,qty,type,result)=>{
     
     
    if(type === 'product'){
     
     if(qty === 0){
-        DeleteProductCart(uid,productid).then(()=>{
+        DeleteProductCart(uid,cartid).then(()=>{
             result(null,{status:"success",message:"Product Cart Data Updated Successfully"});
         }).catch((err)=>{
             result(err,{status:"failure",message:err});
         })
     }else{
-        updateProductCart(uid,productid,ischecked,qty).then(()=>{
+        updateProductCart(uid,cartid,ischecked,qty).then(()=>{
             result(null,{status:"success",message:"Product Cart Data Updated Successfully"});
         }).catch((err)=>{
             result(err,{status:"failure",message:err});
@@ -92,7 +92,7 @@ function addToProductCart(model){
 
 function DeleteProductCart(uid,productid){
     return new Promise((resolve,reject)=>{
-      sql.query("DELETE FROM product_cart_master WHERE productid = ? AND userid = ?",[productid,uid],(err,res)=>{
+      sql.query("DELETE FROM product_cart_master WHERE cartid = ? AND userid = ?",[productid,uid],(err,res)=>{
         if(err){
             reject(err);
             console.log("Product Delete Failed");
@@ -108,7 +108,7 @@ function DeleteProductCart(uid,productid){
 function updateProductCart(uid,productid,ischecked,qty){
     
     return new Promise((resolve,reject)=>{
-        sql.query("UPDATE product_cart_master SET ischecked = ?,qty = ? WHERE productid = ? AND userid = ?",[ischecked,qty,productid,uid],(err,res)=>{
+        sql.query("UPDATE product_cart_master SET ischecked = ?,qty = ? WHERE cartid = ? AND userid = ?",[ischecked,qty,productid,uid],(err,res)=>{
                 if(err){
                     
                     console.log('Cart Update Failed due to '+err);

@@ -56,7 +56,7 @@ exports.getCartData = (req,res)=>{
 
 exports.updateCart = (req,res)=>{
     
-    CartModel.updateCart(req.body.uid,req.body.productid,req.body.ischecked,req.body.qty,req.body.type,(err,data)=>{
+    CartModel.updateCart(req.body.uid,req.body.cartid,req.body.ischecked,req.body.qty,req.body.type,(err,data)=>{
         if(err){
             res.status(500).send(data);
         }
