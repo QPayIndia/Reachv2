@@ -99,7 +99,7 @@ CartModel.getData = (uid,type,result)=>{
 
 function getProductCart(uid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT A.cartid,A.productid,B.productimg,B.name,B.price,B.totalrating as rating,B.reviewCount as review,A.qty FROM product_cart_master as A,product_master as B WHERE A.userid = ? AND A.productid = B.productid; ",[uid],(err,data)=>{
+        sql.query("SELECT A.cartid,A.productid,B.productimg,B.name,B.price,B.totalrating as rating,B.reviewCount as review,A.qty,A.ischecked FROM product_cart_master as A,product_master as B WHERE A.userid = ? AND A.productid = B.productid; ",[uid],(err,data)=>{
             if(err){
                 console.log("Get Product Cart Master : "+err);
                 
