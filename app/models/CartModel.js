@@ -74,7 +74,7 @@ CartModel.updateCart = (uid,cartid,ischecked,qty,type,result)=>{
    }else{
     if(qty === 0){
         DeleteServiceCart(uid,cartid).then(()=>{
-            getCartValue(uid).then((value)=>{
+            getServiceCartValue(uid).then((value)=>{
                 result(null,{status:"success",message:"Service Cart Data Updated Successfully",cart:value});
             }).catch((err)=>{
                 result(null,{status:"success",message:"Service Cart Data Updated Successfully",cart:{price:0,items:0}});
