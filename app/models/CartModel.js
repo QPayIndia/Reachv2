@@ -44,13 +44,22 @@ CartModel.updateCart = (uid,cartid,ischecked,qty,type,result)=>{
     
     if(qty === 0){
         DeleteProductCart(uid,cartid).then(()=>{
-            result(null,{status:"success",message:"Product Cart Data Updated Successfully"});
+            getCartValue(uid).then((value)=>{
+                result(null,{status:"success",message:"Product Cart Data Updated Successfully",cart:value});
+            }).catch((err)=>{
+                result(null,{status:"success",message:"Product Cart Data Updated Successfully",cart:{price:0,items:0}});
+            })
         }).catch((err)=>{
             result(err,{status:"failure",message:err});
         })
     }else{
         updateProductCart(uid,cartid,ischecked,qty).then(()=>{
-            result(null,{status:"success",message:"Product Cart Data Updated Successfully"});
+            getCartValue(uid).then((value)=>{
+                result(null,{status:"success",message:"Product Cart Data Updated Successfully",cart:value});
+            }).catch((err)=>{
+                result(null,{status:"success",message:"Product Cart Data Updated Successfully",cart:{price:0,items:0}});
+            })
+            
         }).catch((err)=>{
             result(err,{status:"failure",message:err});
         })
@@ -139,7 +148,13 @@ function updateProductCart(uid,productid,ischecked,qty){
 CartModel.getData = (uid,type,result)=>{
     
     getProductCart(uid).then((data)=>{
-        result(null,{status:"success",message:"Product Cart Data Fetched Successfully",data:data});
+        getCartValue(uid).then((value)=>{
+            result(null,{status:"success",message:"Product Cart Data Fetched Successfully",data:data,cart:value});
+        }).catch((err)=>{
+            result(null,{status:"success",message:"Product Cart Data Fetched Successfully",data:data,cart:{price:0,items:0}});
+        })
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Product Cart Data Fetched Failed",data:[],cart:{price:0,items:0}});
     })
 
     
@@ -176,6 +191,29 @@ function getProductCart(uid){
             console.log('Product Data Fetched successfully');
     
             resolve(data);
+    
+            
+    
+           
+            
+        })
+    })
+}
+function getCartValue(uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT B.price,A.qty  FROM product_cart_master as A,product_master as B WHERE A.userid = ? AND A.productid = B.productid AND A.ischecked = 1; ",[uid],(err,data)=>{
+            if(err){
+                console.log("Get Product Cart Value Failed : "+err);
+                
+                return;
+            }
+            
+            console.log('Product Cart Value Fetched successfully');
+            let price = 0;
+            for(let i=0;i< data.length; i++){
+                price = price + ( data[i]['price'] * data[i]['qty']);    
+            }
+            resolve({price:price,items:data.length});
     
             
     
