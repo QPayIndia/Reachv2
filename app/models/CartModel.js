@@ -9,6 +9,13 @@ const CartModel = function(model){
     this.qty = model.qty
    
 }
+ const ServiceCartModel = function(model){
+    this.userid = model.userid,
+    this.serviceid = model.serviceid,
+    this.ischecked = model.ischecked,
+    this.qty = model.qty
+   
+}
 
 
 
@@ -23,7 +30,7 @@ CartModel.create = (model,type,result)=>{
 
     }));
    }else if (type == "service"){
-    addToProductCart(model).then((id)=>{
+    addToServiceCart(model).then((id)=>{
         result(null,{status:"success",message:"Service added to cart Successfully",data:id});
     }).catch(({
 
@@ -65,7 +72,28 @@ CartModel.updateCart = (uid,cartid,ischecked,qty,type,result)=>{
         })
     }
    }else{
-
+    if(qty === 0){
+        DeleteServiceCart(uid,cartid).then(()=>{
+            getCartValue(uid).then((value)=>{
+                result(null,{status:"success",message:"Service Cart Data Updated Successfully",cart:value});
+            }).catch((err)=>{
+                result(null,{status:"success",message:"Service Cart Data Updated Successfully",cart:{price:0,items:0}});
+            })
+        }).catch((err)=>{
+            result(err,{status:"failure",message:err});
+        })
+    }else{
+        updateServiceCart(uid,cartid,ischecked,qty).then(()=>{
+            getCartValue(uid).then((value)=>{
+                result(null,{status:"success",message:"Service Cart Data Updated Successfully",cart:value});
+            }).catch((err)=>{
+                result(null,{status:"success",message:"Service Cart Data Updated Successfully",cart:{price:0,items:0}});
+            })
+            
+        }).catch((err)=>{
+            result(err,{status:"failure",message:err});
+        })
+    }
    }
 
     
@@ -98,6 +126,20 @@ function addToProductCart(model){
             })
     });
 }
+function addToServiceCart(model){
+    console.log(model);
+    return new Promise((resolve,reject)=>{
+        sql.query("INSERT INTO service_cart_master SET ?",model,(err,res)=>{
+                if(err){
+                    
+                    console.log('Service Cart Insert Failed due to '+err);
+                    return;
+                }
+                console.log('Service Cart Inserted successfully');
+                resolve(res.insertId);
+            })
+    });
+}
 
 function DeleteProductCart(uid,productid){
     return new Promise((resolve,reject)=>{
@@ -114,10 +156,40 @@ function DeleteProductCart(uid,productid){
     })
     })
   }
-function updateProductCart(uid,productid,ischecked,qty){
+function DeleteServiceCart(uid,productid){
+    return new Promise((resolve,reject)=>{
+      sql.query("DELETE FROM service_cart_master WHERE cartid = ? AND userid = ?",[productid,uid],(err,res)=>{
+        if(err){
+            reject(err);
+            console.log("Service Delete Failed");
+            return;
+        }
+        console.log("Service Deleted Successfully");
+        resolve();
+        
+        
+    })
+    })
+  }
+function updateProductCart(uid,cartid,ischecked,qty){
     
     return new Promise((resolve,reject)=>{
-        sql.query("UPDATE product_cart_master SET ischecked = ?,qty = ? WHERE cartid = ? AND userid = ?",[ischecked,qty,productid,uid],(err,res)=>{
+        sql.query("UPDATE product_cart_master SET ischecked = ?,qty = ? WHERE cartid = ? AND userid = ?",[ischecked,qty,cartid,uid],(err,res)=>{
+                if(err){
+                    
+                    console.log('Cart Update Failed due to '+err);
+                    reject(err);
+                    return;
+                }
+                console.log('Cart Updated successfully');
+                resolve();
+            })
+    });
+}
+function updateServiceCart(uid,cartid,ischecked,qty){
+    
+    return new Promise((resolve,reject)=>{
+        sql.query("UPDATE service_cart_master SET ischecked = ?,qty = ? WHERE cartid = ? AND userid = ?",[ischecked,qty,cartid,uid],(err,res)=>{
                 if(err){
                     
                     console.log('Cart Update Failed due to '+err);
@@ -147,15 +219,27 @@ function updateProductCart(uid,productid,ischecked,qty){
 
 CartModel.getData = (uid,type,result)=>{
     
-    getProductCart(uid).then((data)=>{
-        getCartValue(uid).then((value)=>{
-            result(null,{status:"success",message:"Product Cart Data Fetched Successfully",data:data,cart:value});
+    if(type === "product"){
+        getProductCart(uid).then((data)=>{
+            getCartValue(uid).then((value)=>{
+                result(null,{status:"success",message:"Product Cart Data Fetched Successfully",data:data,cart:value});
+            }).catch((err)=>{
+                result(null,{status:"success",message:"Product Cart Data Fetched Successfully",data:data,cart:{price:0,items:0}});
+            })
         }).catch((err)=>{
-            result(null,{status:"success",message:"Product Cart Data Fetched Successfully",data:data,cart:{price:0,items:0}});
+            result(err,{status:"failure",message:"Product Cart Data Fetched Failed",data:[],cart:{price:0,items:0}});
         })
-    }).catch((err)=>{
-        result(err,{status:"failure",message:"Product Cart Data Fetched Failed",data:[],cart:{price:0,items:0}});
-    })
+    }else{
+        getServiceCart(uid).then((data)=>{
+            getCartValue(uid).then((value)=>{
+                result(null,{status:"success",message:"Service Cart Data Fetched Successfully",data:data,cart:value});
+            }).catch((err)=>{
+                result(null,{status:"success",message:"Service Cart Data Fetched Successfully",data:data,cart:{price:0,items:0}});
+            })
+        }).catch((err)=>{
+            result(err,{status:"failure",message:"Service Cart Data Fetched Failed",data:[],cart:{price:0,items:0}});
+        })
+    }
 
     
 }
@@ -189,6 +273,36 @@ function getProductCart(uid){
                 data[i]['ischecked'] = data[i]['ischecked'] === 1 ? true : false;
             }
             console.log('Product Data Fetched successfully');
+    
+            resolve(data);
+    
+            
+    
+           
+            
+        })
+    })
+}
+function getServiceCart(uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT A.cartid,A.serviceid,B.serviceimg,B.name,B.price,B.totalrating as rating,B.reviewCount as review,A.qty,A.ischecked FROM service_cart_master as A,service_master as B WHERE A.userid = ? AND A.serviceid = B.serviceid; ",[uid],(err,data)=>{
+            if(err){
+                console.log("Get Service Cart Master : "+err);
+                
+                return;
+            }
+            for(let i=0;i< data.length; i++){
+                data[i]['serviceimg'] = global.domain+  data[i]['serviceimg'];
+                if(data[i]['rating'] > 0){
+                    let rating = data[i]['rating'] / data[i]['review'];
+                    data[i]['rating'] = rating.toFixed(1);
+                }else{
+                    data[i]['rating'] = "0";
+                }
+
+                data[i]['ischecked'] = data[i]['ischecked'] === 1 ? true : false;
+            }
+            console.log('Service Data Fetched successfully');
     
             resolve(data);
     

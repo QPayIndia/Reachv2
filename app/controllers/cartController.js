@@ -1,5 +1,13 @@
 const CartModel = require("../models/CartModel.js");
 
+const ServiceCartModel = function(model){
+    this.userid = model.userid,
+    this.serviceid = model.serviceid,
+    this.ischecked = model.ischecked,
+    this.qty = model.qty
+   
+}
+
 
 exports.add = (req,res)=>{
     if(!req.body){
@@ -8,20 +16,26 @@ exports.add = (req,res)=>{
         });
     }
 
-    
-    const model = new CartModel({
-        userid:req.body.userid,
-        ischecked:true,
-        qty:req.body.qty
-        
-    });
+    let model = null;
+   
 
     if(req.body.type == 'product'){
-        model.productid = req.body.productid
+        model = new CartModel({
+            userid:req.body.userid,
+            ischecked:true,
+            qty:req.body.qty,
+           productid : req.body.productid
+            
+        });
+       
     }else if(req.body.type == 'service'){
-        model.productid = req.body.serviceid
-    }else{
-        model.productid = 0
+        model = new ServiceCartModel({
+            userid:req.body.userid,
+            ischecked:true,
+            qty:req.body.qty,
+            serviceid : req.body.serviceid
+            
+        });
     }
 
     CartModel.create(model,req.body.type,(err,data)=>{
