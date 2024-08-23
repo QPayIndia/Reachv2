@@ -84,7 +84,7 @@ CartModel.updateCart = (uid,cartid,ischecked,qty,type,result)=>{
         })
     }else{
         updateServiceCart(uid,cartid,ischecked,qty).then(()=>{
-            getCartValue(uid).then((value)=>{
+            getServiceCartValue(uid).then((value)=>{
                 result(null,{status:"success",message:"Service Cart Data Updated Successfully",cart:value});
             }).catch((err)=>{
                 result(null,{status:"success",message:"Service Cart Data Updated Successfully",cart:{price:0,items:0}});
@@ -231,7 +231,7 @@ CartModel.getData = (uid,type,result)=>{
         })
     }else{
         getServiceCart(uid).then((data)=>{
-            getCartValue(uid).then((value)=>{
+            getServiceCartValue(uid).then((value)=>{
                 result(null,{status:"success",message:"Service Cart Data Fetched Successfully",data:data,cart:value});
             }).catch((err)=>{
                 result(null,{status:"success",message:"Service Cart Data Fetched Successfully",data:data,cart:{price:0,items:0}});
@@ -323,6 +323,30 @@ function getCartValue(uid){
             }
             
             console.log('Product Cart Value Fetched successfully');
+            let price = 0;
+            for(let i=0;i< data.length; i++){
+                price = price + ( data[i]['price'] * data[i]['qty']);    
+            }
+            resolve({price:price,items:data.length});
+    
+            
+    
+           
+            
+        })
+    })
+}
+
+function getServiceCartValue(uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT B.price,A.qty  FROM service_cart_master as A,service_master as B WHERE A.userid = ? AND A.serviceid = B.serviceid AND A.ischecked = 1; ",[uid],(err,data)=>{
+            if(err){
+                console.log("Get Service Cart Value Failed : "+err);
+                
+                return;
+            }
+            
+            console.log('Service Cart Value Fetched successfully');
             let price = 0;
             for(let i=0;i< data.length; i++){
                 price = price + ( data[i]['price'] * data[i]['qty']);    
