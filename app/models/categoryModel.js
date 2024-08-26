@@ -52,6 +52,28 @@ Category.getAllCategory = (result)=>{
     result(err,{status:"failure",message:"Category Fetch Failed",data:[]});
   })
 }
+Category.getMasterCategoryList = (result)=>{
+  
+  getAllCategory().then((data)=>{
+    for(let i =0 ; i < data.length; i++){
+      getSubCategory(data[i].categoryid).then((subCategory)=>{
+        data[i]['subcategory'] = subCategory;
+        
+      })
+     
+
+     
+    };
+    setTimeout(() => {
+      result(null,{status:"success",message:"Category Fetched Successfully",data:data});
+    }, 1000); 
+   
+  }).catch((err)=>{
+    console.log(err);
+    
+    result(err,{status:"failure",message:"Category Fetch Failed",data:[]});
+  })
+}
 
 function deleteCategory(id){
   return new Promise((resolve,reject)=>{
@@ -68,6 +90,7 @@ function deleteCategory(id){
   })
   })
 }
+
 
 
 function addCategory(model){
@@ -131,6 +154,26 @@ Category.getAll = (result)=>{
         
         result(null,{status:"success",message:"Data Fetched Successfully",data: {categories:rows}});
     })
+}
+
+
+function getSubCategory(id){
+  return new Promise((resolve,reject)=>{
+
+      sql.query("SELECT subcategoryid,categoryid,name FROM sub_category_master WHERE categoryid = ?",id,(err,rows)=>{
+          if(err){
+              reject(err);
+              console.log("Get Sub Category Failed");
+              return;
+          }
+          console.log("Sub Category Fetched Successfully");
+          resolve(rows);
+          
+          
+      })
+      
+
+  })
 }
 
 

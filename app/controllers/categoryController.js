@@ -42,6 +42,18 @@ exports.getAll = (req,res)=>{
             res.status(200).send(data)
     })
 }
+exports.getMasterCategoryList = (req,res)=>{
+    
+    Category.getMasterCategoryList((err,data)=>{
+        if(err){
+            res.status(500).send({
+                data
+              });
+        }
+        else
+            res.status(200).send(data)
+    })
+}
 
 exports.delete = (req,res)=>{
     
