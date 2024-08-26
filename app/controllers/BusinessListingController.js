@@ -9,9 +9,12 @@ exports.getListing = (req,res)=>{
         sort:req.body.sort,
         rating:req.body.rating,
         stateid:req.body.stateid,
+        categoryid:req.body.categoryid,
+        subcategoryid:req.body.subcategoryid,
         districtid:req.body.districtid,
     });
-
+    console.log(model);
+    
     BusinessListing.getListing(model,(err,data)=>{
         if(err){
             res.status(500).send({
