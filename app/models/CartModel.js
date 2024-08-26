@@ -4,7 +4,7 @@ const global = require('../config/globals.js');
 
 const CartModel = function(model){
     this.userid = model.userid,
-    this.productid = model.id,
+    this.productid = model.productid,
     this.ischecked = model.ischecked,
     this.qty = model.qty
    
