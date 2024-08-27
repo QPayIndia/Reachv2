@@ -24,6 +24,8 @@ app.get("/", (req, res) => {
 });
 
 
+
+
 app.get('/uploads/:name', (req, res) => { 
   const imagePath = req.params.name; 
   res.header("Access-Control-Allow-Origin", "*");
@@ -79,6 +81,7 @@ require('./app/routes/categoryRoute.js')(app);
 require('./app/routes/likeRoute.js')(app);
 require('./app/routes/userRoute.js')(app);
 require('./app/routes/cartRoute.js')(app);
+require('./app/routes/paymentRoute.js')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
