@@ -96,10 +96,25 @@ const jsonResponse = {
 
 exports.pay = (req,res)=>{
 
-    if(true){
-    res.writeHead(200, { 'Content-Type': 'text/html' });
+    const bigIntToBase64 = (decimal) => {
+        // Convert the decimal number to a buffer (using 32-bit unsigned integer)
+        const buffer = Buffer.alloc(4);
+        buffer.writeUInt32BE(decimal);
+      
+        // Convert the buffer to a Base64 string
+        const base64String = buffer.toString('base64');
+        
+        return base64String;
+      };
+    let amount =  req.query.orderId;     
 
-    let amount = '`MTE=';
+    if(amount){
+
+    amount = "`"+Buffer.from(amount).toString('base64');
+    // amount = "`"+bigIntToBase64(amount);
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    
+    // let amount = '`MTE=';
 
         // Send the HTML code
         res.write(`
