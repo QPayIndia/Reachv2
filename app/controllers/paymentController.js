@@ -117,7 +117,7 @@ exports.pay = (req,res)=>{
 	<input type="hidden" name="Paymentoption" value="C,D,N,U">
 	<input type="hidden" name="secure_hash" value="ajEyiMNDXs1tJklqMaAdfkem25lP/prFHx6PKTZUTU/EVuaz5A==">
 	
-	<input type="submit" value="submit">
+	// <input type="submit" value="submit">
 	
 </form>
  <script>
