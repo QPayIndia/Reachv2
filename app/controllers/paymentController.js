@@ -9,7 +9,7 @@ exports.callback = (req,res)=>{
 // Sample JSON response (parsed)
 const jsonResponse = {
     MSPReferenceID: req.body.MSPReferenceID,
-    Message: req.body.message,
+    Message: req.body.Message,
     MerchantOrderID: req.body.MerchantOrderID,
     TransactionType: req.body.TransactionType,
     ResponseCode: req.body.ResponseCode,
