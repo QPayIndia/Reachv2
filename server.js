@@ -12,6 +12,23 @@ var corsOptions = {
 //app.use(setCorsHeaders);
 app.use(cors({ origin: true }));
 
+// const validateApiKey = (req, res, next) => {
+//   const apiKey = req.headers['x-api-key'];
+//   const userId = req.headers['userId'];
+//   console.log(apiKey);
+//   if (!apiKey) {
+//     return res.status(401).json({ error: 'API key is required' });
+//   }
+
+
+  
+
+
+//   next();
+// };
+
+// app.use(validateApiKey);
+
 // parse requests of content-type - application/json
 app.use(express.json({limit: '200mb'})); /* bodyParser.json() is deprecated */
 

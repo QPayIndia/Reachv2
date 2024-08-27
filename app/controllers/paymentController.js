@@ -103,7 +103,9 @@ exports.pay = (req,res)=>{
 
         // Send the HTML code
         res.write(`
-           <form action="https://pg.qpayindia.com/wwws/Payment/PaymentDetails.aspx" method="post">
+            <html>
+            <body>
+           <form id="payFrm" action="https://pg.qpayindia.com/wwws/Payment/PaymentDetails.aspx" method="post">
 	
 	<input type="hidden" name="ResponseURL" value="http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080/api/pay/callback">
 	<input type="hidden" name="QPayID" value="qpaydemo`+amount+`">
@@ -118,6 +120,14 @@ exports.pay = (req,res)=>{
 	<input type="submit" value="submit">
 	
 </form>
+ <script>
+    window.onload = function() {
+      document.getElementById('payFrm').submit();
+    };
+  </script>
+  
+            </body>
+            </html>
         `);
 
         // End the response
