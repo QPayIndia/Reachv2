@@ -1,6 +1,7 @@
 const { json } = require('express');
 const sql = require('./db.js');
 const { domain } = require('../config/globals.js');
+const { deliveryStatus } = require('../config/globals.js');
 
 const OrderModel = function(model){
    
@@ -60,6 +61,7 @@ function getProductOrders(userId){
            console.log('Orders Fetched Successfully for : '+userId);
            for(let i =0 ; i< data.length ; i++){
             data[i]['productimg'] = domain+data[i]['productimg'];
+            data[i]['deliverystatus'] = deliveryStatus[data[i]['deliverystatus']];
            }
            resolve(data);
     
