@@ -1,4 +1,5 @@
 const CartModel = require("../models/CartModel.js");
+const OrderModel = require("../models/OrderModel.js");
 
 const ServiceCartModel = function(model){
     this.userid = model.userid,
@@ -59,6 +60,16 @@ exports.add = (req,res)=>{
 exports.getCartData = (req,res)=>{
     
     CartModel.getData(req.body.userid,req.body.type,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
+exports.ViewOrders = (req,res)=>{
+    
+    OrderModel.getData(req.body.userid,req.body.type,(err,data)=>{
         if(err){
             res.status(500).send(data);
         }
