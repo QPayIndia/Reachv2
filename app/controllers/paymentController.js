@@ -1,3 +1,4 @@
+const TransactionModel = require("../models/TransactionModel");
 
 exports.callback = (req,res)=>{
     if(!req.body){
@@ -96,62 +97,56 @@ const jsonResponse = {
 
 exports.pay = (req,res)=>{
 
-    const bigIntToBase64 = (decimal) => {
-        // Convert the decimal number to a buffer (using 32-bit unsigned integer)
-        const buffer = Buffer.alloc(4);
-        buffer.writeUInt32BE(decimal);
-      
-        // Convert the buffer to a Base64 string
-        const base64String = buffer.toString('base64');
+   
+    let orderID =  req.query.orderId;     
+    TransactionModel.getDetails(orderID,(err,rows)=>{
+       
+        if(err){
+             res.writeHead(404, { 'Content-Type': 'text/html' });
+             res.end('<h1>404 Not Found</h1>');
+             return;
+        }
+        let amount = rows[0]['amount'].toString();
+        if(amount){
+
+            amount = "`"+Buffer.from(amount).toString('base64');
+           
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+          
+                res.write(`
+                    <html>
+                    <body>
+                   <form id="payFrm" action="https://pg.qpayindia.com/wwws/Payment/PaymentDetails.aspx" method="post">
+            
+            <input type="hidden" name="ResponseURL" value="http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080/api/pay/callback">
+            <input type="hidden" name="QPayID" value="qpaydemo`+amount+`">
+            <input type="hidden" name="QPayPWD" value="asdf!123">
+            <input type="hidden" name="TransactionType" value="PURCHASE">
+            <input type="hidden" name="OrderID" value="`+orderID+`">
+            <input type="hidden" name="Currency" value="INR">
+            <input type="hidden" name="Mode" value="Test">
+            <input type="hidden" name="Paymentoption" value="C,D,N,U">
+            <input type="hidden" name="secure_hash" value="ajEyiMNDXs1tJklqMaAdfkem25lP/prFHx6PKTZUTU/EVuaz5A==">
+            
+            
+            
+        </form>
+         <script>
+            window.onload = function() {
+              document.getElementById('payFrm').submit();
+            };
+          </script>
+          
+                    </body>
+                    </html>
+                `);
         
-        return base64String;
-      };
-    let amount =  req.query.orderId;     
+               
+                res.end();
+            } 
+    });
 
-    if(amount){
-
-    amount = "`"+Buffer.from(amount).toString('base64');
-    // amount = "`"+bigIntToBase64(amount);
-    res.writeHead(200, { 'Content-Type': 'text/html' });
     
-    // let amount = '`MTE=';
-
-        // Send the HTML code
-        res.write(`
-            <html>
-            <body>
-           <form id="payFrm" action="https://pg.qpayindia.com/wwws/Payment/PaymentDetails.aspx" method="post">
-	
-	<input type="hidden" name="ResponseURL" value="http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080/api/pay/callback">
-	<input type="hidden" name="QPayID" value="qpaydemo`+amount+`">
-	<input type="hidden" name="QPayPWD" value="asdf!123">
-	<input type="hidden" name="TransactionType" value="PURCHASE">
-	<input type="hidden" name="OrderID" value="7387483">
-	<input type="hidden" name="Currency" value="INR">
-	<input type="hidden" name="Mode" value="Test">
-	<input type="hidden" name="Paymentoption" value="C,D,N,U">
-	<input type="hidden" name="secure_hash" value="ajEyiMNDXs1tJklqMaAdfkem25lP/prFHx6PKTZUTU/EVuaz5A==">
-	
-	
-	
-</form>
- <script>
-    window.onload = function() {
-      document.getElementById('payFrm').submit();
-    };
-  </script>
-  
-            </body>
-            </html>
-        `);
-
-        // End the response
-        res.end();
-    } else {
-        // For any other URL, send a 404 response
-        res.writeHead(404, { 'Content-Type': 'text/html' });
-        res.end('<h1>404 Not Found</h1>');
-    }
 };
 
 

@@ -44,6 +44,27 @@ CartModel.create = (model,type,result)=>{
 }
 
 
+CartModel.Checkout = (userid,type,result)=>{
+   
+   
+
+    if(type == "product"){
+     CheckoutProductCart(userid).then((id)=>{
+         result(null,{status:"success",message:"Checkout Successfully",transactionId:id});
+     }).catch((err)=>{
+        result(err,{status:"failure",message:"Checkout Failed"});
+     });
+    }else if (type == "service"){
+     
+    }else{
+     result("",{status:"failure",message:"Undefined Cart Type"});
+    }
+     
+     
+     
+ }
+
+
 CartModel.updateCart = (uid,cartid,ischecked,qty,type,result)=>{
     
     
@@ -123,6 +144,39 @@ function addToProductCart(model){
                 }
                 console.log('Cart Inserted successfully');
                 resolve(res.insertId);
+            })
+    });
+}
+function CheckoutProductCart(userid){
+    
+    return new Promise((resolve,reject)=>{
+        var query = "INSERT INTO order_master (amount, addressid,userid,carttype) SELECT SUM(C.price) as amount,B.addressid,B.userid,'product' FROM `product_cart_master` as A,`address_master` as B,`product_master` as C WHERE A.userid = "+userid+" AND A.ischecked = 1 AND A.userid = B.userid  AND A.productid = C.productid;";
+        sql.query(query,(err,res)=>{
+                if(err){
+                    console.log('Cart Checkout Failed due to '+err);
+                    reject(err);
+                    return;
+                }
+                console.log('Cart Checkout successfully');
+                var orderid = res.insertId;
+                    sql.query('INSERT INTO product_order_items (orderid, productid,deliverystatus) SELECT ?,A.productid as productid,1 FROM `product_cart_master` as A WHERE A.userid = ?  AND A.ischecked = 1;',[orderid,userid],(err,res)=>{
+                        if(err){
+                            console.log('Checkout Items Adding to cart Failed due to '+err);
+                            reject(err);
+                            return;
+                        }
+                        console.log('Checkout Items Added successfully');
+                            sql.query("INSERT INTO `transaction_master` (`userid`, `amount`, `transtype`, `orderid`, `paymentstatus`) SELECT userid,amount,'order',orderid,1 FROM order_master WHERE orderid = ?;",orderid,(err,res)=>{
+                                if(err){
+                                    console.log('Transaction create Failed due to '+err);
+                                    reject(err);
+                                    return;
+                                }
+                                console.log('Transaction created successfully : '+res.insertId);
+                                resolve(res.insertId);
+                            })
+                    })
+                
             })
     });
 }

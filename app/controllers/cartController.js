@@ -78,6 +78,16 @@ exports.updateCart = (req,res)=>{
             res.status(200).send(data);
     })
 }
+exports.Checkout = (req,res)=>{
+    
+    CartModel.Checkout(req.body.uid,req.body.type,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
 
 
 // exports.getMyTeams = (req,res)=>{
