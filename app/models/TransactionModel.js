@@ -103,6 +103,7 @@ function getData(refId){
 
 
 function getPaymentDetails(transactionid){
+    console.log(transactionid);
     return new Promise((resolve,reject)=>{
         sql.query("SELECT A.amount,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date ,B.name as businessname,D.phone as businessphone,C.name as username,C.phone as userphone  FROM `transaction_master`as A,`business_info` as B,`user_master` as C,`contact_info` as D WHERE A.bid = B.uid AND A.userid = C.uid AND A.bid = D.uid AND A.transactionid = ?;",[transactionid],(err,data)=>{
             if(err){
@@ -111,8 +112,13 @@ function getPaymentDetails(transactionid){
                 return;
             }
            console.log("Transaction Details Fetched Successfully");
+           console.log(data[0]);
 
-           data[0]['amountinwords'] = numberToWords(data[0]['amount']);
+           if(data[0]['amount'] != null){
+            data[0]['amountinwords'] = numberToWords(data[0]['amount']);
+           }else{
+            data[0]['amountinwords'] = "Rs. "+data[0]['amount'];
+           }
           
            resolve(data[0]);
     
