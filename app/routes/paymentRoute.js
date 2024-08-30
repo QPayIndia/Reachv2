@@ -7,6 +7,7 @@ module.exports = app =>{
     router.post('/callback',payModel.callback);
     router.all('/makepayment',payModel.pay);
     router.all('/createpayment',payModel.CreatePayment);
+    router.all('/getpaymentdetails',payModel.GetPaymentDetails);
    
     app.use('/api/pay',router);
 }
