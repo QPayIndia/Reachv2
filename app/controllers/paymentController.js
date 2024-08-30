@@ -7,93 +7,39 @@ exports.callback = (req,res)=>{
         });
     }
 
-// Sample JSON response (parsed)
-// const jsonResponse = {
-//     MSPReferenceID: req.body.MSPReferenceID,
-//     Message: req.body.Message,
-//     MerchantOrderID: req.body.MerchantOrderID,
-//     TransactionType: req.body.TransactionType,
-//     ResponseCode: req.body.ResponseCode,
-//     PaymentMode: req.body.PaymentMode,
-//     Amount: req.body.Amount,  // Note: This value seems to be base64 encoded.
-//     secure_hash: ''
-// };
 
-// Route to serve the HTML page
-
-   // const amountDecoded = Buffer.from(jsonResponse.Amount, 'base64').toString('utf-8');  // Decoding the base64 amount
-
-    // res.send(`
-    //     <!DOCTYPE html>
-    //     <html lang="en">
-    //     <head>
-    //         <meta charset="UTF-8">
-    //         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    //         <title>Qpay Reach Response</title>
-    //         <style>
-    //             body {
-    //                 font-family: Arial, sans-serif;
-    //                 margin: 20px;
-    //             }
-    //             table {
-    //                 border-collapse: collapse;
-    //                 width: 50%;
-    //             }
-    //             th, td {
-    //                 border: 1px solid #ddd;
-    //                 padding: 8px;
-    //             }
-    //             th {
-    //                 background-color: #f2f2f2;
-    //             }
-    //         </style>
-    //     </head>
-    //     <body>
-    //         <h1>Transaction Details</h1>
-    //         <table>
-    //             <tr>
-    //                 <th>Key</th>
-    //                 <th>Value</th>
-    //             </tr>
-    //             <tr>
-    //                 <td>MSP Reference ID</td>
-    //                 <td>${jsonResponse.MSPReferenceID}</td>
-    //             </tr>
-    //             <tr>
-    //                 <td>Message</td>
-    //                 <td>${jsonResponse.Message}</td>
-    //             </tr>
-    //             <tr>
-    //                 <td>Merchant Order ID</td>
-    //                 <td>${jsonResponse.MerchantOrderID}</td>
-    //             </tr>
-    //             <tr>
-    //                 <td>Transaction Type</td>
-    //                 <td>${jsonResponse.TransactionType}</td>
-    //             </tr>
-    //             <tr>
-    //                 <td>Response Code</td>
-    //                 <td>${jsonResponse.ResponseCode}</td>
-    //             </tr>
-    //             <tr>
-    //                 <td>Payment Mode</td>
-    //                 <td>${jsonResponse.PaymentMode}</td>
-    //             </tr>
-    //             <tr>
-    //                 <td>Amount</td>
-    //                 <td>${amountDecoded}</td>
-    //             </tr>
-    //             <tr>
-    //                 <td>Secure Hash</td>
-    //                 <td>${jsonResponse.secure_hash}</td>
-    //             </tr>
-    //         </table>
-    //     </body>
-    //     </html>
-    // `);
     res.sendFile(path.join(__dirname, '../screen/callback.html'));
 
 };
+
+exports.CreatePayment = (req,res)=>{
+
+    const PaymentModel = function(model){
+        this.userid = model.userid,
+        this.bid = model.bid,
+        this.amount = model.amount,
+        this.description = model.description,
+        this.paymenttype = model.paymenttype
+       
+    }
+
+    let model = new PaymentModel({
+        userid:req.body.userid,
+        bid:req.body.bid,
+        amount:req.body.amount,
+        description:req.body.description,
+        paymenttype:req.body.paymenttype
+    })
+    
+    console.log(model)
+    TransactionModel.CreatePayment(model,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
 
 
 exports.pay = (req,res)=>{
