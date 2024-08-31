@@ -1,4 +1,6 @@
 const sql = require('./db.js');
+const axios = require('axios');
+
 
 const User = function(model){
     // this.userid = model.userid,
@@ -79,6 +81,43 @@ User.getUserById = (uid,result)=>{
     
     
 }
+User.sendOTP = (phone,result)=>{
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    
+    InsertOTP(phone,otp).then((id)=>{
+        // SendOtpToMobile("8637429863",otp).then((id)=>{
+        //     result(null,{status:"success",message:"OTP Send Successfully",otp:otp});
+        // }).catch((err)=>{
+        //     result('',{status:"failure",message:"OTP Send Failed"});
+        // }); 
+        result(null,{status:"success",message:"OTP Send Successfully",otp:otp});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"OTP Send Failed"});
+    }); 
+}
+User.verifyOTP = (phone,otp,result)=>{
+    
+    getOTP(phone).then((data)=>{
+        if(data.length > 0){
+        const currentTime = new Date();
+        const dbTime = new Date(data[0]['timestamp']);
+        const timeDifference = (currentTime - dbTime) / (1000 * 60);
+        
+        
+        if(data[0]['otp'] === otp && timeDifference < 15){
+            result(null,{status:"success",message:"OTP Verified Successfully",uid:data[0]['userid']});
+        }else if (data[0]['otp'] === otp && timeDifference >= 15){
+            result(null,{status:"failure",message:"OTP Expired"});
+        }else{
+            result(null,{status:"failure",message:"Incorrect OTP"});
+        }
+        }else{
+            result("",{status:"failure",message:"No OTP"});
+        }
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"OTP Send Failed"});
+    }); 
+}
 
 
 User.updateName = (name,lastname,uid,result)=>{
@@ -119,6 +158,49 @@ function addUser(model){
             }
             console.log('User Created successfully');
             resolve(res.insertId);
+        })
+    })
+}
+function SendOtpToMobile(phone,otp){
+    return new Promise((resolve,reject)=>{
+        axios.post('http://pg.qpayindia.com/sms/sendsms.php', {
+            phone:phone,
+            otp:otp
+          })
+          .then(response => {
+            console.log('Otp Sent to Mobile:', response.data);
+            resolve();
+          })
+          .catch(error => {
+            console.error('Otp Sent Failed :', error);
+            reject();
+          });
+    })
+}
+
+function InsertOTP(userid,otp){
+    return new Promise((resolve,reject)=>{
+        sql.query("INSERT INTO otp_master SET userid = ?, otp = ?;",[userid,otp],(err,res)=>{
+            if(err){
+                reject(err);
+                console.log('Otp Insert Failed due to '+err);
+                return;
+            }
+            console.log('OTP Inserted successfully');
+            resolve(res.insertId);
+        })
+    })
+}
+function getOTP(phone){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT A.otp,A.timestamp,A.userid FROM otp_master as A,user_master as B WHERE A.userid = B.uid AND B.phone = ? ORDER BY A.otpid DESC LIMIT 1;",[phone],(err,res)=>{
+            if(err){
+                reject(err);
+                console.log('Otp Fetch Failed due to '+err);
+                return;
+            }
+            console.log('OTP Fetch successfully');
+            resolve(res);
         })
     })
 }

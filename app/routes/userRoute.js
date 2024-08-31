@@ -13,5 +13,7 @@ module.exports = app =>{
     router.post('/updateemail',users.updateEmail);
     router.post('/updatedob',users.updateDOB);
     router.post('/getuser',users.getUser);
+    router.post('/sendotp',users.SendOTP);
+    router.post('/verifyotp',users.VerifyOTP);
     app.use('/api/user',router);
 }

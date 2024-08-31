@@ -178,6 +178,28 @@ exports.getUser = (req,res)=>{
     })
 }
 
+exports.SendOTP = (req,res)=>{
+    
+    User.sendOTP(req.body.uid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
+
+exports.VerifyOTP = (req,res)=>{
+    
+    User.verifyOTP(req.body.phone,req.body.otp,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
+
 
 
 

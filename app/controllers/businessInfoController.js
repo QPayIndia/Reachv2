@@ -24,7 +24,9 @@ const ManPowerModel = require("../models/manpowerModel.js");
 const Category = require("../models/categoryModel.js");
 const SubCategory = require("../models/subCategoryModel.js");
 const FAQModel = require("../models/faqModel.js");
+const UserModel = require("../models/userModel.js");
 const PaymentDeliveryModel = require("../models/paymentdeliveryModel.js");
+const User = require("../models/userModel.js");
 exports.create = (req,res)=>{
     if(!req.body){
         res.status(400).send({
@@ -172,8 +174,18 @@ exports.Login = (req,res)=>{
         if(err){
             res.status(500).send(data);
         }
-        else
-            res.status(200).json(data);
+        else{
+          UserModel.sendOTP(data['uid'],(err,data)=>{
+            if(err){
+                res.status(500).send(data);
+            }
+            else{
+              res.status(200).json(data);
+            }
+                
+        })
+        }
+            
     })
 }
 exports.Signup = (req,res)=>{
