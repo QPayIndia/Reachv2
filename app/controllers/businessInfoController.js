@@ -201,8 +201,17 @@ exports.Signup = (req,res)=>{
         if(err){
             res.status(500).send(data);
         }
-        else
-            res.status(200).json(data);
+        else{
+          UserModel.sendOTP(data['uid'],(err,data)=>{
+            if(err){
+                res.status(500).send(data);
+            }
+            else{
+              res.status(200).json(data);
+            }
+                
+        })
+        }
     })
 }
 
