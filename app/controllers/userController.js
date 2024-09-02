@@ -140,6 +140,26 @@ exports.updateDOB = (req,res)=>{
             res.status(200).send(data);
     })
 }
+exports.getPrimaryAddress = (req,res)=>{
+    
+    AddressModel.getPrimaryAddress(req.body.userid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
+exports.updatePrimaryAddress = (req,res)=>{
+    
+    AddressModel.UpdatePrimaryAddress(req.body.userid,req.body.addressid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
 
 
 exports.addUser = (req,res)=>{

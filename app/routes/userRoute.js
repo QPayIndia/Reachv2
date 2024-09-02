@@ -7,6 +7,8 @@ module.exports = app =>{
     // router.post('/getall');
     router.post('/addaddress',users.addUserAddress);
     router.post('/getaddress',users.getAllAddress);
+    router.post('/getprimaryaddress',users.getPrimaryAddress);
+    router.post('/updateprimaryaddress',users.updatePrimaryAddress);
     router.post('/deleteaddress',users.deleteAddress);
     router.post('/adduser',users.addUser);
     router.post('/updatename',users.updateName);

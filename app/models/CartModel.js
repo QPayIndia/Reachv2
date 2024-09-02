@@ -150,7 +150,7 @@ function addToProductCart(model){
 function CheckoutProductCart(userid){
     
     return new Promise((resolve,reject)=>{
-        var query = "INSERT INTO order_master (amount, addressid,userid,carttype) SELECT SUM(C.price) as amount,B.addressid,B.userid,'product' FROM `product_cart_master` as A,`address_master` as B,`product_master` as C WHERE A.userid = "+userid+" AND A.ischecked = 1 AND A.userid = B.userid  AND A.productid = C.productid;";
+        var query = "INSERT INTO order_master (amount, addressid,userid,carttype) SELECT SUM(C.price) as amount,B.addressid,B.userid,'product' FROM `product_cart_master` as A,`address_master` as B,`product_master` as C WHERE A.userid = "+userid+" AND A.ischecked = 1 AND A.userid = B.userid AND B.isprimary = 1  AND A.productid = C.productid;";
         sql.query(query,(err,res)=>{
                 if(err){
                     console.log('Cart Checkout Failed due to '+err);

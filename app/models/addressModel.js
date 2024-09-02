@@ -131,6 +131,26 @@ AddressModel.getDistricts = (stateid,result)=>{
     
 }
 
+AddressModel.getPrimaryAddress = (uid,result)=>{
+    
+    getPrimaryAddress(uid).then((data)=>{
+        result(null,{status:"success",message:"Primary Address Fetched Successfully",data:data});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Primary Address Fetch Failed",data:[]});
+    })
+
+}
+
+AddressModel.UpdatePrimaryAddress = (uid,addressid,result)=>{
+    
+    UpdatePrimaryAddress(uid,addressid).then((data)=>{
+        result(null,{status:"success",message:"Primary Address Updated Successfully",id:addressid});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Primary Address Update Failed",id:addressid});
+    })
+
+}
+
 function getState(){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT state,stateid FROM state_master",(err,data)=>{
@@ -185,6 +205,41 @@ function getLocationData(userid){
 function getDataByID(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM address_master WHERE addressid = ?",[uid],(err,data)=>{
+                if(err){
+                    reject();
+                    console.log('Address Fetch Failed due to '+err);
+                    return;
+                }
+                console.log('Address Fetched successfully');
+				
+			
+                resolve(data);
+            })
+    });
+}
+
+
+
+function getPrimaryAddress(uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT * FROM address_master WHERE userid = ? AND isprimary = 1",[uid],(err,data)=>{
+                if(err){
+                    reject();
+                    console.log('Address Fetch Failed due to '+err);
+                    return;
+                }
+                console.log('Address Fetched successfully');
+				
+			
+                resolve(data[0]);
+            })
+    });
+}
+
+
+function UpdatePrimaryAddress(uid,addressid){
+    return new Promise((resolve,reject)=>{
+        sql.query("UPDATE address_master SET isprimary = 0 WHERE userid = ?;UPDATE address_master SET isprimary = 1 WHERE userid = ? AND addressid = ?;",[uid,uid,addressid],(err,data)=>{
                 if(err){
                     reject();
                     console.log('Address Fetch Failed due to '+err);
