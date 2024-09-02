@@ -231,7 +231,7 @@ function getPrimaryAddress(uid){
                 console.log('Address Fetched successfully');
 				
 			
-                resolve(data[0]);
+                resolve(data);
             })
     });
 }
