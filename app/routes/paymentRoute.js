@@ -8,6 +8,7 @@ module.exports = app =>{
     router.all('/makepayment',payModel.pay);
     router.all('/createpayment',payModel.CreatePayment);
     router.all('/getpaymentdetails',payModel.GetPaymentDetails);
+    router.all('/gettransactions',payModel.GetTransactions);
    
     app.use('/api/pay',router);
 }

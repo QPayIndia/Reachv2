@@ -52,6 +52,18 @@ exports.GetPaymentDetails = (req,res)=>{
             res.status(200).send(data);
     })
 }
+exports.GetTransactions = (req,res)=>{
+
+   
+   
+    TransactionModel.getTransactions(req.body.userid,req.body.type,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
 
 
 exports.pay = (req,res)=>{

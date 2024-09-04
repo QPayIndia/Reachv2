@@ -52,6 +52,30 @@ TransactionModel.getPaymentDetails = (transactionid,result)=>{
    
 }
 
+TransactionModel.getTransactions = (userid,type,result)=>{
+    
+    var data = [];
+
+    getTransactions(userid,type,0).then((month1)=>{
+        data[0]={name:getPreviousMonthAndYear(0),transactions:month1}
+        getTransactions(userid,type,1).then((month2)=>{
+            data[1]={name:getPreviousMonthAndYear(1),transactions:month2}
+            getTransactions(userid,type,2).then((month3)=>{
+                data[2]={name:getPreviousMonthAndYear(2),transactions:month3}
+                result(null,{status:"success",message:"Transaction List Fetched Successfully",data:data});
+            }).catch((err)=>{
+                result(err,{status:"failure",message:"Transaction List Fetch Failed"});
+            })
+        }).catch((err)=>{
+            result(err,{status:"failure",message:"Transaction List Fetch Failed"});
+        })
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Transaction List Fetch Failed"});
+    })
+    
+   
+}
+
 
 function CreatePayment(model){
     
@@ -93,6 +117,31 @@ function getData(refId){
             }
            console.log("Transaction Details Fetched Successfully");
            console.log(data[0])
+           resolve(data);
+    
+           
+            
+        })
+    })
+}
+function getTransactions(userid,type,month){
+    var query = "";
+    if(type === "merchant")
+    query = "SELECT A.amount,A.transactionid,A.userid,A.bid,B.photo,B.name,B.phone,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM transaction_master as A,user_master as B WHERE A.bid = "+userid+" AND A.userid = B.uid AND DATE_FORMAT(A.createdon, '%Y-%m') = DATE_FORMAT(CURDATE() - INTERVAL "+month+" MONTH, '%Y-%m');";
+    else
+    query = "SELECT A.amount,A.transactionid,A.userid,A.bid,B.photo,B.name,B.phone,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM transaction_master as A,user_master as B WHERE A.bid = "+userid+" AND A.userid = B.uid AND DATE_FORMAT(A.createdon, '%Y-%m') = DATE_FORMAT(CURDATE() - INTERVAL "+month+" MONTH, '%Y-%m');";
+
+    return new Promise((resolve,reject)=>{
+        sql.query(query,(err,data)=>{
+            if(err){
+                console.log("Get Transaction List Failed : "+userid+" : "+type);
+                console.log("Get Transaction List Failed : "+err);
+                
+                reject(err);
+                return;
+            }
+           console.log("Transaction List Fetched Successfully - "+userid+" : "+type);
+         
            resolve(data);
     
            
@@ -167,6 +216,29 @@ function numberToWords(number) {
 
     return convertNumberToWords(integerPart) + " Rupees" + convertDecimalToWords(decimalPart);
 }
+
+const getPreviousMonthAndYear = (month) => {
+    // Array of month names
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+  
+    // Get the current date
+    const now = new Date();
+  
+    // Subtract one month from the current date
+    now.setMonth(now.getMonth() - month);
+  
+    // Get the previous month and year
+    const previousMonth = now.getMonth(); // getMonth() is zero-based
+    const previousYear = now.getFullYear();
+  
+    // Format the month and year
+    const formattedMonthAndYear = `${monthNames[previousMonth]} ${previousYear}`;
+  
+    return formattedMonthAndYear;
+  };
 
 
 
