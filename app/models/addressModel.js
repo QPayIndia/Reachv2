@@ -38,7 +38,15 @@ AddressModel.create = (model,addressid,result)=>{
         }else{
             addLocationInfo(model).then((id)=>{
                 getLocationData(model.userid).then((data)=>{
-                    result(null,{status:"success",message:"Location Info Inserted Successfully",data:data});
+                    if(data.length == 1){
+                        UpdatePrimaryAddress(model.userid,id).then((data)=>{
+                            result(null,{status:"success",message:"Location Info Inserted Successfully",data:data});
+                        }).catch((err)=>{
+                            result(null,{status:"success",message:"Location Info Inserted Successfully",data:data});
+                        })
+                    }else{
+                        result(null,{status:"success",message:"Location Info Inserted Successfully",data:data});
+                    }
                 }).catch((err)=>{
                     result(null,{status:"success",message:"Location Info Inserted Successfully",data:[]});
                 })

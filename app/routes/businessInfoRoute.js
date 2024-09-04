@@ -26,6 +26,7 @@ module.exports = app =>{
     router.post('/addbphotoinfo',business.addBPicture);
     router.post('/getbphotoinfo',business.getBPicture);
     router.post('/uploadbvideo',business.uploadvideo);
+    router.post('/uploadprofile',business.uploadProfile);
     router.post('/uploadbvideothumb',business.uploadthumbnail);
     router.post('/uploadcertificate',business.uploadCertificate);
     router.post('/addtradeinfo',business.addTradeData);

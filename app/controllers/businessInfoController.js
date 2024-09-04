@@ -27,6 +27,7 @@ const FAQModel = require("../models/faqModel.js");
 const UserModel = require("../models/userModel.js");
 const PaymentDeliveryModel = require("../models/paymentdeliveryModel.js");
 const User = require("../models/userModel.js");
+const { profile } = require("console");
 exports.create = (req,res)=>{
     if(!req.body){
         res.status(400).send({
@@ -102,6 +103,37 @@ exports.uploadFile = (req,res)=>{
           
           news.thumbimg = "/uploads/"+req.file.filename;
           res.status(200).send({status:"success",message:"Photo Uploaded Successfully",data :{thumb: news.thumbimg}});
+            
+      });
+}
+
+exports.uploadProfile = (req,res)=>{
+
+  
+
+    const storage = multer.diskStorage({
+        destination: function(req, file, cb) {
+          cb(null, 'uploads/profile');
+        },
+        filename: function(req, file, cb) {
+          cb(null, Date.now() + ".jpg"/*path.extname(file.originalname)*/);
+        }
+      });
+      
+      const upload = multer({ storage: storage });
+      upload.single('file')(req,res,function (err){
+        if (err instanceof multer.MulterError) {
+            return res.status(400).json({status:false, message: 'File upload error', error: err });
+          } else if (err) {
+            return res.status(500).json({status:false, message: 'Server error', error: err });
+          }
+      
+          if (!req.file) {
+            return res.status(400).json({ message: 'No files were uploaded.' });
+          }
+          
+          var img = "/uploads/profile/"+req.file.filename;
+          res.status(200).send({status:"success",message:"Photo Uploaded Successfully",data : img});
             
       });
 }
@@ -428,7 +460,7 @@ exports.addBusinessInfo = (req,res)=>{
   const model = new BusinessInfo({
     uid : req.body.uid,
     name:req.body.name,
-    
+    profile:req.body.profile,
     legalname : req.body.legalname,
     category : req.body.category,
     categoryid : req.body.categoryid,

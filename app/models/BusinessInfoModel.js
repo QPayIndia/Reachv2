@@ -6,6 +6,7 @@ const BusinessInfo = function(model){
     
     this.name = model.name,
     this.legalname = model.legalname,
+    this.profile = model.profile,
     this.category = model.category,
     this.categoryid = model.categoryid,
     this.subcategory = model.subcategory,
