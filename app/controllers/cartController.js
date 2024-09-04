@@ -106,7 +106,7 @@ exports.ViewOrders = (req,res)=>{
 
 exports.GetMerchantOrders = (req,res)=>{
     
-    OrderModel.getMerchantOrders(req.body.userid,req.body.type,(err,data)=>{
+    OrderModel.getMerchantOrders(req.body.bid,req.body.type,(err,data)=>{
         if(err){
             res.status(500).send(data);
         }

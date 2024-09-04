@@ -32,11 +32,11 @@ OrderModel.getData = (userid,type,result)=>{
    
 }
 
-OrderModel.getMerchantOrders = (userid,type,result)=>{
+OrderModel.getMerchantOrders = (bid,type,result)=>{
     
 
     if(type==='product'){
-        getMerchantOrders(userid).then((rows)=>{
+        getMerchantOrders(bid).then((rows)=>{
             result(null,{status:"success",message:"Orders Fetched Successfully",data:rows});
             
         }).catch((err)=>{
@@ -90,15 +90,15 @@ function getProductOrders(userId){
     })
 }
 
-function getMerchantOrders(userId){
+function getMerchantOrders(bid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT A.transactionid,D.productid,C.orderid,A.amount,C.deliverystatus,D.name,D.productimg,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM `transaction_master` as A,`order_master` as B,`product_order_items` as C,`product_master` as D WHERE transtype = 'order' AND D.uid = ? AND D.productid = C.productid AND A.orderid = C.orderid AND A.paymentstatus = 1 AND C.orderid = B.orderid;",[userId],(err,data)=>{
+        sql.query("SELECT A.transactionid,D.productid,C.orderid,A.amount,C.deliverystatus,D.name,D.productimg,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM `transaction_master` as A,`order_master` as B,`product_order_items` as C,`product_master` as D WHERE transtype = 'order' AND D.uid = ? AND D.productid = C.productid AND A.orderid = C.orderid AND A.paymentstatus = 1 AND C.orderid = B.orderid;",[bid],(err,data)=>{
             if(err){
                 console.log("Get Merchant Orders Failed : "+err);
                 reject(err);
                 return;
             }
-           console.log('Merchant Orders Fetched Successfully for : '+userId);
+           console.log('Merchant Orders Fetched Successfully for : '+bid);
            for(let i =0 ; i< data.length ; i++){
             data[i]['productimg'] = domain+data[i]['productimg'];
             data[i]['deliverystatus'] = deliveryStatus[data[i]['deliverystatus']];
