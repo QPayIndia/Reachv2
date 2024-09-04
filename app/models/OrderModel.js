@@ -71,7 +71,7 @@ function login(model){
 
 function getProductOrders(userId){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT A.orderid,D.orderitemid,B.paymentstatus,C.productid,D.deliverystatus,C.name,C.productimg FROM `order_master` as A,`transaction_master` as B,`product_master` as C,`product_order_items` as D WHERE A.orderid = B.orderid AND A.orderid = D.orderid AND D.productid = C.productid AND A.userid = ?;",[userId],(err,data)=>{
+        sql.query("SELECT DISTINCT A.orderid,D.orderitemid,B.paymentstatus,C.productid,D.deliverystatus,C.name,C.productimg FROM `order_master` as A,`transaction_master` as B,`product_master` as C,`product_order_items` as D WHERE A.orderid = B.orderid AND A.orderid = D.orderid AND D.productid = C.productid AND A.userid = ?;",[userId],(err,data)=>{
             if(err){
                 console.log("Get Orders Failed : "+err);
                 reject(err);
