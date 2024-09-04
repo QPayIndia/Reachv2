@@ -67,16 +67,7 @@ exports.getCartData = (req,res)=>{
             res.status(200).send(data);
     })
 }
-exports.ViewOrders = (req,res)=>{
-    
-    OrderModel.getData(req.body.userid,req.body.type,(err,data)=>{
-        if(err){
-            res.status(500).send(data);
-        }
-        else
-            res.status(200).send(data);
-    })
-}
+
 
 
 exports.updateCart = (req,res)=>{
@@ -92,6 +83,30 @@ exports.updateCart = (req,res)=>{
 exports.Checkout = (req,res)=>{
     
     CartModel.Checkout(req.body.uid,req.body.type,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
+
+
+exports.ViewOrders = (req,res)=>{
+    
+    OrderModel.getData(req.body.userid,req.body.type,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
+
+
+exports.GetMerchantOrders = (req,res)=>{
+    
+    OrderModel.getMerchantOrders(req.body.userid,req.body.type,(err,data)=>{
         if(err){
             res.status(500).send(data);
         }
