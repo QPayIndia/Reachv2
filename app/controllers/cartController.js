@@ -124,6 +124,16 @@ exports.GetOrderDetails = (req,res)=>{
             res.status(200).send(data);
     })
 }
+exports.UpdateStatus = (req,res)=>{
+    
+    OrderModel.UpdateStatus(req.body.orderitemid,req.body.status,req.body.type,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
 
 
 // exports.getMyTeams = (req,res)=>{

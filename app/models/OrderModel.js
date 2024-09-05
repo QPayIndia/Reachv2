@@ -33,6 +33,31 @@ OrderModel.getData = (userid,type,result)=>{
    
 }
 
+OrderModel.UpdateStatus = (orderitemid,status,type,result)=>{
+    
+
+    if(type==='product'){
+        UpdateProductDeliveryStatus(orderitemid,status).then((rows)=>{
+            getProductOrderDetails(orderitemid).then((data)=>{
+                result(null,{status:"success",message:"Status Updated Successfully",data:data['status']});
+                
+            }).catch((err)=>{
+                result(err,{status:"failure",message:"Status Updated Failed"});
+            })
+            
+            
+        }).catch((err)=>{
+            result(err,{status:"failure",message:"Status Updated Failed"});
+        })
+        
+    }else if (type === 'service'){
+
+    }else{
+        result('',{status:"failure",message:"Orders Fetch Failed"});
+    }
+   
+}
+
 OrderModel.getMerchantOrders = (bid,type,result)=>{
     
 
@@ -79,16 +104,16 @@ OrderModel.getOrderDetails = (orderitemid,type,result)=>{
 
 
 
-function login(model){
+function UpdateProductDeliveryStatus(orderitemid,staus){
     return new Promise((resolve,reject)=>{
-        sql.query("INSERT INTO user_master SET name = ?,phone = ?",[model.name,model.phone],(err,res)=>{
+        sql.query("UPDATE product_order_items SET deliverystatus = ? WHERE orderitemid = ?;",[staus,orderitemid],(err,res)=>{
                 if(err){
                     reject(err);
-                    console.log('Login Failed due to '+err);
+                    console.log('Update Delivery Status Failed due to '+err);
                     return;
                 }
-                console.log('Login successfully');
-                resolve(res.insertId);
+                console.log('Delivery Status Updated Successfully : '+orderitemid);
+                resolve();
             })
     });
 }
@@ -166,14 +191,15 @@ function getAddress(id){
                 reject(err);
                 return;
             }
-
             let address = {};
             if(data.length > 0){
                 address = data[0];
             }
-    
-    
+
+            console.log("Address Fetched Successfully : "+ id);
             resolve(address);
+            
+            
     
             
     
