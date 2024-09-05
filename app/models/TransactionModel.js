@@ -163,10 +163,12 @@ function getPaymentDetails(transactionid){
            console.log("Transaction Details Fetched Successfully");
            console.log(data[0]);
 
-           if(data[0]['amount'] != null){
-            data[0]['amountinwords'] = numberToWords(data[0]['amount']);
-           }else{
-            data[0]['amountinwords'] = "Rs. "+data[0]['amount'];
+           if(data.length> 0){
+            if(data[0]['amount'] != null){
+                data[0]['amountinwords'] = numberToWords(data[0]['amount']);
+               }else{
+                data[0]['amountinwords'] = "Rs. "+data[0]['amount'];
+               }
            }
           
            resolve(data[0]);
