@@ -35,6 +35,7 @@ OrderModel.getData = (userid,type,result)=>{
 
 OrderModel.UpdateStatus = (orderitemid,status,type,result)=>{
     
+    status = (status > 0 && status  < 5) ? status : 1;
 
     if(type==='product'){
         UpdateProductDeliveryStatus(orderitemid,status).then((rows)=>{
