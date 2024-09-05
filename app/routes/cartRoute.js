@@ -11,6 +11,7 @@ module.exports = app =>{
     router.post('/checkout',cart.Checkout);
     router.post('/vieworders',cart.ViewOrders);
     router.post('/getMerchantOrders',cart.GetMerchantOrders);
+    router.post('/getorderdetails',cart.GetOrderDetails);
     
     app.use('/api/cart',router);
 }

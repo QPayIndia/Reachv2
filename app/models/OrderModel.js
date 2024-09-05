@@ -2,6 +2,7 @@ const { json } = require('express');
 const sql = require('./db.js');
 const { domain } = require('../config/globals.js');
 const { deliveryStatus } = require('../config/globals.js');
+const { add } = require('../controllers/cartController.js');
 
 const OrderModel = function(model){
    
@@ -41,6 +42,31 @@ OrderModel.getMerchantOrders = (bid,type,result)=>{
             
         }).catch((err)=>{
             result(err,{status:"failure",message:"Orders Fetch Failed"});
+        })
+        
+    }else if (type === 'service'){
+
+    }else{
+        result('',{status:"failure",message:"Orders Fetch Failed"});
+    }
+   
+}
+
+
+OrderModel.getOrderDetails = (orderitemid,type,result)=>{
+    
+
+    if(type==='product'){
+        getProductOrderDetails(orderitemid).then((details)=>{
+            getAddress(details['addressid']).then((address)=>{
+                result(null,{status:"success",message:"Orders Details Fetched Successfully",data:details,address:address});
+                
+            }).catch((err)=>{
+                result(null,{status:"success",message:"Orders Details Fetched Successfully",data:details,address:null});
+            })
+            
+        }).catch((err)=>{
+            result(err,{status:"failure",message:"Orders Details Fetch Failed"});
         })
         
     }else if (type === 'service'){
@@ -104,6 +130,52 @@ function getMerchantOrders(bid){
             data[i]['deliverystatus'] = deliveryStatus[data[i]['deliverystatus']];
            }
            resolve(data);
+    
+           
+            
+        })
+    })
+}
+
+function getProductOrderDetails(orderitemid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT A.orderitemid,A.orderid,B.name,B.productimg as image,A.priceperunit,A.qty,A.totalamount,C.addressid,A.deliverystatus as status,DATE_FORMAT(C.createdon, '%h:%i %p , %d %M %Y') as date FROM `product_order_items` as A,`product_master` as B,`order_master` as C WHERE A.orderitemid = ? AND A.productid = B.productid AND A.orderid = C.orderid;",[orderitemid],(err,data)=>{
+            if(err){
+                console.log("Get Product Order Detail Failed : "+err);
+                reject(err);
+                return;
+            }
+           console.log('Get Product Order Detail Fetched Successfully for : '+orderitemid);
+           for(let i =0 ; i< data.length ; i++){
+            data[i]['image'] = domain+data[i]['image'];
+            data[i]['status'] = deliveryStatus[data[i]['status']];
+           }
+           resolve(data[0]);
+    
+           
+            
+        })
+    })
+}
+
+function getAddress(id){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT * FROM address_master WHERE addressid = ?",[id],(err,data)=>{
+            if(err){
+                
+                reject(err);
+                return;
+            }
+
+            let address = {};
+            if(data.length > 0){
+                address = data[0];
+            }
+    
+    
+            resolve(address);
+    
+            
     
            
             
