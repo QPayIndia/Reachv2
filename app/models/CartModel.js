@@ -55,7 +55,11 @@ CartModel.Checkout = (userid,type,result)=>{
         result(err,{status:"failure",message:"Checkout Failed"});
      });
     }else if (type == "service"){
-     
+        CheckoutServiceCart(userid).then((id)=>{
+            result(null,{status:"success",message:"Checkout Successfully",transactionId:id});
+        }).catch((err)=>{
+           result(err,{status:"failure",message:"Checkout Failed"});
+        });
     }else{
      result("",{status:"failure",message:"Undefined Cart Type"});
     }
@@ -147,6 +151,7 @@ function addToProductCart(model){
             })
     });
 }
+
 function CheckoutProductCart(userid){
     
     return new Promise((resolve,reject)=>{
@@ -180,6 +185,42 @@ function CheckoutProductCart(userid){
             })
     });
 }
+
+
+function CheckoutServiceCart(userid){
+    
+    return new Promise((resolve,reject)=>{
+        var query = "INSERT INTO order_master (amount, addressid,userid,carttype) SELECT SUM(C.price) as amount,B.addressid,B.userid,'service' FROM `service_cart_master` as A,`address_master` as B,`service_master` as C WHERE A.userid = "+userid+" AND A.ischecked = 1 AND A.userid = B.userid AND B.isprimary = 1 AND A.serviceid = C.serviceid;";
+        sql.query(query,(err,res)=>{
+                if(err){
+                    console.log('Cart Checkout Failed due to '+err);
+                    reject(err);
+                    return;
+                }
+                console.log('Cart Checkout successfully');
+                var orderid = res.insertId;
+                    sql.query('INSERT INTO service_order_items (orderid, serviceid,deliverystatus,priceperunit,qty,totalamount) SELECT ?,A.serviceid as serviceid,1,B.price,A.qty,B.price * A.qty FROM `service_cart_master` as A,`service_master` as B WHERE A.userid = ? AND A.ischecked = 1 AND A.serviceid = B.serviceid;',[orderid,userid],(err,res)=>{
+                        if(err){
+                            console.log('Checkout Items Adding to cart Failed due to '+err);
+                            reject(err);
+                            return;
+                        }
+                        console.log('Checkout Items Added successfully');
+                            sql.query("INSERT INTO `transaction_master` (`userid`, `amount`, `transtype`, `orderid`, `paymentstatus`) SELECT userid,amount,'order',orderid,1 FROM order_master WHERE orderid = ?;",orderid,(err,res)=>{
+                                if(err){
+                                    console.log('Transaction create Failed due to '+err);
+                                    reject(err);
+                                    return;
+                                }
+                                console.log('Transaction created successfully : '+res.insertId);
+                                resolve(res.insertId);
+                            })
+                    })
+                
+            })
+    });
+}
+
 function addToServiceCart(model){
     console.log(model);
     return new Promise((resolve,reject)=>{

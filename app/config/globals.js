@@ -5,6 +5,7 @@ module.exports = {
         2:"Order Packed",
         3:"Shipped",
         4:"Order Cancelled",
+        5:"Completed",
     }
 }
 
