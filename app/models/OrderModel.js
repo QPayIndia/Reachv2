@@ -92,7 +92,7 @@ function getProductOrders(userId){
 
 function getMerchantOrders(bid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT A.transactionid,D.productid,C.orderid,A.amount,C.deliverystatus,D.name,D.productimg,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM `transaction_master` as A,`order_master` as B,`product_order_items` as C,`product_master` as D WHERE transtype = 'order' AND D.uid = ? AND D.productid = C.productid AND A.orderid = C.orderid AND A.paymentstatus = 1 AND C.orderid = B.orderid;",[bid],(err,data)=>{
+        sql.query("SELECT A.transactionid,D.productid,C.orderid,C.orderitemid,A.amount,C.deliverystatus,D.name,D.productimg,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM `transaction_master` as A,`order_master` as B,`product_order_items` as C,`product_master` as D WHERE transtype = 'order' AND D.uid = ? AND D.productid = C.productid AND A.orderid = C.orderid AND A.paymentstatus = 1 AND C.orderid = B.orderid;",[bid],(err,data)=>{
             if(err){
                 console.log("Get Merchant Orders Failed : "+err);
                 reject(err);
