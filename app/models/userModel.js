@@ -85,12 +85,12 @@ User.sendOTP = (phone,result)=>{
     const otp = Math.floor(100000 + Math.random() * 900000);
     
     InsertOTP(phone,otp).then((id)=>{
-        SendOtpToMobile(phone,otp).then((id)=>{
-            result(null,{status:"success",message:"OTP Send Successfully",otp:otp});
-        }).catch((err)=>{
-            result('',{status:"failure",message:"OTP Send Failed"});
-        }); 
-        // result(null,{status:"success",message:"OTP Send Successfully",otp:otp});
+        // SendOtpToMobile(phone,otp).then((id)=>{
+        //     result(null,{status:"success",message:"OTP Send Successfully",otp:otp});
+        // }).catch((err)=>{
+        //     result('',{status:"failure",message:"OTP Send Failed"});
+        // }); 
+        result(null,{status:"success",message:"OTP Send Successfully",otp:otp});
     }).catch((err)=>{
         result(err,{status:"failure",message:"OTP Send Failed"});
     }); 
