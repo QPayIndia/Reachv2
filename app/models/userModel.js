@@ -90,7 +90,7 @@ User.sendOTP = (phone,result)=>{
         }).catch((err)=>{
             result('',{status:"failure",message:"OTP Send Failed"});
         }); 
-        result(null,{status:"success",message:"OTP Send Successfully",otp:otp});
+        // result(null,{status:"success",message:"OTP Send Successfully",otp:otp});
     }).catch((err)=>{
         result(err,{status:"failure",message:"OTP Send Failed"});
     }); 
