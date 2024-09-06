@@ -234,7 +234,7 @@ exports.Signup = (req,res)=>{
             res.status(500).send(data);
         }
         else{
-          UserModel.sendOTP(data['uid'],(err,data)=>{
+          UserModel.sendOTP(model.phone,(err,data)=>{
             if(err){
                 res.status(500).send(data);
             }
