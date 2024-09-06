@@ -129,7 +129,7 @@ function getTransactions(userid,type,month){
     if(type === "merchant")
     query = "SELECT A.amount,A.transactionid,A.userid,A.bid,B.photo as profile,B.name,B.phone,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM transaction_master as A,user_master as B WHERE A.bid = "+userid+" AND A.userid = B.uid AND DATE_FORMAT(A.createdon, '%Y-%m') = DATE_FORMAT(CURDATE() - INTERVAL "+month+" MONTH, '%Y-%m');";
     else
-    query = "SELECT A.amount,A.transactionid,A.userid,A.bid,B.photo,B.name,B.phone,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM transaction_master as A,user_master as B WHERE A.bid = "+userid+" AND A.userid = B.uid AND DATE_FORMAT(A.createdon, '%Y-%m') = DATE_FORMAT(CURDATE() - INTERVAL "+month+" MONTH, '%Y-%m');";
+    query = "SELECT A.amount,A.transactionid,A.userid,A.bid,B.profile,B.name,C.phone,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM transaction_master as A,business_info as B,contact_info as C WHERE A.userid = "+userid+" AND A.bid = B.uid AND B.uid = C.uid AND DATE_FORMAT(A.createdon, '%Y-%m') = DATE_FORMAT(CURDATE() - INTERVAL "+month+" MONTH, '%Y-%m');";
 
     return new Promise((resolve,reject)=>{
         sql.query(query,(err,data)=>{
