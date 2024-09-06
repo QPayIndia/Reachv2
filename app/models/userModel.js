@@ -81,11 +81,11 @@ User.getUserById = (uid,result)=>{
     
     
 }
-User.sendOTP = (phone,result)=>{
+User.sendOTP = (phone,uid,result)=>{
     const otp = Math.floor(100000 + Math.random() * 900000);
     console.log(phone);
     
-    InsertOTP(phone,otp).then((id)=>{
+    InsertOTP(uid,otp).then((id)=>{
         SendOtpToMobile(phone,otp).then((id)=>{
             result(null,{status:"success",message:"OTP Send Successfully",otp:otp});
         }).catch((err)=>{
