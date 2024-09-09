@@ -1283,6 +1283,8 @@ exports.addManPowerData = (req,res)=>{
               salaryto :req.body.salaryto,
               gender :req.body.gender,
               age :req.body.age,
+              agefrom :req.body.agefrom,
+              ageto :req.body.ageto,
               employementtype :req.body.employementtype,
               noofvacancies :req.body.noofvacancies,
               startdate :req.body.startdate,
