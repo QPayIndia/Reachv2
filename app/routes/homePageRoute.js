@@ -3,6 +3,7 @@ module.exports = app =>{
 
     var router = require('express').Router();
     router.post('/getrentproducts',homePage.getRentalProducts);
+    router.post('/getmanpower',homePage.getManPower);
   
     
     
