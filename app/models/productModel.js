@@ -14,6 +14,7 @@ const ProductModel = function(model){
     this.pricetype = model.pricetype,
     this.price = model.price,
     this.offerprice = model.offerprice,
+    this.rentFlag = model.rentFlag,
     this.units = model.units,
     this.minprice = model.minprice,
     this.maxprice = model.maxprice,

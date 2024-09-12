@@ -155,7 +155,7 @@ function getReviews(uid){
 }
 function getProducts(uid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT productid,name,price,productimg,totalRating as rating,reviewCount as review,pricetype,offerprice,minprice,maxprice,minqty,maxqty FROM product_master WHERE uid = ?",[uid],(err,res)=>{
+        sql.query("SELECT productid,name,price,productimg,totalRating as rating,reviewCount as review,pricetype,offerprice,minprice,maxprice,minqty,maxqty,rentFlag FROM product_master WHERE uid = ?",[uid],(err,res)=>{
             if(err){
                 
                 console.log('Product Fetch Fail due to '+err);
@@ -164,6 +164,7 @@ function getProducts(uid){
             }
             for(let i=0;i< res.length; i++){
                 res[i]['productimg'] = "http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080"+  res[i]['productimg'];
+                res[i]['rentFlag'] = res[i]['rentFlag'] === 0 ? false : true;
                 if(res[i]['rating'] > 0){
                     let rating = res[i]['rating'] / res[i]['review'];
                     res[i]['rating'] = rating.toFixed(1);

@@ -525,6 +525,7 @@ exports.addProduct = (req,res)=>{
     maxprice : req.body.maxprice,
     minqty : req.body.minqty,
     maxqty : req.body.maxqty,
+    rentFlag : req.body.rentFlag,
     createdby : req.body.uid
   })
 
@@ -557,6 +558,7 @@ exports.updateProduct = (req,res)=>{
     maxprice : req.body.maxprice,
     minqty : req.body.minqty,
     maxqty : req.body.maxqty,
+    rentFlag : req.body.rentFlag,
     createdby : req.body.uid
   })
 
