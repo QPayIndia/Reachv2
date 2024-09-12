@@ -22,7 +22,7 @@ HomePageModel.getRentalProducts = (userid,result)=>{
 
     
 }
-HomePageModel.getRentalProducts = (areaid,result)=>{
+HomePageModel.getManPower = (areaid,result)=>{
     
     _getManPower(areaid).then((data)=>{
        
