@@ -4,7 +4,7 @@ const HomePageModel = require("../models/homePageModel");
 exports.getRentalProducts = (req,res)=>{
    
    
-    HomePageModel.getRentalProducts(req.body.userid,(err,data)=>{
+    HomePageModel.getRentalProducts(req.body.areaid,(err,data)=>{
         if(err){
             res.status(500).send({
                 message:

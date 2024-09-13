@@ -10,9 +10,9 @@ const HomePageModel = function(model){
 
 
 
-HomePageModel.getRentalProducts = (userid,result)=>{
+HomePageModel.getRentalProducts = (areaid,result)=>{
     
-    _getRentalProducts().then((data)=>{
+    _getRentalProducts(areaid).then((data)=>{
        
             result(null,{status:"success",message:"Data Fetched Successfully",data:data});
       
@@ -37,9 +37,9 @@ HomePageModel.getManPower = (areaid,result)=>{
 
 
 
-function _getRentalProducts(){
+function _getRentalProducts(areaid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT A.productid,A.uid,A.productimg,A.name,A.brandname,A.pricetype,A.price,A.minprice,A.maxprice,A.minqty,A.maxqty,A.totalRating,A.reviewCount,A.rentFlag,A.active,B.whatsapp FROM product_master as A,contact_info as B WHERE A.rentFlag = 1 AND A.uid = B.uid order by A.productid DESC;",(err,data)=>{
+        sql.query("SELECT A.productid,A.uid,A.productimg,A.name,A.brandname,A.pricetype,A.price,A.minprice,A.maxprice,A.minqty,A.maxqty,A.totalRating,A.reviewCount,A.rentFlag,A.active,B.whatsapp,C.name as businessName FROM product_master as A,contact_info as B,business_info as C,location_master as D WHERE A.rentFlag = 1 AND A.uid = B.uid AND A.uid = C.uid AND A.uid = D.uid AND D.areaid = ? order by A.productid DESC;",areaid,(err,data)=>{
             if(err){
                 resolve([]);
                 console.log("Get Product Data :"+err);
