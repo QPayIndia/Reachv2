@@ -39,7 +39,7 @@ HomePageModel.getManPower = (areaid,result)=>{
 
 function _getRentalProducts(){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT * FROM product_master WHERE rentFlag = 1 order by productid DESC",(err,data)=>{
+        sql.query("SELECT A.productid,A.uid,A.productimg,A.name,A.brandname,A.pricetype,A.price,A.minprice,A.maxprice,A.minqty,A.maxqty,A.totalRating,A.reviewCount,A.rentFlag,A.active,B.whatsapp FROM product_master as A,contact_info as B WHERE A.rentFlag = 1 AND A.uid = B.uid order by A.productid DESC;",(err,data)=>{
             if(err){
                 resolve([]);
                 console.log("Get Product Data :"+err);
