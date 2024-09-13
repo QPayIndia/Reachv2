@@ -60,7 +60,7 @@ function _getRentalProducts(){
 
 function _getManPower(areaid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT A.manreqid,A.bid,A.title,A.jobtype,A.description,A.skill,A.qualification,A.experience,A.agefrom,A.ageto,A.salaryfrom,A.salaryto,A.gender,A.employementtype,A.noofvacancies,A.startdate,A.enddate FROM manpower_req_master as A INNER JOIN location_master ON A.bid = location_master.uid AND location_master.areaid = ? order by A.manreqid DESC;",[areaid],(err,data)=>{
+        sql.query("SELECT A.manreqid,A.bid,A.title,A.jobtype,A.description,A.skill,A.qualification,A.experience,A.agefrom,A.ageto,A.salaryfrom,A.salaryto,A.gender,A.employementtype,A.noofvacancies,A.startdate,A.enddate,C.name as businessName,C.profile as businessProfile, D.phone as businessPhone FROM manpower_req_master as A ,location_master as B , business_info as C, contact_info as D WHERE A.bid = B.uid AND A.bid = C.uid AND A.bid = D.uid AND B.areaid = ? order by A.manreqid DESC;",[areaid],(err,data)=>{
                 if(err){
                     reject();
                     console.log('Manpower Req Fetch Failed due to '+err);
@@ -73,6 +73,11 @@ function _getManPower(areaid){
             })
     });
 }
+
+
+
+
+
 
 
 module.exports = HomePageModel;
