@@ -67,6 +67,9 @@ ChatModel.getChatRooms = (userid,usertype,result)=>{
         let _temp = {};
         _temp.roomkey = data[i]['roomkey'];
         _temp.roomid = data[i]['roomid'];
+        _temp.message = "";
+        _temp.isseen = false;
+        _temp.date = "";
             if(data[i]['hostid'] === userid && data[i]['hosttype'] === usertype){
                 let guestid = data[i]['guestid'];
                 if(data[i]['guesttype'] === 'merchant'){
