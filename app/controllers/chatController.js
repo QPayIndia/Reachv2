@@ -2,6 +2,17 @@ const ChatModel = require("../models/chatModel");
 const multer = require('multer');
 const path = require('path');
 
+const MessageModel = function(model){
+    this.roomid = model.roomid,
+    this.senderid = model.senderid,
+    this.sendertype = model.sendertype,
+    this.message = model.message,
+    this.media = model.media,
+    this.mediatype = model.mediatype
+    
+}
+
+
 exports.createChatRoom = (req,res)=>{
    
     const model = new ChatModel({
@@ -27,8 +38,48 @@ exports.createChatRoom = (req,res)=>{
 
 exports.getChatRooms = (req,res)=>{
    
-  
     ChatModel.getChatRooms(req.body.userid,req.body.usertype,(err,data)=>{
+        if(err){
+            res.status(500).send({
+                message:
+                  err.message || "Something went wrong."
+              });
+        }
+        else
+            res.status(200).send(data);
+    });
+
+};
+
+exports.InsertChat = (req,res)=>{
+
+    const model = new MessageModel({
+        roomid : req.body.roomid,
+        senderid : req.body.senderid,
+        sendertype : req.body.sendertype,
+        message : req.body.message,
+        media : req.body.media,
+        mediatype : req.body.mediatype
+    });
+
+    ChatModel.insertChat(model,(err,data)=>{
+        if(err){
+            res.status(500).send({
+                message:
+                  err.message || "Something went wrong."
+              });
+        }
+        else
+            res.status(200).send(data);
+    });
+
+};
+
+
+exports.getChatFromRoom = (req,res)=>{
+   
+  
+    ChatModel.getChatsFromRoom(req.body.roomid,req.body.userid,(err,data)=>{
         if(err){
             res.status(500).send({
                 message:

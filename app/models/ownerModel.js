@@ -14,13 +14,26 @@ const OwnerModel = function(model){
 
 
 
-OwnerModel.create = (model,result)=>{
-   
-    addOwnerModel(model).then((id)=>{
-        result(null,{status:"success",message:"Owner Inserted Successfully",data:id});
-    }).catch(({
+OwnerModel.create = (model,ownerid,result)=>{
 
-    }));
+    if(ownerid === 0){
+        addOwnerModel(model).then((id)=>{
+            result(null,{status:"success",message:"Owner Inserted Successfully",data:id});
+        }).catch((err)=>{
+            result(err,{status:"failure",message:"Owner Insert Failed"});
+        });
+    }else{
+        
+        
+        updateOwnerModel(model,ownerid).then((id)=>{
+            result(null,{status:"success",message:"Owner Updated Successfully",data:id});
+        }).catch((err)=>{
+            console.log(err);
+            result(err,{status:"failure",message:"Owner Update Failed"});
+        });
+    }
+   
+    
     
     
     
@@ -43,10 +56,25 @@ function addOwnerModel(model){
                 if(err){
                     
                     console.log('Owner Insert Failed due to '+err);
+                    reject(err);
                     return;
                 }
                 console.log('Owner Inserted successfully');
                 resolve(res.insertId);
+            })
+    });
+}
+function updateOwnerModel(model,ownerid){
+    return new Promise((resolve,reject)=>{
+        sql.query("UPDATE owner_master SET ? WHERE ownerid = ?",[model,ownerid],(err,res)=>{
+                if(err){
+                    
+                    console.log('Owner Update Failed due to '+err);
+                    reject(err);
+                    return;
+                }
+                console.log('Owner Updated successfully');
+                resolve(ownerid);
             })
     });
 }

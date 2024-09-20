@@ -864,7 +864,7 @@ exports.addOwner = (req,res)=>{
   
 
  
-  OwnerModel.create((model),(err,data)=>{
+  OwnerModel.create(model,req.body.ownerid,(err,data)=>{
         if(err){
             res.status(500).send(data);
         }
@@ -901,7 +901,7 @@ exports.addPhone = (req,res)=>{
   
 
  
-  PhoneNumberModel.create((model),(err,data)=>{
+  PhoneNumberModel.create(model,req.body.phoneid,(err,data)=>{
         if(err){
             res.status(500).send(data);
         }

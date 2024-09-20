@@ -5,6 +5,8 @@ module.exports = app =>{
     router.post('/createroom',chat.createChatRoom);
     router.post('/getchatrooms',chat.getChatRooms);
     router.post('/sendFile',chat.uploadFile);
+    router.post('/sendChat',chat.InsertChat);
+    router.post('/getChat',chat.getChatFromRoom);
   
     
     

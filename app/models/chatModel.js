@@ -15,7 +15,36 @@ const ChatModel = function(model){
 }
 
 
+ChatModel.insertChat = (model,result)=>{
+   
+    _sendChat(model).then((id)=>{
+        result(null,{status:"success",message:"Chat Inserted Successfully",data:id});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Chat Insert Failed"});
+    });   
+}
 
+ChatModel.getChatsFromRoom = (roomid,userid,result)=>{
+   let data = [];
+    _getChats(roomid).then((chats)=>{
+        for(let i = 0 ; i < chats.length ; i++){
+            let message = {};
+            if(chats[i]['senderid'] === userid){
+                message.type = "host";
+                message.message = chats[i];
+
+            }else{
+                message.type = "guest";
+                message.message = chats[i];
+            }
+            data[i] = message;
+
+        }
+        result(null,{status:"success",message:"Chats Fetched Successfully",chats:data});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Chat Fetch Failed"});
+    });   
+}
 
 
 ChatModel.createChatRoom = (model,result)=>{
@@ -213,6 +242,23 @@ function _getHashValue(hash){
             })
     });
 }
+
+function _getChats(roomid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT * FROM chat_master WHERE roomid = ? ORDER BY roomid DESC;",[roomid],(err,data)=>{
+                if(err){
+                    reject();
+                    console.log('Chats Fetch Failed due to '+err);
+                    return;
+                }
+                console.log('Chats Fetched successfully');
+				
+			
+                resolve(data);
+            })
+    });
+}
+
 function _getChatRooms(userid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT A.roomkey,A.roomid,A.hostid,A.guestid,A.hosttype,A.guesttype,B.name as hostBName,C.name as guestBName,B.profile as hostBProfile,C.profile as guestBProfile,D.name as hostUName,E.name as guestUName,D.photo as hostUProfile,E.photo as guestUProfile FROM chat_room_master as A LEFT JOIN business_info as B ON A.hostid = B.uid LEFT JOIN business_info as C ON A.guestid = C.uid LEFT JOIN user_master as D ON A.hostid = D.uid LEFT JOIN user_master as E ON A.guestid = E.uid WHERE A.hostid = ? OR A.guestid = ?;",[userid,userid],(err,data)=>{
@@ -228,6 +274,26 @@ function _getChatRooms(userid){
             })
     });
 }
+
+
+
+function _sendChat(model){
+    return new Promise((resolve,reject)=>{
+        sql.query("INSERT INTO chat_master SET ?",model,(err,res)=>{
+                if(err){
+                    
+                    console.log('Send Chat Failed due to '+err);
+                    reject(err);
+                    return;
+                }
+                console.log('Chat Inserted successfully -----> '+res.insertId);
+                
+                resolve(res.insertId);
+            })
+    });
+}
+
+
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));

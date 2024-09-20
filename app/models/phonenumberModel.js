@@ -17,13 +17,25 @@ const PhoneNumberModel = function(model){
 
 
 
-PhoneNumberModel.create = (model,result)=>{
-   
-    addPhoneNumber(model).then((id)=>{
-        result(null,{status:"success",message:"Phone Number Inserted Successfully",data:id});
-    }).catch(({
+PhoneNumberModel.create = (model,phoneid,result)=>{
 
-    }));
+    if(phoneid === 0){
+        addPhoneNumber(model).then((id)=>{
+            result(null,{status:"success",message:"Phone Number Inserted Successfully",data:id});
+        }).catch((err)=>{
+            result(err,{status:"failure",message:"Phone Number Insert Failed"});
+        });
+    }else{
+        
+        updatePhoneNumber(model,phoneid).then((id)=>{
+            result(null,{status:"success",message:"Phone Number Updated Successfully",data:id});
+        }).catch((err)=>{
+            result(err,{status:"failure",message:"Phone Number Update Failed"});
+        });
+       
+    }
+   
+    
     
     
     
@@ -46,10 +58,25 @@ function addPhoneNumber(model){
                 if(err){
                     
                     console.log('Phone Insert Failed due to '+err);
+                    reject(err);
                     return;
                 }
                 console.log('Phone Inserted successfully');
                 resolve(res.insertId);
+            })
+    });
+}
+function updatePhoneNumber(model,phoneid){
+    return new Promise((resolve,reject)=>{
+        sql.query("UPDATE phone_master SET ? WHERE phoneid = ?",[model,phoneid],(err,res)=>{
+                if(err){
+                    
+                    console.log('Phone Update Failed due to '+err);
+                    reject(err);
+                    return;
+                }
+                console.log('Phone Updated successfully');
+                resolve(phoneid);
             })
     });
 }
@@ -60,7 +87,7 @@ function deleteData(uid,ownerid){
     return new Promise((resolve,reject)=>{
         sql.query("DELETE FROM phone_master WHERE phoneid = ? AND uid = ?",[ownerid,uid],(err,data)=>{
             if(err){
-                reject();
+                reject(err);
                 
                 return;
             }
