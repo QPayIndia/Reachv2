@@ -94,6 +94,27 @@ app.get('/uploads/chat/file/:name', (req, res) => {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   res.sendFile("C:/Users/Public/Reach/reach/Reachv2/uploads/chat/file/"+imagePath); 
 });
+app.get('/uploads/chat/audio/:name', (req, res) => { 
+  const imagePath = req.params.name; 
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.sendFile("C:/Users/Public/Reach/reach/Reachv2/uploads/chat/audio/"+imagePath); 
+});
+app.get('/uploads/chat/video/:name', (req, res) => { 
+  const imagePath = req.params.name; 
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.sendFile("C:/Users/Public/Reach/reach/Reachv2/uploads/chat/video/"+imagePath); 
+});
+app.get('/uploads/chat/image/:name', (req, res) => { 
+  const imagePath = req.params.name; 
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.sendFile("C:/Users/Public/Reach/reach/Reachv2/uploads/chat/image/"+imagePath); 
+});
 
 require("./app/routes/businessInfoRoute.js")(app);
 require("./app/routes/adminRoute.js")(app);
