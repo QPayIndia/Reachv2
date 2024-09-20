@@ -87,6 +87,13 @@ app.get('/uploads/business/kyb/:name', (req, res) => {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   res.sendFile("C:/Users/Public/Reach/reach/Reachv2/uploads/business/kyb/"+imagePath); 
 });
+app.get('/uploads/chat/:name', (req, res) => { 
+  const imagePath = req.params.name; 
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.sendFile("C:/Users/Public/Reach/reach/Reachv2/uploads/chat/"+imagePath); 
+});
 
 require("./app/routes/businessInfoRoute.js")(app);
 require("./app/routes/adminRoute.js")(app);
