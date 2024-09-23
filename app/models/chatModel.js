@@ -267,7 +267,7 @@ function _getHashValue(hash){
 
 function _getChats(roomid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT * FROM chat_master WHERE roomid = ? ORDER BY chatid DESC;",[roomid],(err,data)=>{
+        sql.query("SELECT * FROM chat_master WHERE roomid = ? ORDER BY chatid ASC;",[roomid],(err,data)=>{
                 if(err){
                     reject();
                     console.log('Chats Fetch Failed due to '+err);
@@ -283,7 +283,7 @@ function _getChats(roomid){
 
 function _getUnreadChats(roomid,chatid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT * FROM chat_master WHERE roomid = ? AND chatid > ? ORDER BY chatid DESC;",[roomid,chatid],(err,data)=>{
+        sql.query("SELECT * FROM chat_master WHERE roomid = ? AND chatid > ? ORDER BY chatid ASC;",[roomid,chatid],(err,data)=>{
                 if(err){
                     reject(err);
                     console.log('Chats Fetch Failed due to '+err);
