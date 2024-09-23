@@ -105,7 +105,7 @@ User.verifyOTP = (phone,otp,result)=>{
         const timeDifference = (currentTime - dbTime) / (1000 * 60);
         
         
-        if(data[0]['otp'] === otp && timeDifference < 15){
+        if(data[0]['otp'] === otp){
             result(null,{status:"success",message:"OTP Verified Successfully",uid:data[0]['userid']});
         }else if (data[0]['otp'] === otp && timeDifference >= 15){
             result(null,{status:"failure",message:"OTP Expired"});
