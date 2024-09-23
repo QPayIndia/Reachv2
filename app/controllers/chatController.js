@@ -51,6 +51,21 @@ exports.getChatRooms = (req,res)=>{
 
 };
 
+exports.getUnreadChats = (req,res)=>{
+   
+    ChatModel.getUnreadMessage(req.body.roomid,req.body.chatid,req.body.userid,(err,data)=>{
+        if(err){
+            res.status(500).send({
+                message:
+                  err.message || "Something went wrong."
+              });
+        }
+        else
+            res.status(200).send(data);
+    });
+
+};
+
 exports.InsertChat = (req,res)=>{
 
     const model = new MessageModel({

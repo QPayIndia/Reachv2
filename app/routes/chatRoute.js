@@ -7,6 +7,7 @@ module.exports = app =>{
     router.post('/sendFile',chat.uploadFile);
     router.post('/sendChat',chat.InsertChat);
     router.post('/getChat',chat.getChatFromRoom);
+    router.post('/getunreadchats',chat.getUnreadChats);
   
     
     

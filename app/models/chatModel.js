@@ -47,6 +47,28 @@ ChatModel.getChatsFromRoom = (roomid,userid,result)=>{
 }
 
 
+ChatModel.getUnreadMessage = (roomid,chatid,userid,result)=>{
+    let data = [];
+     _getUnreadChats(roomid,chatid).then((chats)=>{
+        let j = 0;
+         for(let i = 0 ; i < chats.length ; i++){
+             let message = {};
+             if(chats[i]['senderid'] != userid){
+                message.type = "guest";
+                message.message = chats[i];
+                data[j] = message;
+                j++;
+ 
+             }
+
+         }
+         result(null,{status:"success",message:"Chats Fetched Successfully",chats:data});
+     }).catch((err)=>{
+         result(err,{status:"failure",message:"Chat Fetch Failed"});
+     });   
+ }
+
+
 ChatModel.createChatRoom = (model,result)=>{
 
     let hashValue = createHash(model.hostid+model.hosttype,model.guestid+model.guesttype);
@@ -245,9 +267,25 @@ function _getHashValue(hash){
 
 function _getChats(roomid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT * FROM chat_master WHERE roomid = ? ORDER BY roomid DESC;",[roomid],(err,data)=>{
+        sql.query("SELECT * FROM chat_master WHERE roomid = ? ORDER BY chatid DESC;",[roomid],(err,data)=>{
                 if(err){
                     reject();
+                    console.log('Chats Fetch Failed due to '+err);
+                    return;
+                }
+                console.log('Chats Fetched successfully');
+				
+			
+                resolve(data);
+            })
+    });
+}
+
+function _getUnreadChats(roomid,chatid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT * FROM chat_master WHERE roomid = ? AND chatid > ? ORDER BY chatid DESC;",[roomid,chatid],(err,data)=>{
+                if(err){
+                    reject(err);
                     console.log('Chats Fetch Failed due to '+err);
                     return;
                 }
