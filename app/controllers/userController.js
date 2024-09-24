@@ -1,4 +1,5 @@
 const AddressModel = require("../models/addressModel.js");
+const BusinessFavouriteModel = require("../models/business_fav_model.js");
 const User = require("../models/userModel.js");
 
 
@@ -153,6 +154,33 @@ exports.getPrimaryAddress = (req,res)=>{
 exports.updatePrimaryAddress = (req,res)=>{
     
     AddressModel.UpdatePrimaryAddress(req.body.userid,req.body.addressid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
+exports.getFavBusiness = (req,res)=>{
+    
+    BusinessFavouriteModel.getFavBusiness(req.body.userid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
+exports.updateBusinessFavourite = (req,res)=>{
+
+    const model = new BusinessFavouriteModel(
+        {
+            userid : req.body.userid,
+            bid : req.body.bid
+           
+        });
+    
+    BusinessFavouriteModel.updateFavourite(model,(err,data)=>{
         if(err){
             res.status(500).send(data);
         }
