@@ -86,6 +86,8 @@ function updateInfo(model){
                     console.log('Business Info Failed due to '+err);
                     return;
                 }
+                console.log(model);
+                
                 console.log('Business Info Updated successfully');
                 resolve(res.insertId);
             })
