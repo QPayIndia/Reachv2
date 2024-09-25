@@ -101,8 +101,8 @@ function addLike(model){
             }
             console.log('Business Data Fetched successfully');
             for(let i=0;i< res.length; i++){
-                res[i]['thumb'] = "http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080"+    res[i]['thumb'];
-                res[i]['liked'] = res[i]['liked'] === 1 ? true : false;
+                // res[i]['thumb'] = "http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080"+    res[i]['thumb'];
+               
                 if(res[i]['rating'] > 0){
                     let rating = res[i]['rating'] / res[i]['review'];
                     res[i]['rating'] = rating.toFixed(1);
