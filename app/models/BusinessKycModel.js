@@ -27,17 +27,19 @@ BusinessKycModel.create = (model,result)=>{
         if(data.length > 0){
             console.log("Info Already present")
             updateInfo(model).then((id)=>{
-                result(null,{status:"success",message:"KYC Info Inserted Successfully",data:id});
-            }).catch(({
-        
-            }));
+                result(null,{status:"success",message:"KYC Info Updated Successfully",data:id});
+            }).catch((err)=>{
+                result(err,{status:"failure",message:"KYC Info Update Failed",data:0});
+            });
         }else{
             addKYCInfo(model).then((id)=>{
                 result(null,{status:"success",message:"KYC Info Inserted Successfully",data:id});
-            }).catch(({
-        
-            }));
+            }).catch((err)=>{
+                result(err,{status:"failure",message:"KYC Info Insert Failed",data:0});
+            });
         }
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"KYC Info Insert Failed",data:0});
     })
     
     
@@ -77,6 +79,8 @@ BusinessKycModel.getKYCData = (uid,result)=>{
     
     getData(uid).then((data)=>{
         result(null,{status:"success",message:"KYC Info Fetched Successfully",data:data[0]});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"KYC Info Fetch Failed",data:[]});
     })
 
     
@@ -84,10 +88,10 @@ BusinessKycModel.getKYCData = (uid,result)=>{
 
 function getData(uid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT * FROM business_kyc WHERE uid = ? LIMIT 1",[uid],(err,data)=>{
+        sql.query("SELECT A.kycid, A.rc,A.gst,A.pan,A.rentdeed,A.partnershipdeed,A.coa,A.aoa,A.moa,A.mgt,A.trustdeed,B.type as businessType,A.verifyFlag,A.createdon FROM business_kyc as A,business_info as B WHERE A.uid = ? AND A.uid = B.uid LIMIT 1;",[uid],(err,data)=>{
             if(err){
                 console.log('business_kyc Failed due to '+err);
-                
+                reject(err);
                 return;
             }
     
