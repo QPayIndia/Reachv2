@@ -78,7 +78,7 @@ function updateInfo(model){
 BusinessKycModel.getKYCData = (uid,result)=>{
     
     getData(uid).then((data)=>{
-        result(null,{status:"success",message:"KYC Info Fetched Successfully",data:data[0]});
+        result(null,{status:"success",message:"KYC Info Fetched Successfully",data:data.length > 0 ? data[0] : {}});
     }).catch((err)=>{
         result(err,{status:"failure",message:"KYC Info Fetch Failed",data:[]});
     })
