@@ -7,7 +7,8 @@ exports.callback = (req,res)=>{
         });
     }
 
-
+    console.log(req.body);
+    
     res.sendFile(path.join(__dirname, '../screen/callback.html'));
 
 };
