@@ -6,6 +6,7 @@ module.exports = {
         3:"Shipped",
         4:"Order Cancelled",
         5:"Completed",
-    }
+    },
+    pgCommission : 2.5
 }
 
