@@ -202,6 +202,14 @@ function CheckoutServiceCart(userid){
                 }
                 console.log('Cart Checkout successfully');
                 var orderid = res.insertId;
+
+                sql.query("UPDATE `service_cart_master` SET `orderid` = ? WHERE `service_cart_master`.`ischecked` = 1;",[orderid],(err,res)=>{
+                    if(err){
+                        console.log('Order Id Update Failed due to '+err);
+                        reject(err);
+                        return;
+                    }
+
                     sql.query('INSERT INTO service_order_items (orderid, serviceid,deliverystatus,priceperunit,qty,totalamount) SELECT ?,A.serviceid as serviceid,1,B.price,A.qty,B.price * A.qty FROM `service_cart_master` as A,`service_master` as B WHERE A.userid = ? AND A.ischecked = 1 AND A.serviceid = B.serviceid;',[orderid,userid],(err,res)=>{
                         if(err){
                             console.log('Checkout Items Adding to cart Failed due to '+err);
@@ -219,6 +227,8 @@ function CheckoutServiceCart(userid){
                                 resolve(res.insertId);
                             })
                     })
+                })
+                    
                 
             })
     });
