@@ -172,7 +172,9 @@ function CheckoutProductCart(userid){
                         }
                         console.log('Checkout Items Added successfully');
                         var query = "INSERT INTO `transaction_master` (`userid`, `amount`, `transtype`, `orderid`, `paymentstatus`,`commissionpercentage`,`commissionamount`,`settlementamount`) SELECT userid,amount,'order',orderid,1,?,amount * "+global.pgCommission+"/100,amount - (amount * "+global.pgCommission+"/100) FROM order_master WHERE orderid = ?;";
-                            sql.query(query,[orderid,global.pgCommission ],(err,res)=>{
+                            console.log(query);
+                            
+                        sql.query(query,[orderid,global.pgCommission ],(err,res)=>{
                                 if(err){
                                     console.log('Transaction create Failed due to '+err);
                                     reject(err);
