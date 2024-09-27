@@ -164,6 +164,12 @@ function CheckoutProductCart(userid){
                 }
                 console.log('Cart Checkout successfully');
                 var orderid = res.insertId;
+                sql.query("UPDATE `product_cart_master` SET `orderid` = ? WHERE `product_cart_master`.`ischecked` = 1 AND `product_cart_master`.`userid` = ?;",[orderid,userid],(err,res)=>{
+                    if(err){
+                        console.log('Order Id Update Failed due to '+err);
+                        reject(err);
+                        return;
+                    }
                     sql.query('INSERT INTO product_order_items (orderid, productid,deliverystatus,priceperunit,qty,totalamount) SELECT ?,A.productid as productid,1,B.price,A.qty,B.price * A.qty FROM `product_cart_master` as A,`product_master` as B WHERE A.userid = ?  AND A.ischecked = 1 AND A.productid = B.productid;',[orderid,userid],(err,res)=>{
                         if(err){
                             console.log('Checkout Items Adding to cart Failed due to '+err);
@@ -183,6 +189,7 @@ function CheckoutProductCart(userid){
                                 console.log('Transaction created successfully : '+res.insertId);
                                 resolve(res.insertId);
                             })
+                    })
                     })
                 
             })
