@@ -49,7 +49,11 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
             if(transData.length > 0){
                 if(transData[0]['transtype'] === 'order'){
                     if(transData[0]['carttype'] === 'service'){
-
+                        _deleteServiceCartItems(transData[0]['orderid']).then(()=>{
+                            result(null,{status:"success"});
+                        }).catch((err)=>{
+                            result(null,{status:"success"});
+                        })
                     }else if (transData[0]['carttype'] === 'product'){
                         _deleteCartProductItems(transData[0]['orderid']).then(()=>{
                             result(null,{status:"success"});
@@ -198,6 +202,23 @@ function _deleteCartProductItems(orderid){
     })
 }
 
+
+function _deleteServiceCartItems(orderid){
+    return new Promise((resolve,reject)=>{
+        sql.query("DELETE FROM service_cart_master WHERE orderid = ?;",[orderid],(err,data)=>{
+            if(err){
+                console.log("Service Cart Items Delete Failed : "+err);
+                reject(err);
+                return;
+            }
+           console.log("Service Cart Items Deleted Successfully");
+           resolve();
+    
+           
+            
+        })
+    })
+}
 
 
 
