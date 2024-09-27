@@ -127,7 +127,7 @@ function _updateTransactionResponse(model){
         }
         console.log(model);
         
-        sql.query("UPDATE `transaction_master` SET `paymentstatus` = ? , `bankrefno` = ?, `bankmessage` = ?, `bankresponse` = ? WHERE `transaction_master`.`transactionid` = ?;",[status,model.MSPReferenceID,'',model,model.MerchantOrderID],(err,res)=>{
+        sql.query("UPDATE `transaction_master` SET `paymentstatus` = ? , `bankrefno` = ?, `bankmessage` = ?, `bankresponse` = ? WHERE `transaction_master`.`transactionid` = ?;",[status,model.MSPReferenceID,'','',model.MerchantOrderID],(err,res)=>{
             if(err){
                 console.log('Transaction Update After PG Response Failed due to '+err);
                 reject(err);
