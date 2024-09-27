@@ -30,6 +30,8 @@ exports.callback = (req,res)=>{
         secure_hash: req.body.secure_hash
     })
 
+    console.log(model);
+    
     TransactionModel.UpdateTransactionResponse(model,(err,data)=>{
         if(err){
             res.sendFile(path.join(__dirname, '../screen/callback.html'));
