@@ -129,6 +129,7 @@ require('./app/routes/cartRoute.js')(app);
 require('./app/routes/paymentRoute.js')(app);
 require('./app/routes/homePageRoute.js')(app);
 require('./app/routes/chatRoute.js')(app);
+require('./app/routes/businessReportRoute.js')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
