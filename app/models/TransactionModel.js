@@ -45,7 +45,31 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
     
 
     _updateTransactionResponse(model).then((id)=>{
-        result(null,{status:"success"});
+        _getpostTransactionData(id).then((transData)=>{
+            if(transData.length > 0){
+                if(transData[0]['transtype'] === 'order'){
+                    if(transData[0]['carttype'] === 'service'){
+
+                    }else if (transData[0]['carttype'] === 'product'){
+                        _deleteCartProductItems(transData[0]['orderid']).then(()=>{
+                            result(null,{status:"success"});
+                        }).catch((err)=>{
+                            result(null,{status:"success"});
+                        })
+                    }else{
+                        //add validation for carttype
+                        result(null,{status:"success"});
+                    }
+                }else{
+                    result(null,{status:"success"});
+                }
+            }else{
+                result(err,{status:"failure"});
+            }
+        }).catch((err)=>{
+        result(err,{status:"failure"});
+    })
+        
     }).catch((err)=>{
         result(err,{status:"failure"});
     })
@@ -134,11 +158,45 @@ function _updateTransactionResponse(model){
                 return;
             }
             console.log('Transaction Updated successfully Update After PG Response : '+model.MerchantOrderID);
-            resolve();
+            resolve(model.MerchantOrderID);
         })
     });
 }
 
+
+function _getpostTransactionData(refId){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT A.transactionid,A.transtype,B.carttype,A.orderid FROM transaction_master A LEFT JOIN order_master B ON A.orderid = B.orderid WHERE A.transactionid = ?;",[refId],(err,data)=>{
+            if(err){
+                console.log("Get Transaction Details Failed : "+err);
+                reject(err);
+                return;
+            }
+           console.log("Transaction Details Fetched Successfully");
+           console.log(data[0])
+           resolve(data);
+    
+           
+            
+        })
+    })
+}
+function _deleteCartProductItems(orderid){
+    return new Promise((resolve,reject)=>{
+        sql.query("DELETE FROM product_cart_master WHERE orderid = ?;",[orderid],(err,data)=>{
+            if(err){
+                console.log("Product Cart Items Delete Failed : "+err);
+                reject(err);
+                return;
+            }
+           console.log("Product Cart Items Deleted Successfully");
+           resolve();
+    
+           
+            
+        })
+    })
+}
 
 
 
