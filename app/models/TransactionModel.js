@@ -90,7 +90,7 @@ function CreatePayment(model){
                 }
                 console.log('Create Payment successfull');
                 var orderid = res.insertId;
-                sql.query("INSERT INTO `transaction_master` (`userid`,`bid`, `amount`, `transtype`, `orderid`, `paymentstatus`,`commissionpercentage`,`commissionamount`,`settlementamount`) VALUES (?,?,?,'payment',?,1,?,? );",[model.userid,model.bid,model.amount,orderid,pgCommission,model.amount * pgCommission/100,model.amount - (model.amount * pgCommission/100) ],(err,res)=>{
+                sql.query("INSERT INTO `transaction_master` (`userid`,`bid`, `amount`, `transtype`, `orderid`, `paymentstatus`,`commissionpercentage`,`commissionamount`,`settlementamount`) VALUES (?,?,?,'payment',?,1,?,?,? );",[model.userid,model.bid,model.amount,orderid,pgCommission,model.amount * pgCommission/100,model.amount - (model.amount * pgCommission/100) ],(err,res)=>{
                     if(err){
                         console.log('Transaction create Failed due to '+err);
                         reject(err);
