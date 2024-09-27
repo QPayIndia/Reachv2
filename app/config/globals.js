@@ -7,6 +7,13 @@ module.exports = {
         4:"Order Cancelled",
         5:"Completed",
     },
-    pgCommission : 2.5
+    pgCommission : 2.5,
+    payStatus:{
+        1:"Incomplete",
+        2:"Paid",
+        3:"Pending",
+        4:"Failed",
+        5:"Refunded"
+    }
 }
 

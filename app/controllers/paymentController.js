@@ -7,9 +7,45 @@ exports.callback = (req,res)=>{
         });
     }
 
-    console.log(req.body.ResponseCode);
+    const ResponseModel = function(model){
+        this.MSPReferenceID= model.MSPReferenceID,
+        this.Message= model.Message,
+        this.MerchantOrderID= model.MerchantOrderID,
+        this.TransactionType= model.TransactionType,
+        this.ResponseCode= model.ResponseCode,
+        this.PaymentMode= model.PaymentMode,
+        this.Amount= model.Amount,
+        this.secure_hash= model.secure_hash
+       
+    }
+
+    let model = new ResponseModel({
+        MSPReferenceID: req.body.MSPReferenceID,
+        Message: req.body.Message,
+        MerchantOrderID: req.body.MerchantOrderID,
+        TransactionType: req.body.TransactionType,
+        ResponseCode: req.body.ResponseCode,
+        PaymentMode: req.body.PaymentMode,
+        Amount: req.body.Amount,
+        secure_hash: req.body.secure_hash
+    })
+
+    TransactionModel.UpdateTransactionResponse(model,(err,data)=>{
+        if(err){
+            res.sendFile(path.join(__dirname, '../screen/callback.html'));
+        }
+        else
+            res.sendFile(path.join(__dirname, '../screen/callback.html'));
+    })
+
+    // let resCode = req.body.ResponseCode;
+    // if(resCode === 100 || resCode === 200){
+    //     res.sendFile(path.join(__dirname, '../screen/callback.html'));
+    // }else{
+    //     res.sendFile(path.join(__dirname, '../screen/callback.html'));
+    // }
     
-    res.sendFile(path.join(__dirname, '../screen/callback.html'));
+    
 
 };
 

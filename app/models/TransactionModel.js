@@ -41,6 +41,17 @@ TransactionModel.CreatePayment = (model,result)=>{
     
    
 }
+TransactionModel.UpdateTransactionResponse = (model,result)=>{
+    
+
+    _updateTransactionResponse(model).then((id)=>{
+        result(null,{status:"success"});
+    }).catch((err)=>{
+        result(err,{status:"failure"});
+    })
+    
+   
+}
 TransactionModel.getPaymentDetails = (transactionid,result)=>{
     
 
@@ -101,6 +112,28 @@ function CreatePayment(model){
                 })
                 
             })
+    });
+}
+
+function _updateTransactionResponse(model){
+    
+    return new Promise((resolve,reject)=>{
+
+        let status = 1;
+        if(model.ResponseCode  === 100 || model.ResponseCode  === 200 ){
+            status = 2;
+        }else{
+            status = 4;
+        }
+        sql.query("UPDATE `transaction_master` SET `paymentstatus` = ? , `bankrefno` = ?, `bankmessage` = ?, `bankresponse` = ? WHERE `transaction_master`.`transactionid` = ?;",[status,model.MSPReferenceID,model.Message,model,model.MerchantOrderID],(err,res)=>{
+            if(err){
+                console.log('Transaction Update After PG Response Failed due to '+err);
+                reject(err);
+                return;
+            }
+            console.log('Transaction Updated successfully Update After PG Response : '+model.MerchantOrderID);
+            resolve();
+        })
     });
 }
 
