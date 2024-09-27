@@ -120,7 +120,7 @@ function _updateTransactionResponse(model){
     return new Promise((resolve,reject)=>{
 
         let status = 1;
-        if(model.ResponseCode  === 100 || model.ResponseCode  === 200 ){
+        if(model.ResponseCode  === '100' || model.ResponseCode  === '200' ){
             status = 2;
         }else{
             status = 4;
@@ -138,6 +138,7 @@ function _updateTransactionResponse(model){
         })
     });
 }
+
 
 
 
