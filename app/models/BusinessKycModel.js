@@ -77,10 +77,14 @@ function updateInfo(model){
 
 BusinessKycModel.getKYCData = (uid,result)=>{
     
-    getData(uid).then((data)=>{
-        result(null,{status:"success",message:"KYC Info Fetched Successfully",data:data.length > 0 ? data[0] : {}});
+    getBusinessInfo(uid).then((type)=>{
+        getData(uid).then((data)=>{
+            result(null,{status:"success",message:"KYC Info Fetched Successfully",businessType: type.length > 0 ?  type[0]['type'] : "",data:data.length > 0 ? data[0] : {}});
+        }).catch((err)=>{
+            result(err,{status:"failure",message:"KYC Info Fetch Failed",businessType:"",data:[]});
+        })
     }).catch((err)=>{
-        result(err,{status:"failure",message:"KYC Info Fetch Failed",data:[]});
+        result(err,{status:"failure",message:"KYC Info Fetch Failed",data:[],businessType:""});
     })
 
     
@@ -92,6 +96,29 @@ function getData(uid){
             if(err){
                 console.log('business_kyc Failed due to '+err);
                 reject(err);
+                return;
+            }
+    
+    
+            resolve(data);
+    
+            
+    
+           
+            
+        })
+    })
+}
+
+
+function getBusinessInfo(uid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT type FROM business_info WHERE uid = ? LIMIT 1",[uid],(err,data)=>{
+            if(err){
+				console.log("Business Info Model "+err);
+                resolve([]);
+				
+                
                 return;
             }
     
