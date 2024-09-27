@@ -203,7 +203,7 @@ function CheckoutServiceCart(userid){
                 console.log('Cart Checkout successfully');
                 var orderid = res.insertId;
 
-                sql.query("UPDATE `service_cart_master` SET `orderid` = ? WHERE `service_cart_master`.`ischecked` = 1;",[orderid],(err,res)=>{
+                sql.query("UPDATE `service_cart_master` SET `orderid` = ? WHERE `service_cart_master`.`ischecked` = 1 AND `service_cart_master`.`userid` = ?;",[orderid,userid],(err,res)=>{
                     if(err){
                         console.log('Order Id Update Failed due to '+err);
                         reject(err);
