@@ -268,7 +268,7 @@ function _getHashValue(hash){
 
 function _getChats(roomid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT chatid,roomid,senderid,sendertype,message,media,mediatype,isseen,DATE_FORMAT(date, '%D %b %Y %l:%i %p') as date FROM chat_master WHERE roomid = ? ORDER BY chatid ASC;",[roomid],(err,data)=>{
+        sql.query("SELECT chatid,roomid,senderid,sendertype,message,media,mediatype,isseen,IF(DATE(NOW()) = DATE(date),DATE_FORMAT(date, '%l:%i %p'),DATE_FORMAT(date, '%D %b %Y %l:%i %p') as date FROM chat_master WHERE roomid = ? ORDER BY chatid ASC;",[roomid],(err,data)=>{
                 if(err){
                     reject();
                     console.log('Chats Fetch Failed due to '+err);
