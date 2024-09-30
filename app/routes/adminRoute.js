@@ -9,6 +9,11 @@ module.exports = app =>{
     router.post('/login',admin.login);
     router.post('/adduser',admin.addUser);
     router.post('/deletebusiness',admin.deleteBusiness);
+
+    router.post('/gethomeBanner',admin.GetAllBanner);
+    router.post('/updateHomeBanner',admin.UpdateHomeBannerStatus);
+    router.post('/addHomeBanner',admin.AddHomeBanner);
+    router.post('/uploadhomebanner',admin.uploadFile);
     //router.post('/addrating',business.addRating);
     
     

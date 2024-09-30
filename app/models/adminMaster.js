@@ -114,6 +114,45 @@ AdminMaster.login = (phone,password,result)=>{
     
 }
 
+AdminMaster.getHomeBanner = (userid,result)=>{
+    getHomeBanner().then((data)=>{
+        result(null,{status:"success",message:"Data Fetched Successfully",data:data});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Data Fetch Failed"});
+    });
+    
+}
+
+AdminMaster.updateBannerStatus = (bannerid,result)=>{
+   
+    updateBannerStatus(bannerid).then(()=>{
+        getBannerStatus(bannerid).then((data)=>{
+           result(null,{status:"success",message:"Banner Updated Successfully",active:data['active']});
+        }).catch((err)=>{
+            result(err,{status:"failure",message:"Banner Update Failed"});
+        })
+        
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Banner Update  Failed"});
+    });
+    
+    
+    
+}
+
+
+AdminMaster.addBanner = (title,url,userid,result)=>{
+   
+    addBanner(title,url,userid).then((id)=>{
+        result(null,{status:"success",message:"Banner Created Successfully",uid:id});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Banner create Failed"});
+    });
+    
+    
+    
+}
+
 function addUser(username,password,usertype,uid){
     return new Promise((resolve,reject)=>{
         sql.query("INSERT INTO user_master SET name = ? ,phone = ?,password = ?,usertype = ?",[username,username,password,usertype],(err,res)=>{
@@ -191,6 +230,7 @@ function updateMerchantActiveStatus(bid){
                 if(err){
                     
                     console.log('Status Update Failed due to '+err);
+                    reject(err);
                     return;
                 }
                 console.log('Status Updated Successfully for bid ' + bid);
@@ -204,6 +244,7 @@ function getMerchantActiveStatus(bid){
                 if(err){
                     
                     console.log('Status Fetch Failed due to '+err);
+                    reject(err);
                     return;
                 }
                 console.log('Status Fetched Successfully for bid ' + bid);
@@ -218,7 +259,7 @@ function deleteBusiness(bid){
     return new Promise((resolve,reject)=>{
         sql.query("DELETE FROM business_master WHERE bid = ?",[bid],(err,data)=>{
             if(err){
-                reject();
+                reject(err);
                 console.log("Delete Business Failed " +err);
                 return;
             }
@@ -232,7 +273,7 @@ function getBusinessByID(bid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT * FROM business_master WHERE bid = ?",[bid],(err,data)=>{
             if(err){
-                reject();
+                reject(err);
                 console.log(" Business Fetch Failed " +err);
                 return;
             }
@@ -243,6 +284,62 @@ function getBusinessByID(bid){
     })
 }
 
+function getHomeBanner(){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT bannerid,title,url,active,DATE_FORMAT(createdon, '%d-%m-%Y %h:%i:%s %p') as date FROM home_banner_master ",(err,data)=>{
+            if(err){
+                reject(err);
+                console.log(" Business Fetch Failed " +err);
+                return;
+            }
+            resolve(data);
+        })
+    })
+}
+
+function updateBannerStatus(bannerid){
+    return new Promise((resolve,reject)=>{
+        sql.query("UPDATE home_banner_master SET active = CASE WHEN active = 0 THEN 1 WHEN active = 1 THEN 0 ELSE 0 END WHERE bannerid = ?;",bannerid,(err,res)=>{
+                if(err){
+                    
+                    console.log('Status Update Failed due to '+err);
+                    reject(err);
+                    return;
+                }
+                console.log('Status Updated Successfully for bid ' + bannerid);
+                resolve();
+            })
+    });
+}
+
+function getBannerStatus(bannerid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT active FROM home_banner_master WHERE bannerid = ?;",bannerid,(err,res)=>{
+                if(err){
+                    
+                    console.log('Status Fetch Failed due to '+err);
+                    reject(err);
+                    return;
+                }
+                console.log('Status Fetched Successfully for bid ' + bannerid);
+                resolve(res[0]);
+            })
+    });
+}
+
+function addBanner(title,url,userid){
+    return new Promise((resolve,reject)=>{
+        sql.query("INSERT INTO home_banner_master SET title = ? ,url = ?,active = 1,createdby = ?",[title,url,userid],(err,res)=>{
+            if(err){
+                reject();
+                console.log('Banner Insert Failed due to '+err);
+                return;
+            }
+            console.log('Banner Inserted successfully');
+            resolve(res.insertId);
+        })
+    })
+}
 
 
 

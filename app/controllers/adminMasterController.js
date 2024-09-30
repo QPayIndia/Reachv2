@@ -1,5 +1,6 @@
 const adminModel = require("../models/adminMaster.js");
-
+const multer = require('multer');
+const path = require('path');
 
 exports.getAllMerchants = (req,res)=>{
    
@@ -85,6 +86,82 @@ exports.deleteBusiness = (req,res)=>{
             res.status(200).send(data);
     });
 };
+
+
+//Home Banner
+
+exports.AddHomeBanner = (req,res)=>{
+   
+    adminModel.addBanner(req.body.title,req.body.url,req.body.userid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    });
+};
+
+exports.UpdateHomeBannerStatus = (req,res)=>{
+   
+    adminModel.updateBannerStatus(req.body.bannerid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    });
+};
+
+exports.GetAllBanner = (req,res)=>{
+   
+    adminModel.getHomeBanner(req.body.userid,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    });
+};
+
+
+
+
+
+
+exports.uploadFile = (req,res)=>{
+
+    var ext = "";
+    var img = "";
+
+    const storage = multer.diskStorage({
+        destination: function(req, file, cb) {
+             ext = path.extname(file.originalname);
+             cb(null, 'uploads/banner');
+         
+        },
+        filename: function(req, file, cb) {
+            
+          cb(null, Date.now() +path.extname(file.originalname));
+        }
+      });
+      
+      const upload = multer({ storage: storage });
+      upload.single('file')(req,res,function (err){
+        if (err instanceof multer.MulterError) {
+            return res.status(400).json({status:false, message: 'File upload error', error: err });
+          } else if (err) {
+            return res.status(500).json({status:false, message: 'Server error', error: err });
+          }
+      
+          if (!req.file) {
+            return res.status(400).json({ message: 'No files were uploaded.' });
+          }
+          img = "/uploads/banner/"+req.file.filename;
+          
+          res.status(200).send({status:"success",message:"File Uploaded Successfully",data : img});
+            
+      });
+}
 
 
 
