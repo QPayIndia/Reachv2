@@ -1,6 +1,6 @@
 const { json } = require('express');
 const sql = require('./db.js');
-const { domain } = require('../config/globals.js');
+const { domain, servicestatus } = require('../config/globals.js');
 const { deliveryStatus } = require('../config/globals.js');
 const { add } = require('../controllers/cartController.js');
 
@@ -198,7 +198,7 @@ function getServiceOrders(userId){
            console.log('Orders Fetched Successfully for : '+userId);
            for(let i =0 ; i< data.length ; i++){
             data[i]['itemimage'] = domain+data[i]['itemimage'];
-            data[i]['deliverystatus'] = deliveryStatus[data[i]['deliverystatus']];
+            data[i]['deliverystatus'] = servicestatus[data[i]['deliverystatus']];
            }
            resolve(data);
     
@@ -240,7 +240,7 @@ function getMerchantServiceOrders(bid){
            console.log('Merchant Orders Fetched Successfully for : '+bid);
            for(let i =0 ; i< data.length ; i++){
             data[i]['itemimage'] = domain+data[i]['itemimage'];
-            data[i]['deliverystatus'] = deliveryStatus[data[i]['deliverystatus']];
+            data[i]['deliverystatus'] = servicestatus[data[i]['deliverystatus']];
            }
            resolve(data);
     
@@ -283,7 +283,7 @@ function getServiceOrderDetails(orderitemid){
            console.log('Get Service Order Detail Fetched Successfully for : '+orderitemid);
            for(let i =0 ; i< data.length ; i++){
             data[i]['image'] = domain+data[i]['image'];
-            data[i]['status'] = deliveryStatus[data[i]['status']];
+            data[i]['status'] = servicestatus[data[i]['status']];
            }
            resolve(data[0]);
     

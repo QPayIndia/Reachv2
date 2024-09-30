@@ -7,6 +7,12 @@ module.exports = {
         4:"Order Cancelled",
         5:"Completed",
     },
+    servicestatus:{
+        1:"In Process",
+        2:"Service Completed",
+        3:"Service Cancelled"
+       
+    },
     pgCommission : 2.5,
     payStatus:{
         1:"Incomplete",
