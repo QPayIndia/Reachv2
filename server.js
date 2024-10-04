@@ -1,14 +1,21 @@
 const express = require("express");
 const crypto = require('crypto');
 const cors = require("cors");
+
 const { secretKey, ivKey } = require("./app/config/globals.js");
 const CustomEncrypt = require("./app/controllers/encrypt.js");
+const { start } = require("repl");
+const Logger = require("./app/utils/logger.js");
 
 const app = express();
 
 
 
+
+
+
 app.use(express.json({limit: '200mb'})); 
+app.use(express.urlencoded({ extended: false ,limit: '200mb'}));
 app.use(cors({ origin: true }));
 
 // const validateApiKey = (req, res, next) => {
@@ -88,7 +95,21 @@ if (req.body.bid) {
 // app.use(decryptMiddleware);
 
 
-app.use(express.urlencoded({ extended: false ,limit: '200mb'})); /* bodyParser.urlencoded() is deprecated */
+app.use((req, res, next) => {
+ 
+  // Capture the response finish event to log status and response time
+  // res.on('finish', () => {
+  //   const { statusCode } = res;
+  //   const responseTime = Date.now() - startTime;
+  //   console.log(`${method} ${req.body} ${url} ${statusCode} - ${responseTime}ms`);
+  //   console.log('Body:', req.body);
+  // });
+  Logger.LogInfo(req);
+  next();
+});
+
+
+ /* bodyParser.urlencoded() is deprecated */
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Reach application." });
@@ -206,3 +227,5 @@ function setCorsHeaders(req, res, next) {
   res.setHeader('Access-Control-Allow-Headers', 'Accept, Accept-Language, Content-Language, Content-Type');
   next();
 }
+
+

@@ -1,0 +1,8 @@
+2024-10-04 17:49:09 [INFO]: Method: POST URL: /api/business/getlisting Body: {"uid":2,"search":"","districtid":7,"stateid":1,"sort":"distance","rating":"","latitude":11.1073433,"longitude":77.5647433,"categoryid":0,"subcategoryid":0} Time: 1728044349192
+<-------------------------------------------------->
+2024-10-04 17:49:32 [INFO]: Method: POST URL: /api/cart/getorderdetails Body: {"orderitemid":3,"type":"service"} Time: 1728044372440
+<-------------------------------------------------->
+2024-10-04 17:53:04 [INFO]: Method: POST URL: /api/cart/getorderdetails Body: {"orderitemid":3,"type":"service"} Time: 2024-10-04 17:53:04
+<-------------------------------------------------->
+2024-10-04 17:58:47 [INFO]: Method: POST URL: /api/cart/getorderdetails Body: {"orderitemid":3,"type":"service"} Time: 2024-10-04 17:58:47
+<-------------------------------------------------->
