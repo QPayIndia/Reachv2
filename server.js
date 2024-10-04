@@ -1,15 +1,14 @@
 const express = require("express");
-// const bodyParser = require("body-parser"); /* deprecated */
+const crypto = require('crypto');
 const cors = require("cors");
+const { secretKey, ivKey } = require("./app/config/globals.js");
+const CustomEncrypt = require("./app/controllers/encrypt.js");
 
 const app = express();
 
-var corsOptions = {
-  origin: "http://localhost:8080"
-};
 
-//app.use(cors(corsOptions));
-//app.use(setCorsHeaders);
+
+app.use(express.json({limit: '200mb'})); 
 app.use(cors({ origin: true }));
 
 // const validateApiKey = (req, res, next) => {
@@ -29,15 +28,79 @@ app.use(cors({ origin: true }));
 
 // app.use(validateApiKey);
 
-// parse requests of content-type - application/json
-app.use(express.json({limit: '200mb'})); /* bodyParser.json() is deprecated */
+function decryptMiddleware(req, res, next) {
+ 
+const { uid,userid,bid } = req.body;
 
-// parse requests of content-type - application/x-www-form-urlencoded
+  if(uid|| userid || bid){
+    if (req.body.uid) {
+      try {
+          const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(secretKey, 'hex'),Buffer.from(ivKey, 'hex'));
+          let decrypted = decipher.update(req.body.uid, 'hex', 'utf8');
+          decrypted += decipher.final('utf8');
+          
+          // Modify request body with decrypted data
+          req.body.uid = decrypted;
+         
+      } catch (err) {
+          // return res.status(400).json({ error: 'Decryption failed' });
+          
+      }
+  }
+   if (req.body.userid) {
+   
+    try {
+        const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(secretKey, 'hex'),Buffer.from(ivKey, 'hex'));
+        let decrypted = decipher.update(req.body.userid, 'hex', 'utf8');
+        decrypted += decipher.final('utf8');
+        
+        // Modify request body with decrypted data
+        req.body.userid = decrypted;
+        console.log(decrypted);
+        
+        
+       
+    } catch (err) {
+        // return res.status(400).json({ error: 'Decryption failed' });
+        // console.log(err);
+    }
+}  
+if (req.body.bid) {
+  try {
+      const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(secretKey, 'hex'),Buffer.from(ivKey, 'hex'));
+      let decrypted = decipher.update(req.body.bid, 'hex', 'utf8');
+      decrypted += decipher.final('utf8');
+      
+      // Modify request body with decrypted data
+      req.body.bid = decrypted;
+  } catch (err) {
+      // return res.status(400).json({ error: 'Decryption failed' });
+  }
+} 
+  }
+  
+
+  // Proceed to the next middleware or route handler
+  next();
+}
+
+
+// app.use(decryptMiddleware);
+
+
 app.use(express.urlencoded({ extended: false ,limit: '200mb'})); /* bodyParser.urlencoded() is deprecated */
 
-// simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Welcome to Reach application." });
+});
+
+app.get("/encrypt/:text", (req, res) => {
+  const path = req.params.text; 
+  try{
+    CustomEncrypt.encrypt(path,req,res);
+  }catch(err){
+    res.send(404).send('404 Not Found');
+  }
 });
 
 

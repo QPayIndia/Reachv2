@@ -20,6 +20,8 @@ module.exports = {
         3:"Pending",
         4:"Failed",
         5:"Refunded"
-    }
+    },
+    secretKey:'2d4e96c50ee6d74fcf4b895b0a3e35e6747b92df5b4a0e672c939367e6aa2e65',
+    ivKey:'bfd28cdc509488382d2ae57d9e72bfa0'
 }
 

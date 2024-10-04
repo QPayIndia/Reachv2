@@ -10,6 +10,8 @@ exports.getListing = (req,res)=>{
         rating:req.body.rating,
         stateid:req.body.stateid,
         categoryid:req.body.categoryid,
+        latitude: req.body.latitude || 0,
+        longitude: req.body.longitude || 0,
         subcategoryid:req.body.subcategoryid,
         districtid:req.body.districtid,
     });

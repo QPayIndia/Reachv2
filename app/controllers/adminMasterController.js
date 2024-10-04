@@ -92,7 +92,7 @@ exports.deleteBusiness = (req,res)=>{
 
 exports.AddHomeBanner = (req,res)=>{
    
-    adminModel.addBanner(req.body.title,req.body.url,req.body.userid,(err,data)=>{
+    adminModel.addBanner(req.body.title,req.body.url,req.body.uid,(err,data)=>{
         if(err){
             res.status(500).send(data);
         }
@@ -114,7 +114,7 @@ exports.UpdateHomeBannerStatus = (req,res)=>{
 
 exports.GetAllBanner = (req,res)=>{
    
-    adminModel.getHomeBanner(req.body.userid,(err,data)=>{
+    adminModel.getHomeBanner(req.body.uid,(err,data)=>{
         if(err){
             res.status(500).send(data);
         }
