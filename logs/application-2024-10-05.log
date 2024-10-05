@@ -1,0 +1,16 @@
+2024-10-05 14:09:28 [INFO]: Method: POST URL: /api/chat/createroom Body: {"hostid":13,"hosttype":"merchant","guestid":5,"guesttype":"merchant"} Time: 2024-10-05 14:09:28
+<-------------------------------------------------->
+2024-10-05 14:09:41 [INFO]: Method: POST URL: /api/avc/createcall Body: {"hostid":13,"hosttype":"merchant","guestid":5,"guesttype":"merchant"} Time: 2024-10-05 14:09:41
+<-------------------------------------------------->
+2024-10-05 14:10:39 [INFO]: Method: POST URL: /api/avc/createcall Body: {"hostid":13,"hosttype":"merchant","guestid":5,"guesttype":"merchant"} Time: 2024-10-05 14:10:39
+<-------------------------------------------------->
+2024-10-05 14:10:42 [INFO]: Method: POST URL: /api/avc/createcall Body: {"hostid":13,"hosttype":"merchant","guestid":5,"guesttype":"merchant"} Time: 2024-10-05 14:10:42
+<-------------------------------------------------->
+2024-10-05 14:11:26 [INFO]: Method: POST URL: /api/avc/createcall Body: {"hostid":13,"hosttype":"merchant","guestid":5,"guesttype":"merchant","calltype":"video"} Time: 2024-10-05 14:11:26
+<-------------------------------------------------->
+2024-10-05 14:26:47 [INFO]: Method: POST URL: /api/avc/createcall Body: {"hostid":13,"hosttype":"merchant","guestid":5,"guesttype":"merchant","calltype":"video"} Time: 2024-10-05 14:26:47
+<-------------------------------------------------->
+2024-10-05 14:27:49 [INFO]: Method: POST URL: /api/avc/createcall Body: {"hostid":13,"hosttype":"merchant","guestid":5,"guesttype":"merchant","calltype":"video"} Time: 2024-10-05 14:27:49
+<-------------------------------------------------->
+2024-10-05 14:29:06 [INFO]: Method: POST URL: /api/avc/createcall Body: {"hostid":13,"hosttype":"merchant","guestid":5,"guesttype":"merchant","calltype":"video"} Time: 2024-10-05 14:29:06
+<-------------------------------------------------->

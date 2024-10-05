@@ -109,6 +109,13 @@ app.use((req, res, next) => {
 });
 
 
+
+app.use((err, req, res, next) => {
+  Logger.LogError(err,req,res);
+  res.status(500).send('Something went wrong!'); // Send a generic error response
+});
+
+
  /* bodyParser.urlencoded() is deprecated */
 
 app.get("/", (req, res) => {
@@ -213,6 +220,7 @@ require('./app/routes/cartRoute.js')(app);
 require('./app/routes/paymentRoute.js')(app);
 require('./app/routes/homePageRoute.js')(app);
 require('./app/routes/chatRoute.js')(app);
+require('./app/routes/audioVideoCallRoute.js')(app);
 require('./app/routes/businessReportRoute.js')(app);
 
 // set port, listen for requests

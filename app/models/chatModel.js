@@ -46,6 +46,16 @@ ChatModel.getChatsFromRoom = (roomid,userid,result)=>{
     });   
 }
 
+ChatModel.getRoomId = (hostid,hosttype,guestid,guesttype,result)=>{
+   
+     _getRoomID(hostid,hosttype,guestid,guesttype).then((data)=>{
+         
+         result(null,{status:"success",message:"Room Id Fetched Successfully",roomid:data[0]['roomid']});
+     }).catch((err)=>{
+         result(err,{status:"failure",message:"Room Id Fetch Failed"});
+     });   
+ }
+
 
 ChatModel.getUnreadMessage = (roomid,chatid,userid,result)=>{
     let data = [];
@@ -269,6 +279,24 @@ function _getHashValue(hash){
 function _getChats(roomid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT chatid,roomid,senderid,sendertype,message,media,mediatype,isseen,IF(DATE(NOW()) = DATE(date),DATE_FORMAT(date, '%l:%i %p'),DATE_FORMAT(date, '%D %b %Y %l:%i %p')) as date FROM chat_master WHERE roomid = ? ORDER BY chatid ASC;",[roomid],(err,data)=>{
+                if(err){
+                    reject();
+                    console.log('Chats Fetch Failed due to '+err);
+                    return;
+                }
+                console.log('Chats Fetched successfully');
+				
+			
+                resolve(data);
+            })
+    });
+}
+function _getRoomID(hostid,hosttype,guestid,guesttype){
+    return new Promise((resolve,reject)=>{
+        let query = `SELECT * FROM chat_room_master WHERE hostid = ${hostid} AND hosttype = '${hosttype}' AND guestid = ${guestid} AND guesttype = '${guesttype}' OR guestid = ${hostid} AND guesttype = '${hosttype}' AND hostid = ${guestid} AND hosttype = '${guesttype}';`;
+        console.log(query);
+        
+        sql.query(query,(err,data)=>{
                 if(err){
                     reject();
                     console.log('Chats Fetch Failed due to '+err);

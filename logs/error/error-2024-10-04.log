@@ -1,0 +1,8 @@
+2024-10-04 18:21:52 [ERROR]: Method: GET URL: /error Body: {} Time: 2024-10-04 18:21:52
+Error occurred: This is an intentional error!<-------------------------------------------------->
+2024-10-04 18:22:57 [ERROR]: Method: GET URL: /error Body: {} 
+Error occurred: This is an intentional error!
+<-------------------------------------------------->
+2024-10-04 18:22:58 [ERROR]: Method: GET URL: /error Body: {} 
+Error occurred: This is an intentional error!
+<-------------------------------------------------->
