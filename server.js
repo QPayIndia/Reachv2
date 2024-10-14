@@ -6,9 +6,9 @@ const { secretKey, ivKey } = require("./app/config/globals.js");
 const CustomEncrypt = require("./app/controllers/encrypt.js");
 const { start } = require("repl");
 const Logger = require("./app/utils/logger.js");
-
+const WebSocket = require('ws');
+const Socket = require("./app/utils/socket.js");
 const app = express();
-
 
 
 
@@ -225,9 +225,45 @@ require('./app/routes/businessReportRoute.js')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
+
+
+const wss = new WebSocket.Server({ server });
+
+// Handle WebSocket connections
+wss.on('connection', (ws) => {
+  console.log('New WebSocket connection established');
+
+  // Send a welcome message when a new WebSocket connects
+  ws.send(JSON.stringify({ message: 'Welcome to the WebSocket server!' }));
+
+  // Handle incoming messages from WebSocket clients
+  ws.on('message', (message) => {
+    console.log('Received message:', message.toString());
+    // Echo the message back to the client
+    ws.send(JSON.stringify({ message: `You said: ${message}` }));
+  });
+
+  // Handle WebSocket close
+  ws.on('close', () => {
+    console.log('WebSocket connection closed');
+  });
+
+});
+
+Socket.InitConnection();
+
+sleep(3000).then(()=>{
+  Socket.SendMessage("Data Send Later");
+})
+
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function setCorsHeaders(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');

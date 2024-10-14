@@ -137,12 +137,14 @@ ChatModel.getChatRooms = (userid,usertype,result)=>{
                   _temp.name = data[i]['guestBName'];
                   _temp.profile = data[i]['guestBProfile'];
                   _temp.type = "merchant";
+                  _temp.guestid = guestid;
 
                  
                 }else{
                     _temp.name = data[i]['guestUName'];
                     _temp.profile = data[i]['guestUProfile'];
                     _temp.type = "user";
+                    _temp.guestid = guestid;
                 }
                 _rows[j] = _temp;
                 j++;
@@ -153,12 +155,14 @@ ChatModel.getChatRooms = (userid,usertype,result)=>{
                         _temp.name = data[i]['hostBName'];
                         _temp.profile = data[i]['hostBProfile'];
                         _temp.type = "merchant";
+                        _temp.guestid = guestid;
      
                       
                      }else{
                         _temp.name = data[i]['hostUName'];
                         _temp.profile = data[i]['hostUProfile'];
                         _temp.type = "user";
+                        _temp.guestid = guestid;
                      
                 }
                 _rows[j] = _temp;

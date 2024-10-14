@@ -14,3 +14,5 @@
 <-------------------------------------------------->
 2024-10-05 14:29:06 [INFO]: Method: POST URL: /api/avc/createcall Body: {"hostid":13,"hosttype":"merchant","guestid":5,"guesttype":"merchant","calltype":"video"} Time: 2024-10-05 14:29:06
 <-------------------------------------------------->
+2024-10-05 14:29:45 [INFO]: Method: POST URL: /api/avc/createcall Body: {"hostid":13,"hosttype":"merchant","guestid":5,"guesttype":"merchant","calltype":"video"} Time: 2024-10-05 14:29:45
+<-------------------------------------------------->
