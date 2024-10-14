@@ -95,18 +95,18 @@ if (req.body.bid) {
 // app.use(decryptMiddleware);
 
 
-app.use((req, res, next) => {
+// app.use((req, res, next) => {
  
-  // Capture the response finish event to log status and response time
-  // res.on('finish', () => {
-  //   const { statusCode } = res;
-  //   const responseTime = Date.now() - startTime;
-  //   console.log(`${method} ${req.body} ${url} ${statusCode} - ${responseTime}ms`);
-  //   console.log('Body:', req.body);
-  // });
-  Logger.LogInfo(req);
-  next();
-});
+//   // Capture the response finish event to log status and response time
+//   // res.on('finish', () => {
+//   //   const { statusCode } = res;
+//   //   const responseTime = Date.now() - startTime;
+//   //   console.log(`${method} ${req.body} ${url} ${statusCode} - ${responseTime}ms`);
+//   //   console.log('Body:', req.body);
+//   // });
+//   Logger.LogInfo(req);
+//   next();
+// });
 
 
 
