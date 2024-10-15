@@ -248,10 +248,10 @@ wss.on('connection', (ws) => {
 
     wss.clients.forEach(client => {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(message);
+        client.send(message.toString());
       }
     });
-    
+
   });
 
   // Handle WebSocket close
