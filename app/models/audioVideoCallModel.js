@@ -2,6 +2,8 @@ const { json } = require('express');
 const sql = require('./db.js');
 const crypto = require('crypto');
 const ChatModel = require('./chatModel.js');
+const BusinessMaster = require('./businessMasterModel.js');
+const Socket = require('../utils/socket.js');
 
 const AudioVideoCallModel = function(model){
     this.hostid = model.hostid,
@@ -49,8 +51,23 @@ AudioVideoCallModel.create = (model,result)=>{
                         sendertype : model.hosttype,
                         message : '',
                         media : model.callid,
-                        mediatype : 'videocall'
+                        mediatype : model.calltype
                     });
+
+                    if(model.guesttype == 'merchant'){
+                        BusinessMaster.getUserIdByBID(model.guestid,(err,data)=>{
+                            if(err){
+                                console.log(err);
+                                
+                            }else{
+                              if(data['userid']!= null)  Socket.SendMessage(JSON.stringify({userid:data['userid'],type:model.calltype,data:model.callid,message:""}))
+                            }
+                        })
+                    }else{
+                        Socket.SendMessage(JSON.stringify({userid:model.guestid,type:model.calltype,data:model.callid,message:""}))
+                    }
+
+                   
                 
                     ChatModel.insertChat(msg,(err,data)=>{
                         if(err){

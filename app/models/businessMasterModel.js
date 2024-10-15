@@ -24,6 +24,14 @@ BusinessMaster.getAll = (uid,result)=>{
         result(err,{status:"failure",message:err});
     })
 }
+BusinessMaster.getUserIdByBID = (bid,result)=>{
+   
+    getUserIdByBid(bid).then((uid)=>{
+        result(null,{userid:uid});
+    }).catch((err)=>{
+        result(err,{});
+    })
+}
 BusinessMaster.deleteBusiness = (uid,bid,result)=>{
    
     deleteBusiness(uid,bid).then(()=>{
@@ -51,6 +59,20 @@ function createBusiness(model){
 function getAllBuiness(uid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT bid,name,description FROM business_master WHERE uid = ?",[uid],(err,res)=>{
+            if(err){
+                
+                console.log('Business Data Fail due to '+err);
+                reject();
+                return;
+            }
+            console.log('Business Data Fetched successfully');
+            resolve(res);
+        })
+    })
+}
+function getUserIdByBid(bid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT uid FROM business_master WHERE bid = ?",[bid],(err,res)=>{
             if(err){
                 
                 console.log('Business Data Fail due to '+err);
