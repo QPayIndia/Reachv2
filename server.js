@@ -261,7 +261,7 @@ const server = app.listen(PORT, () => {
 
 // });
 
-Socket.InitConnection();
+Socket.InitConnection(server);
 
 sleep(3000).then(()=>{
   Socket.SendMessage(JSON.stringify({message:'Data Send Later'}));
