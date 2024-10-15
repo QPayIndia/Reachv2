@@ -237,14 +237,14 @@ const wss = new WebSocket.Server({ server });
 wss.on('connection', (ws) => {
   console.log('New WebSocket connection established');
 
-  // Send a welcome message when a new WebSocket connects
+  
   ws.send(JSON.stringify({ message: 'Welcome to the WebSocket server!' }));
 
   // Handle incoming messages from WebSocket clients
   ws.on('message', (message) => {
     console.log('Received message:', message.toString());
     // Echo the message back to the client
-    ws.send(JSON.stringify({ message: `You said: ${message}` }));
+    // ws.send(JSON.stringify({ message: `You said: ${message}` }));
   });
 
   // Handle WebSocket close
@@ -257,7 +257,7 @@ wss.on('connection', (ws) => {
 Socket.InitConnection();
 
 sleep(3000).then(()=>{
-  Socket.SendMessage("Data Send Later");
+  Socket.SendMessage(JSON.stringify({message:'Data Send Later'}));
 })
 
 

@@ -12,7 +12,7 @@ ws.on('open', function open() {
 
 Socket.SendMessage=(message)=>{
     
-    ws.send(JSON.stringify({message:message}));
+    ws.send(message);
 
 
 
