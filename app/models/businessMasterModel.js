@@ -26,8 +26,8 @@ BusinessMaster.getAll = (uid,result)=>{
 }
 BusinessMaster.getUserIdByBID = (bid,result)=>{
    
-    getUserIdByBid(bid).then((uid)=>{
-        result(null,{userid:uid});
+    getUserIdByBid(bid).then((data)=>{
+        result(null,{userid:data[0].uid});
     }).catch((err)=>{
         result(err,{});
     })
