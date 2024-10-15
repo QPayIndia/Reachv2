@@ -231,35 +231,35 @@ const server = app.listen(PORT, () => {
 
 
 
-const wss = new WebSocket.Server({ server });
+// const wss = new WebSocket.Server({ server });
 
-// Handle WebSocket connections
-wss.on('connection', (ws) => {
-  console.log('New WebSocket connection established');
+// // Handle WebSocket connections
+// wss.on('connection', (ws) => {
+//   console.log('New WebSocket connection established');
 
   
-  ws.send(JSON.stringify({ message: 'Welcome to the WebSocket server!' }));
+//   ws.send(JSON.stringify({ message: 'Welcome to the WebSocket server!' }));
 
-  // Handle incoming messages from WebSocket clients
-  ws.on('message', (message) => {
-    console.log('Received message:', message.toString());
-    // Echo the message back to the client
-    // ws.send(JSON.stringify({ message: 'Data Received' }));
+//   // Handle incoming messages from WebSocket clients
+//   ws.on('message', (message) => {
+//     console.log('Received message:', message.toString());
+//     // Echo the message back to the client
+//     // ws.send(JSON.stringify({ message: 'Data Received' }));
 
-    wss.clients.forEach(client => {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(message.toString());
-      }
-    });
+//     wss.clients.forEach(client => {
+//       if (client !== ws && client.readyState === WebSocket.OPEN) {
+//         client.send(message.toString());
+//       }
+//     });
 
-  });
+//   });
 
-  // Handle WebSocket close
-  ws.on('close', () => {
-    console.log('WebSocket connection closed');
-  });
+//   // Handle WebSocket close
+//   ws.on('close', () => {
+//     console.log('WebSocket connection closed');
+//   });
 
-});
+// });
 
 Socket.InitConnection();
 
