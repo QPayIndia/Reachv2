@@ -60,11 +60,11 @@ AudioVideoCallModel.create = (model,result)=>{
                                 console.log(err);
                                 
                             }else{
-                              if(data['userid']!= null)  Socket.SendMessage(JSON.stringify({userid:data['userid'],type:model.calltype,data:model.callid,message:""}))
+                              if(data['userid']!= null)  Socket.SendMessageByUserId(data.userid,model.calltype,model.callid,"");
                             }
                         })
                     }else{
-                        Socket.SendMessage(JSON.stringify({userid:model.guestid,type:model.calltype,data:model.callid,message:""}))
+                        Socket.SendMessageByUserId(model.guestid,model.calltype,model.callid,"");
                     }
 
                    
