@@ -37,7 +37,7 @@ Socket.InitConnection = (server)=>{
 
 Socket.SendMessage=(message)=>{
   wss.clients.forEach(client => {
-    if (client !== ws && client.readyState === WebSocket.OPEN) {
+    if (client.readyState === WebSocket.OPEN) {
       client.send(message);
     }
   });
