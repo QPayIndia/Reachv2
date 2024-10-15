@@ -244,7 +244,7 @@ wss.on('connection', (ws) => {
   ws.on('message', (message) => {
     console.log('Received message:', message.toString());
     // Echo the message back to the client
-    // ws.send(JSON.stringify({ message: `You said: ${message}` }));
+    ws.send(message);
   });
 
   // Handle WebSocket close
