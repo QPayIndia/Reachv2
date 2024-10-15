@@ -2,7 +2,7 @@ const WebSocket = require('ws');
 
 const Socket = function(model){}
 // const ws = new WebSocket('ws://localhost:8080');
-const wss = null;
+let wss = null;
 Socket.InitConnection = (server)=>{
 
   wss = new WebSocket.Server({ server });
