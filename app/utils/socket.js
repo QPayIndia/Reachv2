@@ -28,11 +28,11 @@ Socket.InitConnection = (server)=>{
 
 });
 
-// When the connection is open
-ws.on('open', function open() {
-    console.log('Connected to the WebSocket server');
-    ws.send('Hello from the client!');
-  });
+// // When the connection is open
+// ws.on('open', function open() {
+//     console.log('Connected to the WebSocket server');
+//     ws.send('Hello from the client!');
+//   });
 }
 
 Socket.SendMessage=(message)=>{
