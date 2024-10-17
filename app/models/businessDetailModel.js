@@ -1,3 +1,4 @@
+const globals = require('../config/globals.js');
 const controller = require('../controllers/businessInfoController.js');
 const sql = require('./db.js');
 
@@ -105,6 +106,7 @@ function getDetailFun(model){
 
             res[0]['userRating'] = 0;
             res[0]['userReview'] = "";
+            res[0]['profile'] =  globals.domain+ res[0]['profile'];
            }
             
             resolve(res);
