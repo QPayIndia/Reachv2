@@ -37,7 +37,7 @@ AudioVideoCallModel.create = (model,result)=>{
    
     const callid = crypto.randomBytes(10);
     model.callid = callid.toString('hex');
-    console.log(model);
+    // console.log(model);
     
     _createCall(model).then(()=>{
         ChatModel.getRoomId(model.hostid,model.hosttype,model.guestid,model.guesttype,(err,data)=>{
