@@ -8,6 +8,8 @@ const Socket = require('../utils/socket.js');
 const AudioVideoCallModel = function(model){
     this.hostid = model.hostid,
     this.hosttype = model.hosttype,
+    this.hostname = model.hostname,
+    this.hostprofile = model.hostprofile,
     this.guestid = model.guestid,
     this.guesttype = model.guesttype,
     this.createdby = model.hostid,
@@ -61,11 +63,11 @@ AudioVideoCallModel.create = (model,result)=>{
                                 console.log(err);
                                 
                             }else{
-                              if(data['userid']!= null)  Socket.SendMessageByUserId(data.userid,model.calltype,model.callid,"");
+                              if(data['userid']!= null)  Socket.SendMessageByUserId(data.userid,model.calltype,model.callid,model.hostname,model.hostprofile,"");
                             }
                         })
                     }else{
-                        Socket.SendMessageByUserId(model.guestid,model.calltype,model.callid,"");
+                        Socket.SendMessageByUserId(model.guestid,model.calltype,model.callid,model.hostname,model.hostprofile,"");
                     }
 
                    
