@@ -210,7 +210,7 @@ function getServiceOrders(userId){
 
 function getMerchantProductOrders(bid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT A.transactionid,D.productid as itemid,C.orderid,C.orderitemid,A.amount,C.deliverystatus,D.name,D.productimg as itemimage,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM `transaction_master` as A,`order_master` as B,`product_order_items` as C,`product_master` as D WHERE transtype = 'order' AND D.uid = ? AND D.productid = C.productid AND A.orderid = C.orderid AND A.paymentstatus = 1 AND C.orderid = B.orderid;",[bid],(err,data)=>{
+        sql.query("SELECT A.transactionid,D.productid as itemid,C.orderid,C.orderitemid,A.amount,C.deliverystatus,D.name,D.productimg as itemimage,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM `transaction_master` as A,`order_master` as B,`product_order_items` as C,`product_master` as D WHERE transtype = 'order' AND D.uid = ? AND D.productid = C.productid AND A.orderid = C.orderid AND A.paymentstatus = 2 AND C.orderid = B.orderid;",[bid],(err,data)=>{
             if(err){
                 console.log("Get Merchant Orders Failed : "+err);
                 reject(err);
@@ -231,7 +231,7 @@ function getMerchantProductOrders(bid){
 
 function getMerchantServiceOrders(bid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT A.transactionid,D.serviceid as itemid,C.orderid,C.orderitemid,A.amount,C.deliverystatus,D.name,D.serviceimg as itemimage,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM `transaction_master` as A,`order_master` as B,`service_order_items` as C,`service_master` as D WHERE transtype = 'order' AND D.uid = ? AND D.serviceid = C.serviceid AND A.orderid = C.orderid AND A.paymentstatus = 1 AND C.orderid = B.orderid;",[bid],(err,data)=>{
+        sql.query("SELECT A.transactionid,D.serviceid as itemid,C.orderid,C.orderitemid,A.amount,C.deliverystatus,D.name,D.serviceimg as itemimage,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM `transaction_master` as A,`order_master` as B,`service_order_items` as C,`service_master` as D WHERE transtype = 'order' AND D.uid = ? AND D.serviceid = C.serviceid AND A.orderid = C.orderid AND A.paymentstatus = 2 AND C.orderid = B.orderid;",[bid],(err,data)=>{
             if(err){
                 console.log("Get Merchant Orders Failed : "+err);
                 reject(err);
