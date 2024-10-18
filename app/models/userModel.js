@@ -235,13 +235,14 @@ function getUserByPhone(phone){
 
 function getUserById(uid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT * FROM user_master WHERE uid = ?;",uid,(err,res)=>{
+        sql.query("SELECT uid,name,lastname,phone,email,photo,occupation,DATE_FORMAT(dob, '%Y-%m-%d %H:%i:%s') AS dob FROM user_master WHERE uid = ?;",uid,(err,res)=>{
                 if(err){
                     
                     console.log('Get Users Failed due to '+err);
                     return;
                 }
                 console.log('Get  User Fetched');
+               
                 resolve(res);
             })
     });
