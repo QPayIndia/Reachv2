@@ -45,6 +45,7 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
     
 
     _updateTransactionResponse(model).then((id)=>{
+       if(model.ResponseCode == 200 || model.ResponseCode == 100){
         _getpostTransactionData(id).then((transData)=>{
             if(transData.length > 0){
                 if(transData[0]['transtype'] === 'order'){
@@ -73,6 +74,9 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
         }).catch((err)=>{
         result(err,{status:"failure"});
     })
+       }else{
+            result(null,{status:"success"});
+       }
         
     }).catch((err)=>{
         result(err,{status:"failure"});
