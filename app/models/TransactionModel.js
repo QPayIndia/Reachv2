@@ -191,7 +191,7 @@ function _getpostTransactionData(refId){
 }
 function _deleteCartProductItems(orderid){
     return new Promise((resolve,reject)=>{
-        sql.query("DELETE FROM product_cart_master WHERE orderid = ?;",[orderid],(err,data)=>{
+        sql.query("UPDATE `product_order_items` SET `deliverystatus` = '1' WHERE `product_order_items`.`orderid` = ?;DELETE FROM product_cart_master WHERE orderid = ?;",[orderid,orderid],(err,data)=>{
             if(err){
                 console.log("Product Cart Items Delete Failed : "+err);
                 reject(err);
@@ -209,7 +209,7 @@ function _deleteCartProductItems(orderid){
 
 function _deleteServiceCartItems(orderid){
     return new Promise((resolve,reject)=>{
-        sql.query("DELETE FROM service_cart_master WHERE orderid = ?;",[orderid],(err,data)=>{
+        sql.query("UPDATE `service_order_items` SET `deliverystatus` = '1' WHERE `service_order_items`.`orderid` = ?;DELETE FROM service_cart_master WHERE orderid = ?;",[orderid,orderid],(err,data)=>{
             if(err){
                 console.log("Service Cart Items Delete Failed : "+err);
                 reject(err);
