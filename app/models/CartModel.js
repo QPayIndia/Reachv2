@@ -170,7 +170,7 @@ function CheckoutProductCart(userid){
                         reject(err);
                         return;
                     }
-                    sql.query('INSERT INTO product_order_items (orderid, productid,deliverystatus,priceperunit,qty,totalamount) SELECT ?,A.productid as productid,1,B.price,A.qty,B.price * A.qty FROM `product_cart_master` as A,`product_master` as B WHERE A.userid = ?  AND A.ischecked = 1 AND A.productid = B.productid;',[orderid,userid],(err,res)=>{
+                    sql.query('INSERT INTO product_order_items (orderid, productid,deliverystatus,priceperunit,qty,totalamount) SELECT ?,A.productid as productid,0,B.price,A.qty,B.price * A.qty FROM `product_cart_master` as A,`product_master` as B WHERE A.userid = ?  AND A.ischecked = 1 AND A.productid = B.productid;',[orderid,userid],(err,res)=>{
                         if(err){
                             console.log('Checkout Items Adding to cart Failed due to '+err);
                             reject(err);
@@ -217,7 +217,7 @@ function CheckoutServiceCart(userid){
                         return;
                     }
 
-                    sql.query('INSERT INTO service_order_items (orderid, serviceid,deliverystatus,priceperunit,qty,totalamount) SELECT ?,A.serviceid as serviceid,1,B.price,A.qty,B.price * A.qty FROM `service_cart_master` as A,`service_master` as B WHERE A.userid = ? AND A.ischecked = 1 AND A.serviceid = B.serviceid;',[orderid,userid],(err,res)=>{
+                    sql.query('INSERT INTO service_order_items (orderid, serviceid,deliverystatus,priceperunit,qty,totalamount) SELECT ?,A.serviceid as serviceid,0,B.price,A.qty,B.price * A.qty FROM `service_cart_master` as A,`service_master` as B WHERE A.userid = ? AND A.ischecked = 1 AND A.serviceid = B.serviceid;',[orderid,userid],(err,res)=>{
                         if(err){
                             console.log('Checkout Items Adding to cart Failed due to '+err);
                             reject(err);

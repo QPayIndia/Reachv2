@@ -33,11 +33,11 @@ exports.callback = (req,res)=>{
     console.log(model);
     
     TransactionModel.UpdateTransactionResponse(model,(err,data)=>{
-        if(err){
-            res.sendFile(path.join(__dirname, '../screen/callback.html'));
+        if(model.ResponseCode == 200 || model.ResponseCode == 100){
+            res.sendFile(path.join(__dirname, '../screen/success-msg.html'));
         }
         else
-            res.sendFile(path.join(__dirname, '../screen/callback.html'));
+            res.sendFile(path.join(__dirname, '../screen/failure-msg.html'));
     })
 
     // let resCode = req.body.ResponseCode;

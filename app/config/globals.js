@@ -1,6 +1,7 @@
 module.exports = {
     domain:"http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080",
     deliveryStatus:{
+        0:"Order Not Placed",
         1:"In Process",
         2:"Order Packed",
         3:"Shipped",
@@ -8,6 +9,7 @@ module.exports = {
         5:"Completed",
     },
     servicestatus:{
+        0:"Order Not Placed",
         1:"In Process",
         2:"Service Completed",
         3:"Service Cancelled"
