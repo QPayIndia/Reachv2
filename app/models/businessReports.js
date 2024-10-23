@@ -1,7 +1,7 @@
 const { json } = require('express');
 const sql = require('./db.js');
 const { add } = require('./userModel.js');
-const { domain, deliveryStatus, servicestatus } = require('../config/globals.js');
+const { domain, deliveryStatus, servicestatus, payStatus } = require('../config/globals.js');
 
 const BusinessReports = function(model){
 }
@@ -92,7 +92,7 @@ function getMerchantServiceOrders(bid,status,fromdate,todate){
 function getTransactions(userid,fromdate,todate){
     var query = "";
    
-    query = "SELECT A.amount,A.transactionid,A.userid,A.bid,B.photo as profile,B.name,B.phone,A.commissionpercentage,A.commissionamount,A.settlementamount,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM transaction_master as A,user_master as B WHERE A.bid = "+userid+" AND A.userid = B.uid AND A.createdon >= '"+fromdate+"' AND A.createdon <= '"+todate+"'  ORDER BY A.transactionid DESC;";
+    query = "SELECT A.amount,A.transactionid,A.paymentstatus as status,A.userid,A.bid,B.photo as profile,B.name,B.phone,A.commissionpercentage,A.commissionamount,A.settlementamount,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM transaction_master as A,user_master as B WHERE A.bid = "+userid+" AND A.userid = B.uid AND A.createdon >= '"+fromdate+"' AND A.createdon <= '"+todate+"'  ORDER BY A.transactionid DESC;";
    
     return new Promise((resolve,reject)=>{
         sql.query(query,[userid],(err,data)=>{
@@ -105,6 +105,11 @@ function getTransactions(userid,fromdate,todate){
             }
            console.log("Transaction List Fetched Successfully - "+userid);
          
+        if(data.length > 0){
+            for (let i = 0; i < data.length; i++){
+                data[i]['status'] = payStatus[ data[i]['status']];
+            }
+        }
            resolve(data);
     
            
