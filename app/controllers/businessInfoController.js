@@ -460,6 +460,7 @@ exports.addBusinessInfo = (req,res)=>{
   const model = new BusinessInfo({
     uid : req.body.uid,
     name:req.body.name,
+    description:req.body.description,
     profile:req.body.profile,
     legalname : req.body.legalname,
     category : req.body.category,

@@ -5,6 +5,7 @@ const BusinessInfo = function(model){
     this.uid = model.uid,
     
     this.name = model.name,
+    this.description = model.description,
     this.legalname = model.legalname,
     this.profile = model.profile,
     this.category = model.category,
