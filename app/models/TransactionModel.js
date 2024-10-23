@@ -1,7 +1,7 @@
 const { json } = require('express');
 const sql = require('./db.js');
 const ContactInfo = require("./ContactInfoModel.js");
-const { pgCommission } = require('../config/globals.js');
+const { pgCommission, payStatus } = require('../config/globals.js');
 
 const TransactionModel = function(model){
    
@@ -50,13 +50,13 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
             if(transData.length > 0){
                 if(transData[0]['transtype'] === 'order'){
                     if(transData[0]['carttype'] === 'service'){
-                        _deleteServiceCartItems(transData[0]['orderid']).then(()=>{
+                        _updateServiceCartItems(transData[0]['orderid']).then(()=>{
                             result(null,{status:"success"});
                         }).catch((err)=>{
                             result(null,{status:"success"});
                         })
                     }else if (transData[0]['carttype'] === 'product'){
-                        _deleteCartProductItems(transData[0]['orderid']).then(()=>{
+                        _updateCartProductItems(transData[0]['orderid']).then(()=>{
                             result(null,{status:"success"});
                         }).catch((err)=>{
                             result(null,{status:"success"});
@@ -189,7 +189,7 @@ function _getpostTransactionData(refId){
         })
     })
 }
-function _deleteCartProductItems(orderid){
+function _updateCartProductItems(orderid){
     return new Promise((resolve,reject)=>{
         sql.query("UPDATE `product_order_items` SET `deliverystatus` = '1' WHERE `product_order_items`.`orderid` = ?;DELETE FROM product_cart_master WHERE orderid = ?;",[orderid,orderid],(err,data)=>{
             if(err){
@@ -207,7 +207,7 @@ function _deleteCartProductItems(orderid){
 }
 
 
-function _deleteServiceCartItems(orderid){
+function _updateServiceCartItems(orderid){
     return new Promise((resolve,reject)=>{
         sql.query("UPDATE `service_order_items` SET `deliverystatus` = '1' WHERE `service_order_items`.`orderid` = ?;DELETE FROM service_cart_master WHERE orderid = ?;",[orderid,orderid],(err,data)=>{
             if(err){
@@ -274,7 +274,7 @@ function getTransactions(userid,type,month){
 function getPaymentDetails(transactionid){
     console.log(transactionid);
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT A.amount,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date ,B.name as businessname,D.phone as businessphone,C.name as username,C.phone as userphone  FROM `transaction_master`as A,`business_info` as B,`user_master` as C,`contact_info` as D WHERE A.bid = B.uid AND A.userid = C.uid AND A.bid = D.uid AND A.transactionid = ?;",[transactionid],(err,data)=>{
+        sql.query("SELECT A.amount,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date,paymentstatus as status ,B.name as businessname,D.phone as businessphone,C.name as username,C.phone as userphone  FROM `transaction_master`as A,`business_info` as B,`user_master` as C,`contact_info` as D WHERE A.bid = B.uid AND A.userid = C.uid AND A.bid = D.uid AND A.transactionid = ?;",[transactionid],(err,data)=>{
             if(err){
                 console.log("Get Transaction Details Failed : "+err);
                 reject(err);
@@ -284,6 +284,7 @@ function getPaymentDetails(transactionid){
            console.log(data[0]);
 
            if(data.length> 0){
+            data[0]['status'] = payStatus[data[0]['status']]
             if(data[0]['amount'] != null){
                 data[0]['amountinwords'] = numberToWords(data[0]['amount']);
                }else{
