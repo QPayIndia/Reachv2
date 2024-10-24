@@ -1,6 +1,9 @@
+const { JSON } = require('mysql/lib/protocol/constants/types.js');
 const globals = require('../config/globals.js');
 const controller = require('../controllers/businessInfoController.js');
 const sql = require('./db.js');
+const BusinessMaster = require('./businessMasterModel.js');
+const Socket = require('../utils/socket.js');
 
 const BusinessDetail = function(model){
     this.uid = model.uid,
@@ -72,6 +75,13 @@ BusinessDetail.addRating = ([uid,userid,rating,review],result)=>{
             });
         }else{
             addRating(model).then((id)=>{
+                BusinessMaster.getUserIdByBID(model.uid,(err,data)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                      if(data['userid']!= null)  Socket.SendMessageByUserId(data.userid,'rating',JSON.stringify({bid:model.uid,userid:data.userid,message:'Your Business Got A New Review!'}),"","","");
+                    }
+                })
                 result(null,{status:"success",message:"Rating  Inserted Successfully",data:id});
             }).catch((err)=>{
                 result(null,{status:"failure",message:err});

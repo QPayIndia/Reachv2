@@ -105,11 +105,11 @@ function getTransactions(userid,fromdate,todate){
             }
            console.log("Transaction List Fetched Successfully - "+userid);
          
-        if(data.length > 0){
-            for (let i = 0; i < data.length; i++){
-                data[i]['status'] = payStatus[ data[i]['status']];
+            if(data.length > 0){
+                for (let i = 0; i < data.length; i++){
+                    data[i]['status'] = payStatus[ data[i]['status']];
+                }
             }
-        }
            resolve(data);
     
            
