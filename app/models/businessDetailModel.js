@@ -69,6 +69,13 @@ BusinessDetail.addRating = ([uid,userid,rating,review],result)=>{
     getBusinessRating(model).then((data)=>{
         if(data.length > 0){
             updateBusinessRating(model).then((id)=>{
+                BusinessMaster.getUserIdByBID(model.uid,(err,data)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                      if(data['userid']!= null)  Socket.SendMessageByUserId(data.userid,'rating',JSON.stringify({bid:model.uid,userid:data.userid,message:'Your Business Got A New Review!'}),"","","");
+                    }
+                })
                 result(null,{status:"success",message:"Rating  Updated Successfully"});
             }).catch((err)=>{
                 result(null,{status:"failure",message:err});
