@@ -57,6 +57,8 @@ Socket.SendMessageByUserId=(userid,type,data,hostname,hostprofile,message)=>{
     // ws.send(JSON.stringify({userid:userid,type:type,data:data,message:message}));
     const client = clients.get(userid);
       if (client && client.readyState === WebSocket.OPEN) {
+        console.log(JSON.stringify({userid:userid,type:type,data:data,hostname:hostname,hostprofile:hostprofile,message:message}));
+        
         client.send(JSON.stringify({userid:userid,type:type,data:data,hostname:hostname,hostprofile:hostprofile,message:message}));
       }
  
