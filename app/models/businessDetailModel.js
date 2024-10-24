@@ -73,7 +73,7 @@ BusinessDetail.addRating = ([uid,userid,rating,review],result)=>{
                     if(err){
                         console.log(err);
                     }else{
-                      if(data['userid']!= null)  Socket.SendMessageByUserId(data.userid,'rating',JSON.stringify({bid:model.uid,userid:data.userid,message:'Your Business Got A New Review!'}),"","","");
+                      if(data['userid']!= null)  Socket.SendMessageByUserId(data.userid,'rating',{bid:model.uid,userid:data.userid,message:'Your Business Got A New Review!'},"","","");
                     }
                 })
                 result(null,{status:"success",message:"Rating  Updated Successfully"});
