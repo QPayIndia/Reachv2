@@ -18,16 +18,16 @@ BillPayments.getPrepaidPlans = (userid,billerid,circle,result)=>{
 
 function _getPrepaidPlans(billerid,circle){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT * FROM `instantpay_recharge_plans` WHERE billerid = ? AND circle = ?",[billerid,circle],(err,data)=>{
+        sql.query("SELECT jsonPlan FROM `instantpay_recharge_plans` WHERE billerid = ? AND circle = ?",[billerid,circle],(err,data)=>{
             if(err){
                 reject(err);
                 console.log(err);
                 
                 return;
             }
+            
     
-    
-            resolve(data);
+            resolve(JSON.parse(data[0]['jsonPlan']['data']['plans']));
         })
     })
 }
