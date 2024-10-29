@@ -31,7 +31,7 @@ function _getPrepaidPlans(billerid,circle){
             
             for(let i=0; i< rawData.length ; i++){
                 let model = {};
-                model['id'] = rawData[i]['id'];
+                model['id'] = rawData[i]['_id'];
                 model['amount'] = rawData[i]['planAmount'];
                 model['validity'] = rawData[i]['planValidity'];
                 model['description'] = rawData[i]['planDescription'];
