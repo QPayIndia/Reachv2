@@ -35,7 +35,7 @@ function _getPrepaidPlans(billerid,circle){
                 model['amount'] = rawData[i]['planAmount'];
                 model['validity'] = rawData[i]['planValidity'];
                 model['description'] = rawData[i]['planDescription'];
-                parsedData.add(model);
+                parsedData[i] = model;
             }
             
     
