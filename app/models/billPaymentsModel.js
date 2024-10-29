@@ -27,7 +27,7 @@ function _getPrepaidPlans(billerid,circle){
             }
             
     
-            resolve(JSON.parse(data[0]['jsonPlan']['data']['plans']));
+            resolve(JSON.parse(data[0]['jsonPlan'])['data']['plans']);
         })
     })
 }
