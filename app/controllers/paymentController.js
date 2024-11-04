@@ -129,8 +129,8 @@ exports.pay = (req,res)=>{
                    <form id="payFrm" action="https://pg.qpayindia.com/wwws/Payment/PaymentDetails.aspx" method="post">
             
             <input type="hidden" name="ResponseURL" value="http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080/api/pay/callback">
-            <input type="hidden" name="QPayID" value="qpaydemo`+amount+`">
-            <input type="hidden" name="QPayPWD" value="asdf!123">
+            <input type="hidden" name="QPayID" value="qpyerapiacc`+amount+`">
+            <input type="hidden" name="QPayPWD" value="qpyer!123">
             <input type="hidden" name="TransactionType" value="PURCHASE">
             <input type="hidden" name="OrderID" value="`+orderID+`">
             <input type="hidden" name="Currency" value="INR">
@@ -155,6 +155,9 @@ exports.pay = (req,res)=>{
                 res.end();
             } 
     });
+
+    // <input type="hidden" name="QPayID" value="qpaydemo`+amount+`">
+            // <input type="hidden" name="QPayPWD" value="asdf!123">
 
     
 };
