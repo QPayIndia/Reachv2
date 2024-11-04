@@ -1,5 +1,7 @@
 const TransactionModel = require("../models/TransactionModel");
 const path = require('path');
+const crypto = require('crypto');
+const Logger = require("../utils/logger");
 exports.callback = (req,res)=>{
     if(!req.body){
         res.status(400).send({
@@ -108,10 +110,13 @@ exports.GetTransactions = (req,res)=>{
 exports.pay = (req,res)=>{
 
    
-    let orderID =  req.query.orderId;     
+    let orderID =  req.query.orderId;  
+    
     TransactionModel.getDetails(orderID,(err,rows)=>{
        
         if(err){
+            console.log("Error Occured while creating payment page ==>"+err);
+                   
              res.writeHead(404, { 'Content-Type': 'text/html' });
              res.end('<h1>404 Not Found</h1>');
              return;
@@ -120,6 +125,17 @@ exports.pay = (req,res)=>{
         if(amount){
 
             amount = "`"+Buffer.from(amount).toString('base64');
+            let secretKey =  'vMVOg9wxslEUlvX3IjYDXAgVL9vUk+n0zvrA3fG/9sg4ZTdXST8=';  
+            let QPayID = 'qpyerapiacc'+amount;
+            let QPayPWD = 'qpyer!123';
+            let Mode = 'test';
+            let ResponseURL = 'http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080/api/pay/callback';
+            let TransactionType = 'PURCHASE';
+            let Currency = 'INR';
+            let secure_hash = '';
+           
+            secure_hash = calculateSHA512Hash(secretKey+ "|" + ResponseURL + "|" +QPayID + "|" + QPayPWD + "|"+ TransactionType+ "|" + orderID + "|" + Currency + "|" + Mode + "|"+ ''+ "|" + ''+ "|"+'' )
+
            
             res.writeHead(200, { 'Content-Type': 'text/html' });
           
@@ -128,15 +144,15 @@ exports.pay = (req,res)=>{
                     <body>
                    <form id="payFrm" action="https://pg.qpayindia.com/wwws/Payment/PaymentDetails.aspx" method="post">
             
-            <input type="hidden" name="ResponseURL" value="http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080/api/pay/callback">
+            <input type="hidden" name="ResponseURL" value="`+ResponseURL+`">
             <input type="hidden" name="QPayID" value="qpyerapiacc`+amount+`">
-            <input type="hidden" name="QPayPWD" value="qpyer!123">
-            <input type="hidden" name="TransactionType" value="PURCHASE">
+            <input type="hidden" name="QPayPWD" value="`+QPayPWD+`">
+            <input type="hidden" name="TransactionType" value="`+TransactionType+`">
             <input type="hidden" name="OrderID" value="`+orderID+`">
-            <input type="hidden" name="Currency" value="INR">
-            <input type="hidden" name="Mode" value="Test">
+            <input type="hidden" name="Currency" value="`+Currency+`">
+            <input type="hidden" name="Mode" value="`+Mode+`">
             <input type="hidden" name="Paymentoption" value="C,D,N,U">
-            <input type="hidden" name="secure_hash" value="ajEyiMNDXs1tJklqMaAdfkem25lP/prFHx6PKTZUTU/EVuaz5A==">
+            <input type="hidden" name="secure_hash" value="`+secure_hash+`">
             
             
             
@@ -158,6 +174,20 @@ exports.pay = (req,res)=>{
 
     // <input type="hidden" name="QPayID" value="qpaydemo`+amount+`">
             // <input type="hidden" name="QPayPWD" value="asdf!123">
+
+
+            function calculateSHA512Hash(input) {
+                // Create a SHA-512 hash
+                
+                
+                const hash = crypto.createHash('sha512');
+                
+                // Update the hash with the input data
+                hash.update(input);
+                
+                // Return the hash in hexadecimal format
+                return hash.digest('hex');
+              }
 
     
 };
