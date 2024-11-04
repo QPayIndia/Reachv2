@@ -22,7 +22,7 @@ exports.createCall = (req,res)=>{
         
     });
 
-    AudioVideoCallModel.create(model,"","",(err,data)=>{
+    AudioVideoCallModel.create(model,req.body.hostname,req.body.hostprofile,(err,data)=>{
         if(err){
             res.status(500).send({
                 message:
