@@ -295,7 +295,8 @@ function getPaymentDetails(transactionid){
                 data[0]['amountinwords'] = "Rs. "+data[0]['amount'];
                }
            }
-          
+           console.log(data[0]);
+           
            resolve(data[0]);
     
            
