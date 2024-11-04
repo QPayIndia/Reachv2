@@ -16,9 +16,9 @@ exports.createCall = (req,res)=>{
         guestid :req.body.guestid,
         guesttype :req.body.guesttype,
         createdby :req.body.hostid,
-        calltype :req.body.calltype
-        // hostprofile :req.body.hostprofile,
-        // hostname :req.body.hostname
+        calltype :req.body.calltype,
+        hostprofile :req.body.hostprofile,
+        hostname :req.body.hostname
         
     });
 
