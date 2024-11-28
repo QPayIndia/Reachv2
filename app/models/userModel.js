@@ -1,6 +1,6 @@
 const sql = require('./db.js');
 const axios = require('axios');
-
+const crypto = require('crypto');
 
 const User = function(model){
     // this.userid = model.userid,
@@ -83,11 +83,12 @@ User.getUserById = (uid,result)=>{
 }
 User.sendOTP = (phone,uid,result)=>{
     const otp = Math.floor(100000 + Math.random() * 900000);
-    console.log(phone);
     
-    InsertOTP(uid,otp).then((id)=>{
+    const refKey = _generateRandomString(60);
+    
+    InsertOTP(uid,otp,refKey).then((id)=>{
         SendOtpToMobile(phone,otp).then((id)=>{
-            result(null,{status:"success",message:"OTP Send Successfully",otp:otp});
+            result(null,{status:"success",message:"OTP Send Successfully"});
         }).catch((err)=>{
             result('',{status:"failure",message:"OTP Send Failed"});
         }); 
@@ -106,12 +107,34 @@ User.verifyOTP = (phone,otp,result)=>{
         
         
         if(data[0]['otp'] === otp){
-            result(null,{status:"success",message:"OTP Verified Successfully",uid:data[0]['userid']});
+            result(null,{status:"success",message:"OTP Verified Successfully",uid:data[0]['userid'],refKey:data[0]['otpreference']});
         }else if (data[0]['otp'] === otp && timeDifference >= 15){
             result(null,{status:"failure",message:"OTP Expired"});
         }else{
             result(null,{status:"failure",message:"Incorrect OTP"});
         }
+        }else{
+            result("",{status:"failure",message:"No OTP"});
+        }
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"OTP Send Failed"});
+    }); 
+}
+
+User.Auth = (userid,refKey,result)=>{
+    
+    _getOtpRefKey(userid).then((data)=>{
+        if(data.length > 0){
+            const token = _generateRandomString(50);
+            if(refKey === data[0]['otpreference']){
+                _insertToken(userid,token).then(()=>{
+                    result(null,{status:"success",message:"Reference Key Validated",accesstoken:token});
+                }).catch((Err)=>{
+                    result("",{status:"failure",message:"Invalid Reference Key"});
+                })
+            }else{
+                result("",{status:"failure",message:"Invalid Reference Key"});
+            }
         }else{
             result("",{status:"failure",message:"No OTP"});
         }
@@ -179,9 +202,9 @@ function SendOtpToMobile(phone,otp){
     })
 }
 
-function InsertOTP(userid,otp){
+function InsertOTP(userid,otp,refKey){
     return new Promise((resolve,reject)=>{
-        sql.query("INSERT INTO otp_master SET userid = ?, otp = ?;",[userid,otp],(err,res)=>{
+        sql.query("INSERT INTO otp_master SET userid = ?, otp = ?,otpreference = ?;",[userid,otp,refKey],(err,res)=>{
             if(err){
                 reject(err);
                 console.log('Otp Insert Failed due to '+err);
@@ -194,7 +217,7 @@ function InsertOTP(userid,otp){
 }
 function getOTP(phone){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT A.otp,A.timestamp,A.userid FROM otp_master as A,user_master as B WHERE A.userid = B.uid AND B.phone = ? ORDER BY A.otpid DESC LIMIT 1;",[phone],(err,res)=>{
+        sql.query("SELECT A.otp,A.timestamp,A.userid,A.otpreference FROM otp_master as A,user_master as B WHERE A.userid = B.uid AND B.phone = ? ORDER BY A.otpid DESC LIMIT 1;",[phone],(err,res)=>{
             if(err){
                 reject(err);
                 console.log('Otp Fetch Failed due to '+err);
@@ -228,6 +251,20 @@ function getUserByPhone(phone){
                     return;
                 }
                 console.log('Get  User Fetched');
+                resolve(res);
+            })
+    });
+}
+
+function _getOtpRefKey(userid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT * FROM otp_master WHERE userid = ? ORDER BY otpid DESC;",userid,(err,res)=>{
+                if(err){
+                    
+                    console.log('Get Ref Key Failed due to '+err);
+                    return;
+                }
+                console.log('Ref Key Fetched');
                 resolve(res);
             })
     });
@@ -289,6 +326,27 @@ function updateDOB(dob,uid){
             resolve();
         })
     })
+}
+
+function _insertToken(userid,token){
+    return new Promise((resolve,reject)=>{
+        sql.query("INSERT INTO access_token_master SET userid = ?,token = ?",[userid,token],(err,data)=>{
+            if(err){
+                console.log("Token Insert Failed : "+err);
+                reject(err);
+                return;
+            }
+           console.log("Token Inserted Successfully");
+           resolve();
+    
+           
+            
+        })
+    })
+  }
+
+function _generateRandomString(length) {
+    return crypto.randomBytes(length).toString('hex').slice(0, length);
 }
 
 

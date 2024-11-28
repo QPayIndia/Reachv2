@@ -1,6 +1,6 @@
 const winston = require('winston');
 require('winston-daily-rotate-file');
-
+const sql = require('../models/db.js');
 const Logger = function(model){
 
 }
@@ -31,33 +31,35 @@ Logger.LogInfo=(req,res) =>{
     logger.info(`Method: ${req.method} URL: ${req.url} Body: ${JSON.stringify(req.body)} Time: ${formatDate()}\n<-------------------------------------------------->`);
 }
 
-Logger.LogError=(err,req,res)=>{
+Logger.LogError=(userid,message)=>{
 
-    const transport = new winston.transports.DailyRotateFile({
-        filename: 'logs/error/error-%DATE%.log',  // Log filename with date
-        datePattern: 'YYYY-MM-DD',                // Date pattern for file names
-        zippedArchive: true,                      // Optionally compress logs
-        maxSize: '20m',                           // Max size of each log file
-        maxFiles: '14d'                           // Keep logs for 14 days
-      });
-    const logger = winston.createLogger({
-        level: 'error',
-        format: winston.format.combine(
-            winston.format.timestamp({
-                format: 'YYYY-MM-DD HH:mm:ss'
-              }),
-              winston.format.printf(({ timestamp, level, message }) => {
-                return `${timestamp} [${level.toUpperCase()}]: ${message}`;
-              })
-        ),
-        transports: [
-            transport
-        ]
-    });
+  _insertError(userid,message);
+
+    // const transport = new winston.transports.DailyRotateFile({
+    //     filename: 'logs/error/error-%DATE%.log',  // Log filename with date
+    //     datePattern: 'YYYY-MM-DD',                // Date pattern for file names
+    //     zippedArchive: true,                      // Optionally compress logs
+    //     maxSize: '20m',                           // Max size of each log file
+    //     maxFiles: '14d'                           // Keep logs for 14 days
+    //   });
+    // const logger = winston.createLogger({
+    //     level: 'error',
+    //     format: winston.format.combine(
+    //         winston.format.timestamp({
+    //             format: 'YYYY-MM-DD HH:mm:ss'
+    //           }),
+    //           winston.format.printf(({ timestamp, level, message }) => {
+    //             return `${timestamp} [${level.toUpperCase()}]: ${message}`;
+    //           })
+    //     ),
+    //     transports: [
+    //         transport
+    //     ]
+    // });
     
     
 
-    logger.error(`Method: ${req.method} URL: ${req.url} Body: ${JSON.stringify(req.body)} \nError occurred: ${err.message}\n<-------------------------------------------------->`);
+    // logger.error(`Method: ${req.method} URL: ${req.url} Body: ${JSON.stringify(req.body)} \nError occurred: ${err.message}\n<-------------------------------------------------->`);
     
 }
 
@@ -73,5 +75,23 @@ function formatDate() {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
+
+  
+function _insertError(userid,message){
+  return new Promise((resolve,reject)=>{
+      sql.query("INSERT INTO error_log_master SET userid = ?,message = ?,status = 'ERROR'",[userid,message],(err,data)=>{
+          if(err){
+              console.log("Error Insert Failed : "+err);
+              reject(err);
+              return;
+          }
+         console.log("Error Inserted Successfully");
+         resolve();
+  
+         
+          
+      })
+  })
+}
 
 module.exports = Logger;

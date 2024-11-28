@@ -247,6 +247,16 @@ exports.VerifyOTP = (req,res)=>{
             res.status(200).send(data);
     })
 }
+exports.Auth = (req,res)=>{
+    
+    User.Auth(req.body.userid,req.body.refKey,(err,data)=>{
+        if(err){
+            res.status(500).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
 
 
 

@@ -54,13 +54,7 @@ LoginModel.Signup = (model,result)=>{
 						result(null,{status:"success",message:"User Created Successfully",uid:id});
 					});
                 
-                    // ContactInfo.create(binfo,(err,data)=>{
-                        // if(err){
-                            // result(null,{status:"failure",message:"Something went wrong",uid:id});
-                        // }
-                        // else
-                        // result(null,{status:"success",message:"User Created Successfully",uid:id});
-                    // });
+                    
                 
                 
             }).catch((err)=>{

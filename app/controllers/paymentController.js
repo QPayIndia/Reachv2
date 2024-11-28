@@ -41,16 +41,6 @@ exports.callback = (req,res)=>{
         else
             res.sendFile(path.join(__dirname, '../screen/failure-msg.html'));
     })
-
-    // let resCode = req.body.ResponseCode;
-    // if(resCode === 100 || resCode === 200){
-    //     res.sendFile(path.join(__dirname, '../screen/callback.html'));
-    // }else{
-    //     res.sendFile(path.join(__dirname, '../screen/callback.html'));
-    // }
-    
-    
-
 };
 
 exports.CreatePayment = (req,res)=>{
@@ -172,14 +162,11 @@ exports.pay = (req,res)=>{
             } 
     });
 
-    // <input type="hidden" name="QPayID" value="qpaydemo`+amount+`">
-            // <input type="hidden" name="QPayPWD" value="asdf!123">
+  
 
 
-            function calculateSHA512Hash(input) {
+    function calculateSHA512Hash(input) {
                 // Create a SHA-512 hash
-                
-                
                 const hash = crypto.createHash('sha512');
                 
                 // Update the hash with the input data

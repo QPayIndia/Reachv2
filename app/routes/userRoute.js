@@ -17,6 +17,7 @@ module.exports = app =>{
     router.post('/getuser',users.getUser);
     router.post('/sendotp',users.SendOTP);
     router.post('/verifyotp',users.VerifyOTP);
+    router.post('/auth',users.Auth);
     router.post('/updateBusinessFavourite',users.updateBusinessFavourite);
     router.post('/getbusinessfavourite',users.getFavBusiness);
     app.use('/api/user',router);

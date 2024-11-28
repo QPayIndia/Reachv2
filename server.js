@@ -8,6 +8,7 @@ const { start } = require("repl");
 const Logger = require("./app/utils/logger.js");
 const WebSocket = require('ws');
 const Socket = require("./app/utils/socket.js");
+const Auth = require("./app/utils/auth.js");
 const app = express();
 
 
@@ -18,20 +19,47 @@ app.use(express.json({limit: '200mb'}));
 app.use(express.urlencoded({ extended: false ,limit: '200mb'}));
 app.use(cors({ origin: true }));
 
-// const validateApiKey = (req, res, next) => {
-//   const apiKey = req.headers['x-api-key'];
-//   const userId = req.headers['userId'];
-//   console.log(apiKey);
-//   if (!apiKey) {
-//     return res.status(401).json({ error: 'API key is required' });
-//   }
+const validateApiKey = (req, res, next) => {
+
+
+ 
+  
+  if (req.path === '/api/business/signup' || req.path === '/api/user/verifyotp' || req.path === '/api/user/auth') {
+      return next();
+  }else{
+
+  // const apiKey = req.headers['x-api-key'];
+  // if (!apiKey) {
+  //   return res.status(401).json({ error: 'API key is required' });
+  // }
+
+  let requestorid = req.body.userid;
+  if(!requestorid) return res.status(401).json({status:"failure", message: 'User Id is required' });
+  
+  let accesstoken = req.body.accesstoken;
+  if(!accesstoken) return res.status(401).json({status:"failure", message: 'Access Token is required' });
+  
+  // let apiKey = req.body.requestorid;
+  // if(!requestorid) return res.status(401).json({status:"failure", message: 'Requestor Id is required' });
+
+  Auth.ValidateAPIKey(requestorid,accesstoken,(auth,response)=>{
+    if(auth){
+      next();
+    }else{
+      res.send(response)
+    }
+  })
+
+}
 
 
   
 
 
-//   next();
-// };
+  
+};
+
+
 
 // app.use(validateApiKey);
 
@@ -214,7 +242,6 @@ require("./app/routes/productDetailRoute.js")(app);
 require("./app/routes/businessMasterRoute.js")(app);
 require("./app/routes/businessDetailRoute.js")(app);
 require('./app/routes/categoryRoute.js')(app);
-require('./app/routes/likeRoute.js')(app);
 require('./app/routes/userRoute.js')(app);
 require('./app/routes/cartRoute.js')(app);
 require('./app/routes/paymentRoute.js')(app);
@@ -232,35 +259,7 @@ const server = app.listen(PORT, () => {
 
 
 
-// const wss = new WebSocket.Server({ server });
 
-// // Handle WebSocket connections
-// wss.on('connection', (ws) => {
-//   console.log('New WebSocket connection established');
-
-  
-//   ws.send(JSON.stringify({ message: 'Welcome to the WebSocket server!' }));
-
-//   // Handle incoming messages from WebSocket clients
-//   ws.on('message', (message) => {
-//     console.log('Received message:', message.toString());
-//     // Echo the message back to the client
-//     // ws.send(JSON.stringify({ message: 'Data Received' }));
-
-//     wss.clients.forEach(client => {
-//       if (client !== ws && client.readyState === WebSocket.OPEN) {
-//         client.send(message.toString());
-//       }
-//     });
-
-//   });
-
-//   // Handle WebSocket close
-//   ws.on('close', () => {
-//     console.log('WebSocket connection closed');
-//   });
-
-// });
 
 Socket.InitConnection(server);
 

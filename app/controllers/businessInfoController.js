@@ -295,7 +295,6 @@ exports.addPaymentInfo = (req,res)=>{
 
   const model = new PaymentModel({
     uid : req.body.uid,
-    // pinfoid  : req.body.pinfoid,
     C:req.body.C,
     D:req.body.D,
     N:req.body.N,
@@ -308,7 +307,7 @@ exports.addPaymentInfo = (req,res)=>{
     bifsc:req.body.bifsc,
     bcheque:req.body.bcheque,
     createdby : req.body.uid,
-    // createdon : req.body.createdon
+    
   })
     
   PaymentModel.create((model),(err,data)=>{
@@ -1187,58 +1186,6 @@ exports.uploadvideo = (req,res)=>{
     });
 }
 
-
-exports.getNewsDetail = (req,res)=>{
-    
-  ContactInfo.getNewsDetail(req.body.newsid,req.body.userid,(err,data)=>{
-      if(err){
-          res.status(500).send(data);
-      }
-      else
-          res.status(200).json(data);
-  })
-}
-
-exports.delete = (req,res)=>{
-    
-  ContactInfo.delete(req.body.newsid,(err,data)=>{
-      if(err){
-          res.status(500).send(data);
-      }
-      else
-          res.status(200).json(data);
-  })
-}
-exports.addLike = (req,res)=>{
-  ContactInfo.addLike([req.body.userid,req.body.newsid],(err,data)=>{
-      if(err){
-          res.status(500).send({
-             data
-            });
-      }
-      else
-          res.status(200).send(data);
-  });
-  
-
- 
-};
-
-exports.addBookmark = (req,res)=>{
-  ContactInfo.addBookamrk([req.body.userid,req.body.newsid],(err,data)=>{
-      if(err){
-          res.status(500).send({
-             data
-            });
-      }
-      else
-          res.status(200).send(data);
-  });
-  
-
- 
-};
-
 exports.getBookmark = (req,res)=>{
     
   ContactInfo.getBookmarks(req.body.userid,(err,data)=>{
@@ -1479,7 +1426,7 @@ exports.addPaymentDeliveryModel = (req,res)=>{
   
     const model = new PaymentDeliveryModel(
               {
-                bid :req.body.bid,
+              bid :req.body.bid,
               one: req.body.one,
               two: req.body.two,
               three: req.body.three,
