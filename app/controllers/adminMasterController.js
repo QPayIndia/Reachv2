@@ -29,7 +29,8 @@ exports.getPendingMerchants = (req,res)=>{
 exports.getAllUsers = (req,res)=>{
    
     
-
+    console.log(req.body.uid);
+    
     adminModel.getAllUsers(req.body.uid,(err,data)=>{
         if(err){
             res.status(500).send(data);
@@ -38,10 +39,8 @@ exports.getAllUsers = (req,res)=>{
             res.status(200).send(data);
     });
 };
-exports.addUser = (req,res)=>{
-   
-    
 
+exports.addUser = (req,res)=>{
     adminModel.addUser(req.body.username,req.body.password,req.body.usertype,req.body.uid,(err,data)=>{
         if(err){
             res.status(500).send(data);
@@ -50,6 +49,7 @@ exports.addUser = (req,res)=>{
             res.status(200).send(data);
     });
 };
+
 exports.updateMerchantActiveStatus = (req,res)=>{
    
     

@@ -37,13 +37,13 @@ AdminMaster.addUser = (username,password,usertype,uid,result)=>{
             addUser(username,password,usertype,uid).then((id)=>{
                 result(null,{status:"success",message:"User Created Successfully",uid:id});
             }).catch(()=>{
-                result(null,{status:"failure",message:"User create Failed"});
+                result("",{status:"failure",message:"User create Failed"});
             });
         }else{
-            result(null,{status:"failure",message:"User already exists"});
+            result("",{status:"failure",message:"User already exists"});
         }
     }).catch(()=>{
-        result(null,{status:"failure",message:"User create Failed"});
+        result("",{status:"failure",message:"User create Failed"});
     });
     
     

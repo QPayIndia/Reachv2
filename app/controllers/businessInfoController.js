@@ -225,7 +225,7 @@ exports.Signup = (req,res)=>{
   const model = new LoginModel({
    
     phone : req.body.phone,
-    nameprefix : req.body.nameprefix,
+    nameprefix : 0,
     name : req.body.name
   })
     
