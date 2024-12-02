@@ -1,6 +1,10 @@
 const express = require("express");
 const crypto = require('crypto');
 const cors = require("cors");
+require('dotenv').config();
+
+
+
 
 const { secretKey, ivKey } = require("./app/config/globals.js");
 const CustomEncrypt = require("./app/controllers/encrypt.js");
@@ -9,6 +13,7 @@ const Logger = require("./app/utils/logger.js");
 const WebSocket = require('ws');
 const Socket = require("./app/utils/socket.js");
 const Auth = require("./app/utils/auth.js");
+const { env } = require("process");
 const app = express();
 
 
@@ -27,44 +32,43 @@ const validateApiKey = (req, res, next) => {
   if (req.path === '/api/business/signup' || req.path === '/api/user/verifyotp' || req.path === '/api/user/auth') {
       return next();
   }else{
+   const mode = req.headers['x-agent-mode'];
+   const apiKey = req.headers['x-qpay-key'];
+   const envKey = "";
+   if(mode === "user"){
+      envKey = process.env.USER_KEY;
+   }else if(mode === "staff"){
+      envKey = process.env.USER_KEY;
+   }else{
+      return res.status(401).json({status:"failure", message: 'Invalid Request - 1' });
+   }
+ 
 
-    //api ---> YlkigmcDSfydvy8KIMiyV3sOWjAVcDfOznPb7StvhtSV6qgS1OmDclWEJ0krvKNS
-
-
-  // const apiKey = req.headers['x-api-key'];
-  // if (!apiKey) {
-  //   return res.status(401).json({ error: 'API key is required' });
-  // }
-
-  let requestorid = req.body.userid;
+  if(apiKey === envKey){
+    let requestorid = req.body.userid;
   if(!requestorid) return res.status(401).json({status:"failure", message: 'User Id is required' });
   
   let accesstoken = req.body.accesstoken;
   if(!accesstoken) return res.status(401).json({status:"failure", message: 'Access Token is required' });
   
-  // let apiKey = req.body.requestorid;
-  // if(!requestorid) return res.status(401).json({status:"failure", message: 'Requestor Id is required' });
 
   Auth.ValidateAPIKey(requestorid,accesstoken,(auth,response)=>{
     if(auth){
       next();
     }else{
-      res.send(response)
+      return res.status(401).json({status:"failure", message: 'Invalid Request - 2' });
     }
   })
+  }else{
+    return res.status(401).json({status:"failure", message: 'Invalid Request - 3' });
+  }
 
-}
-
-
-  
-
-
-  
+} 
 };
 
 
 
-// app.use(validateApiKey);
+app.use(validateApiKey);
 
 function decryptMiddleware(req, res, next) {
  
