@@ -30,7 +30,7 @@ const validateApiKey = (req, res, next) => {
 
  
   
-  if (req.path === '/api/business/signup' || req.path === '/api/user/verifyotp' || req.path === '/api/usesr/auth' || req.path === '/uploads') {
+  if (req.path === '/api/business/signup' || req.path === '/api/user/verifyotp' || req.path === '/api/usesr/auth' || req.path.includes('/uploads')) {
       return next();
   }else{
    const mode = req.headers['x-agent-mode'];
