@@ -247,7 +247,7 @@ function getData(refId){
 function getTransactions(userid,type,month){
     var query = "";
     if(type === "merchant")
-    query = "SELECT A.amount,A.transactionid,A.paymentstatus as status,A.userid,A.A.bid,B.photo as profile,B.name,B.phone,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM transaction_master as A,user_master as B WHERE A.bid = "+userid+" AND A.userid = B.uid AND DATE_FORMAT(A.createdon, '%Y-%m') = DATE_FORMAT(CURDATE() - INTERVAL "+month+" MONTH, '%Y-%m') ORDER BY A.transactionid DESC;";
+    query = "SELECT A.amount,A.transactionid,A.paymentstatus as status,A.userid,A.bid,B.photo as profile,B.name,B.phone,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM transaction_master as A,user_master as B WHERE A.bid = "+userid+" AND A.userid = B.uid AND DATE_FORMAT(A.createdon, '%Y-%m') = DATE_FORMAT(CURDATE() - INTERVAL "+month+" MONTH, '%Y-%m') ORDER BY A.transactionid DESC;";
     else
     query = "SELECT A.amount,A.transactionid,A.paymentstatus as status,A.userid,A.bid,B.profile,B.name,C.phone,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date FROM transaction_master as A,business_info as B,contact_info as C WHERE A.userid = "+userid+" AND A.bid = B.uid AND B.uid = C.uid AND DATE_FORMAT(A.createdon, '%Y-%m') = DATE_FORMAT(CURDATE() - INTERVAL "+month+" MONTH, '%Y-%m') ORDER BY A.transactionid DESC;";
 
