@@ -30,16 +30,13 @@ const validateApiKey = (req, res, next) => {
 
  
   
-  if (req.path === '/api/business/signup' || req.path === '/api/user/verifyotp' || req.path === '/api/user/auth') {
+  if (req.path === '/api/business/signup' || req.path === '/api/user/verifyotp' || req.path === '/api/usesr/auth') {
       return next();
   }else{
    const mode = req.headers['x-agent-mode'];
    const apiKey = req.headers['x-qpay-key'];
-   const envKey = "";
+   let envKey = "";
    if(mode === "user"){
-    console.log("APi --> "+apiKey);
-    console.log("ENV APi --> "+USER_KEY);
-    
       envKey = process.env.USER_KEY;
    }else if(mode === "staff"){
       envKey = process.env.USER_KEY;
@@ -48,7 +45,7 @@ const validateApiKey = (req, res, next) => {
    }
  
 
-  if(apiKey === envKey){
+  if(apiKey == envKey){
     let requestorid = req.body.userid;
   if(!requestorid) return res.status(401).json({status:"failure", message: 'User Id is required' });
   
