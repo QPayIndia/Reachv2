@@ -45,6 +45,68 @@ function _getPrepaidPlans(billerid,circle){
     })
 }
 
+function _getBillDetails(){
+    return new Promise(async (resolve,reject)=>{
+        const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
+
+        // Prepare the HTTP request
+        const response = await axios.post(
+            "https://api.instantpay.in/marketplace/utilityPayments/prePaymentEnquiry",
+            {
+                billerId: operator,
+                initChannel: "AGT",
+                externalRef: sess,
+                inputParameters: {
+                    param1: customerId,
+                    param2: ""
+                },
+                deviceInfo: {
+                    mac: "02-00-AC-10-7A-99",
+                    ip: "164.52.211.128"
+                },
+                remarks: {
+                    param1: "9940620016"
+                },
+                transactionAmount: 10
+            },
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "X-Ipay-Auth-Code": "1",
+                    "X-Ipay-Client-Id": clientSecret[0]?.client_Id,
+                    "X-Ipay-Client-Secret": clientSecret[0]?.client_secret,
+                    "X-Ipay-Outlet-Id": clientOutletId.outlet_id,
+                    "X-Ipay-Endpoint-Ip": "216.48.190.93"
+                },
+                httpsAgent: new (require("https").Agent)({ rejectUnauthorized: false }) // Disable SSL verification
+            }
+        );
+
+        const result = response.data;
+
+        // Process response
+        if (result) {
+            if (
+                result.statuscode === "TXN" &&
+                result.status === "Transaction Successful"
+            ) {
+                result.data.ipay_id = result.data.enquiryReferenceId;
+                result.data.billamount = result.data.BillAmount;
+                result.data.billduedate = result.data.BillDueDate;
+                result.data.customername = result.data.CustomerName;
+                result.data.additionalinfo = result.data.AdditionalDetails;
+            }
+            return res.json(result);
+        } else {
+            return res.json(message);
+        }
+    });
+
+    
+
+}
+
 
 
 

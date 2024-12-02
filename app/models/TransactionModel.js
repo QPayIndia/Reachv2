@@ -96,9 +96,10 @@ TransactionModel.getPaymentDetails = (transactionid,result)=>{
    
 }
 
-TransactionModel.getTransactions = (userid,type,result)=>{
+TransactionModel.getTransactions = (uid,bid,type,result)=>{
     
     var data = [];
+    let userid = (type === "user") ? uid : bid;
 
     getTransactions(userid,type,0).then((month1)=>{
         data[0]={name:getPreviousMonthAndYear(0),transactions:month1}

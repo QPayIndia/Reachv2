@@ -87,7 +87,7 @@ exports.GetTransactions = (req,res)=>{
 
    
    
-    TransactionModel.getTransactions(req.body.userid,req.body.type,(err,data)=>{
+    TransactionModel.getTransactions(req.body.userid,req.body.bid,req.body.type,(err,data)=>{
         if(err){
             res.status(500).send(data);
         }
