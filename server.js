@@ -14,6 +14,7 @@ const WebSocket = require('ws');
 const Socket = require("./app/utils/socket.js");
 const Auth = require("./app/utils/auth.js");
 const { env } = require("process");
+const { log } = require("console");
 const app = express();
 
 
@@ -36,6 +37,9 @@ const validateApiKey = (req, res, next) => {
    const apiKey = req.headers['x-qpay-key'];
    const envKey = "";
    if(mode === "user"){
+    console.log("APi --> "+apiKey);
+    console.log("ENV APi --> "+USER_KEY);
+    
       envKey = process.env.USER_KEY;
    }else if(mode === "staff"){
       envKey = process.env.USER_KEY;
