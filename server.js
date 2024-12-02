@@ -145,10 +145,10 @@ if (req.body.bid) {
 
 
 
-app.use((err, req, res, next) => {
-  Logger.LogError(err,req,res);
-  res.status(500).send('Something went wrong!'); // Send a generic error response
-});
+// app.use((err, req, res, next) => {
+//   Logger.LogError(err,req,res);
+//   res.status(500).send('Something went wrong!'); // Send a generic error response
+// });
 
 
  /* bodyParser.urlencoded() is deprecated */
