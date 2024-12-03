@@ -55,7 +55,7 @@ exports.create = (req,res)=>{
     var numbers = req.body.numbers;
     ContactInfo.create(binfo,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                data
               });
         }
@@ -94,7 +94,7 @@ exports.uploadFile = (req,res)=>{
         if (err instanceof multer.MulterError) {
             return res.status(400).json({status:false, message: 'File upload error', error: err });
           } else if (err) {
-            return res.status(500).json({status:false, message: 'Server error', error: err });
+            return res.status(400).json({status:false, message: 'Server error', error: err });
           }
       
           if (!req.file) {
@@ -125,7 +125,7 @@ exports.uploadProfile = (req,res)=>{
         if (err instanceof multer.MulterError) {
             return res.status(400).json({status:false, message: 'File upload error', error: err });
           } else if (err) {
-            return res.status(500).json({status:false, message: 'Server error', error: err });
+            return res.status(400).json({status:false, message: 'Server error', error: err });
           }
       
           if (!req.file) {
@@ -143,7 +143,7 @@ exports.getDtaa = (req,res)=>{
     
     ContactInfo.getData((req.body.uid),(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -174,7 +174,7 @@ exports.addlocation = (req,res)=>{
     
     LocationInfo.create((model),(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -184,7 +184,7 @@ exports.getLocationData = (req,res)=>{
     
     LocationInfo.getLocationData(req.body.uid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -194,7 +194,7 @@ exports.getDistircts = (req,res)=>{
     
     LocationInfo.getDistricts(req.body.stateid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -204,12 +204,12 @@ exports.Login = (req,res)=>{
     
     LoginModel.Login(req.body.phone,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else{
           UserModel.sendOTP(data['uid'],(err,data)=>{
             if(err){
-                res.status(500).send(data);
+                res.status(400).send(data);
             }
             else{
               res.status(200).json(data);
@@ -231,12 +231,12 @@ exports.Signup = (req,res)=>{
     
     LoginModel.Signup(model,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else{
           UserModel.sendOTP(model.phone,data['uid'],(err,data)=>{
             if(err){
-                res.status(500).send(data);
+                res.status(400).send(data);
             }
             else{
               res.status(200).json(data);
@@ -264,7 +264,7 @@ exports.addSocialInfo = (req,res)=>{
     
     SocailMedia.create((model),(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -274,7 +274,7 @@ exports.getSocailInfo = (req,res)=>{
     
     SocailMedia.getData(req.body.uid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -284,7 +284,7 @@ exports.getPaymentInfo = (req,res)=>{
     
     PaymentModel.getPaymentData(req.body.uid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -312,7 +312,7 @@ exports.addPaymentInfo = (req,res)=>{
     
   PaymentModel.create((model),(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -323,7 +323,7 @@ exports.getKYCInfo = (req,res)=>{
     
   IndividualKycModel.getKYCData(req.body.uid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -348,7 +348,7 @@ exports.addKYCInfo = (req,res)=>{
     
   IndividualKycModel.create((model),(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -374,7 +374,7 @@ exports.addKYBInfo = (req,res)=>{
     
   BusinessKycModel.create((model),(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -386,7 +386,7 @@ exports.getBusinessKYC = (req,res)=>{
     
   BusinessKycModel.getKYCData(req.body.uid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -398,7 +398,7 @@ exports.getBPicture = (req,res)=>{
     
   BusinessPhotoModel.getInfo(req.body.uid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -428,7 +428,7 @@ exports.addBPicture = (req,res)=>{
     
   BusinessPhotoModel.create((model),(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -447,7 +447,7 @@ exports.addTradeData = (req,res)=>{
     
   TradeMemberModel.create((model),(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -478,7 +478,7 @@ exports.addBusinessInfo = (req,res)=>{
     
   BusinessInfo.create((model),(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -489,7 +489,7 @@ exports.getBusinessInfo = (req,res)=>{
     
   BusinessInfo.getData(req.body.uid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -499,7 +499,7 @@ exports.getSubCategory = (req,res)=>{
     
   BusinessInfo.getSubCategory(req.body.categoryid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -533,7 +533,7 @@ exports.addProduct = (req,res)=>{
   
   ProductModel.create(model,req.body.specs,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -565,7 +565,7 @@ exports.updateProduct = (req,res)=>{
 
   ProductModel.updateProduct(model,req.body.productid,req.body.specs,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -577,7 +577,7 @@ exports.getProducts = (req,res)=>{
     
   ProductModel.getData(req.body.uid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -587,7 +587,7 @@ exports.getProductSpec = (req,res)=>{
     
   ProductModel.getProductSpec(req.body.productid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -598,7 +598,7 @@ exports.deleteProduct = (req,res)=>{
     
   ProductModel.deleteProduct(req.body.uid,req.body.productid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -608,7 +608,7 @@ exports.deleteProductSpec = (req,res)=>{
     
   ProductModel.deleteProductSpec(req.body.productid,req.body.pspecid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -637,7 +637,7 @@ exports.addService = (req,res)=>{
 
   ServiceModel.create((model),(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -665,7 +665,7 @@ exports.updateService = (req,res)=>{
 
   ServiceModel.updateService(model,req.body.serviceid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -677,7 +677,7 @@ exports.getService = (req,res)=>{
     
   ServiceModel.getData(req.body.uid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -688,7 +688,7 @@ exports.deleteService = (req,res)=>{
     
   ServiceModel.deleteService(req.body.uid,req.body.serviceid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -708,7 +708,7 @@ exports.addBrochure = (req,res)=>{
 
   BrochureModel.create((model),(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -720,7 +720,7 @@ exports.getBrochure = (req,res)=>{
     
   BrochureModel.getData(req.body.uid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -731,7 +731,7 @@ exports.deleteBrochure = (req,res)=>{
     
   BrochureModel.deleteBrochure(req.body.uid,req.body.brochureid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -762,7 +762,7 @@ exports.addBusinessTiming = (req,res)=>{
     
   BusinessTimings.addTimings((model),(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -797,7 +797,7 @@ exports.addAward = (req,res)=>{
     
   AwardCertficateModel.create(([req.body.uid,award,certificate]),(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -810,7 +810,7 @@ exports.getAward = (req,res)=>{
     
   AwardCertficateModel.getInfo(req.body.uid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -821,7 +821,7 @@ exports.deleteAward = (req,res)=>{
     
   AwardCertficateModel.deleteAward(req.body.uid,req.body.awardid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -832,7 +832,7 @@ exports.getBusinessInfoProgress = (req,res)=>{
     
   BusinessInfoProgress.getData(req.body.uid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -842,7 +842,7 @@ exports.deletCertificate = (req,res)=>{
     
   AwardCertficateModel.deleteCertificate(req.body.uid,req.body.awardid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -866,7 +866,7 @@ exports.addOwner = (req,res)=>{
  
   OwnerModel.create(model,req.body.ownerid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -879,7 +879,7 @@ exports.deleteOwner = (req,res)=>{
     
   OwnerModel.deleteOwner(req.body.uid,req.body.ownerid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -903,7 +903,7 @@ exports.addPhone = (req,res)=>{
  
   PhoneNumberModel.create(model,req.body.phoneid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -916,7 +916,7 @@ exports.deletePhone = (req,res)=>{
     
   PhoneNumberModel.deletePhoneNumber(req.body.uid,req.body.phoneid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -931,7 +931,7 @@ exports.deleteTradeData = (req,res)=>{
     
   TradeMemberModel.deleteInfo([req.body.uid,req.body.tradeid],(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -942,7 +942,7 @@ exports.getTradeData = (req,res)=>{
     
   TradeMemberModel.getInfo(req.body.uid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -969,7 +969,7 @@ exports.uploadCheque = (req,res)=>{
         if (err instanceof multer.MulterError) {
             return res.status(400).json({status:false, message: 'File upload error', error: err });
           } else if (err) {
-            return res.status(500).json({status:false, message: 'Server error', error: err });
+            return res.status(400).json({status:false, message: 'Server error', error: err });
           }
       
           if (!req.file) {
@@ -1002,7 +1002,7 @@ exports.uploadkyc = (req,res)=>{
       if (err instanceof multer.MulterError) {
           return res.status(400).json({status:false, message: 'File upload error', error: err });
         } else if (err) {
-          return res.status(500).json({status:false, message: 'Server error', error: err });
+          return res.status(400).json({status:false, message: 'Server error', error: err });
         }
     
         if (!req.file) {
@@ -1030,7 +1030,7 @@ exports.uploadphoto = (req,res)=>{
       if (err instanceof multer.MulterError) {
           return res.status(400).json({status:false, message: 'File upload error', error: err });
         } else if (err) {
-          return res.status(500).json({status:false, message: 'Server error', error: err });
+          return res.status(400).json({status:false, message: 'Server error', error: err });
         }
     
         if (!req.file) {
@@ -1058,7 +1058,7 @@ exports.uploadKYBPhoto = (req,res)=>{
       if (err instanceof multer.MulterError) {
           return res.status(400).json({status:false, message: 'File upload error', error: err });
         } else if (err) {
-          return res.status(500).json({status:false, message: 'Server error', error: err });
+          return res.status(400).json({status:false, message: 'Server error', error: err });
         }
     
         if (!req.file) {
@@ -1087,7 +1087,7 @@ exports.uploadPdfFile = (req,res)=>{
       if (err instanceof multer.MulterError) {
           return res.status(400).json({status:false, message: 'File upload error', error: err });
         } else if (err) {
-          return res.status(500).json({status:false, message: 'Server error', error: err });
+          return res.status(400).json({status:false, message: 'Server error', error: err });
         }
     
         if (!req.file) {
@@ -1116,7 +1116,7 @@ exports.uploadCertificate = (req,res)=>{
       if (err instanceof multer.MulterError) {
           return res.status(400).json({status:false, message: 'File upload error', error: err });
         } else if (err) {
-          return res.status(500).json({status:false, message: 'Server error', error: err });
+          return res.status(400).json({status:false, message: 'Server error', error: err });
         }
     
         if (!req.file) {
@@ -1144,7 +1144,7 @@ exports.uploadthumbnail = (req,res)=>{
       if (err instanceof multer.MulterError) {
           return res.status(400).json({status:false, message: 'File upload error', error: err });
         } else if (err) {
-          return res.status(500).json({status:false, message: 'Server error', error: err });
+          return res.status(400).json({status:false, message: 'Server error', error: err });
         }
     
         if (!req.file) {
@@ -1173,7 +1173,7 @@ exports.uploadvideo = (req,res)=>{
       if (err instanceof multer.MulterError) {
           return res.status(400).json({status:false, message: 'File upload error', error: err });
         } else if (err) {
-          return res.status(500).json({status:false, message: 'Server error', error: err });
+          return res.status(400).json({status:false, message: 'Server error', error: err });
         }
     
         if (!req.file) {
@@ -1190,7 +1190,7 @@ exports.getBookmark = (req,res)=>{
     
   ContactInfo.getBookmarks(req.body.userid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -1200,7 +1200,7 @@ exports.getManPowerData = (req,res)=>{
     
   ManPowerModel.getData(req.body.bid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -1210,7 +1210,7 @@ exports.deleteManPowerData = (req,res)=>{
     
   ManPowerModel.deleteData(req.body.manreqid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -1248,7 +1248,7 @@ exports.addManPowerData = (req,res)=>{
     ManPowerModel.addData(model,req.body.manreqid,(err,data)=>{
     
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -1268,7 +1268,7 @@ exports.addBusinessCategory = (req,res)=>{
  
   Category.create(model,req.body.categoryid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -1279,7 +1279,7 @@ exports.deleteBusinessCategory = (req,res)=>{
     
   Category.delete(req.body.categoryid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -1290,7 +1290,7 @@ exports.getAllBusinessCategory = (req,res)=>{
     
   Category.getAllCategory((err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -1312,7 +1312,7 @@ exports.addBusinessSubCategory = (req,res)=>{
  
         SubCategory.create(model,req.body.subcategoryid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -1323,7 +1323,7 @@ exports.deleteSubCategory = (req,res)=>{
     
   SubCategory.delete(req.body.categoryid,req.body.subcategoryid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -1334,7 +1334,7 @@ exports.getBusinessSubCategory = (req,res)=>{
     
   SubCategory.getAllCategory(req.body.categoryid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -1345,7 +1345,7 @@ exports.getBusinessPhoneNumbers = (req,res)=>{
     
   ContactInfo.getNumbers(req.body.uid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -1355,7 +1355,7 @@ exports.getBusinessOwners = (req,res)=>{
     
   ContactInfo.getOwners(req.body.uid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -1367,7 +1367,7 @@ exports.getFAQ = (req,res)=>{
     
   FAQModel.getData(req.body.bid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -1377,7 +1377,7 @@ exports.deleteFAQ = (req,res)=>{
     
   FAQModel.deleteData(req.body.faqid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -1401,7 +1401,7 @@ exports.addFAQ = (req,res)=>{
         FAQModel.addData(model,req.body.faqid,(err,data)=>{
     
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -1413,7 +1413,7 @@ exports.getPaymentDelivery = (req,res)=>{
     
   PaymentDeliveryModel.getData(req.body.bid,(err,data)=>{
       if(err){
-          res.status(500).send(data);
+          res.status(400).send(data);
       }
       else
           res.status(200).json(data);
@@ -1444,7 +1444,7 @@ exports.addPaymentDeliveryModel = (req,res)=>{
       PaymentDeliveryModel.addData(model,req.body.paytypeid,(err,data)=>{
     
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);

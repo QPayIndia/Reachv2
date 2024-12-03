@@ -148,7 +148,7 @@ if (req.body.bid) {
 
 // app.use((err, req, res, next) => {
 //   Logger.LogError(err,req,res);
-//   res.status(500).send('Something went wrong!'); // Send a generic error response
+//   res.status(400).send('Something went wrong!'); // Send a generic error response
 // });
 
 

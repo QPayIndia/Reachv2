@@ -17,7 +17,7 @@ exports.create = (req,res)=>{
 
     Category.create(model,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });
@@ -34,7 +34,7 @@ exports.getAll = (req,res)=>{
     
     Category.getAll((err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 data
               });
         }
@@ -46,7 +46,7 @@ exports.getMasterCategoryList = (req,res)=>{
     
     Category.getMasterCategoryList((err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 data
               });
         }
@@ -59,7 +59,7 @@ exports.delete = (req,res)=>{
     
     Category.delete(req.body.categoryid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).json(data);
@@ -70,7 +70,7 @@ exports.delete = (req,res)=>{
    
 //     Team.getMyTeams(req.body.userId,(err,rows)=>{
 //         if(err){
-//             res.status(500).json({
+//             res.status(400).json({
 //                 message:"Something went wrong"
 //             });
 //         }
@@ -85,7 +85,7 @@ exports.delete = (req,res)=>{
    
 //     Team.getOppTeams(req.body.userId,(err,rows)=>{
 //         if(err){
-//             res.status(500).json({
+//             res.status(400).json({
 //                 message:"Something went wrong"
 //             });
 //         }

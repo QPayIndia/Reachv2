@@ -6,7 +6,7 @@ exports.getRentalProducts = (req,res)=>{
    
     HomePageModel.getRentalProducts(req.body.areaid,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });
@@ -22,7 +22,7 @@ exports.getManPower = (req,res)=>{
    
     HomePageModel.getManPower(req.body.areaid,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });

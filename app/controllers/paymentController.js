@@ -65,7 +65,7 @@ exports.CreatePayment = (req,res)=>{
     console.log(model)
     TransactionModel.CreatePayment(model,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -77,7 +77,7 @@ exports.GetPaymentDetails = (req,res)=>{
    
     TransactionModel.getPaymentDetails(req.body.transactionId,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -89,7 +89,7 @@ exports.GetTransactions = (req,res)=>{
    
     TransactionModel.getTransactions(req.body.userid,req.body.bid,req.body.type,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);

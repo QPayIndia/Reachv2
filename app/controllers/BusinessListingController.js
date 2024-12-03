@@ -19,7 +19,7 @@ exports.getListing = (req,res)=>{
     
     BusinessListing.getListing(model,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });

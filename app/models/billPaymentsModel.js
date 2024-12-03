@@ -1,5 +1,7 @@
-const { json } = require('express');
-const sql = require('./db.js');
+
+require('./db.js');
+require('dotenv').config();
+const axios = require('axios');
 
 const BillPayments = function(model){
 
@@ -16,9 +18,20 @@ BillPayments.getPrepaidPlans = (userid,billerid,circle,result)=>{
     
 }
 
+BillPayments.getBillDetails = (operator,cutomerMobile,result)=>{
+   
+    _getBillDetails(operator,cutomerMobile).then((data)=>{
+        result(null,{status:"success",message:"Bill Details Fetched Successfully",data:data});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:err,data:{}});
+    });
+    
+    
+}
+
 function _getPrepaidPlans(billerid,circle){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT jsonPlan FROM `instantpay_recharge_plans` WHERE billerid = ? AND circle = ?",[billerid,circle],(err,data)=>{
+        query("SELECT jsonPlan FROM `instantpay_recharge_plans` WHERE billerid = ? AND circle = ?",[billerid,circle],(err,data)=>{
             if(err){
                 reject(err);
                 console.log(err);
@@ -45,7 +58,7 @@ function _getPrepaidPlans(billerid,circle){
     })
 }
 
-function _getBillDetails(){
+function _getBillDetails(operator,customerId){
     return new Promise(async (resolve,reject)=>{
         const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
 
@@ -74,9 +87,9 @@ function _getBillDetails(){
                     Accept: "application/json",
                     "Content-Type": "application/json",
                     "X-Ipay-Auth-Code": "1",
-                    "X-Ipay-Client-Id": clientSecret[0]?.client_Id,
-                    "X-Ipay-Client-Secret": clientSecret[0]?.client_secret,
-                    "X-Ipay-Outlet-Id": clientOutletId.outlet_id,
+                    "X-Ipay-Client-Id": process.env.INV_ID,
+                    "X-Ipay-Client-Secret": process.env.INV_SECRET,
+                    "X-Ipay-Outlet-Id": "192785",
                     "X-Ipay-Endpoint-Ip": "216.48.190.93"
                 },
                 httpsAgent: new (require("https").Agent)({ rejectUnauthorized: false }) // Disable SSL verification
@@ -96,49 +109,17 @@ function _getBillDetails(){
                 result.data.billduedate = result.data.BillDueDate;
                 result.data.customername = result.data.CustomerName;
                 result.data.additionalinfo = result.data.AdditionalDetails;
+                resolve(result);
             }
-            return res.json(result);
+            reject(result.status)
         } else {
-            return res.json(message);
+            reject(result.status);
         }
     });
 
     
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 BillPayments.create = (model,ownerid,result)=>{
 
@@ -159,10 +140,7 @@ BillPayments.create = (model,ownerid,result)=>{
         });
     }
    
-    
-    
-    
-    
+ 
 }
 BillPayments.deleteOwner = (uid,ownerid,result)=>{
    
@@ -178,7 +156,7 @@ BillPayments.deleteOwner = (uid,ownerid,result)=>{
 
 function addOwnerModel(model){
     return new Promise((resolve,reject)=>{
-        sql.query("INSERT INTO owner_master SET ?",model,(err,res)=>{
+        query("INSERT INTO owner_master SET ?",model,(err,res)=>{
                 if(err){
                     
                     console.log('Owner Insert Failed due to '+err);
@@ -192,7 +170,7 @@ function addOwnerModel(model){
 }
 function updateOwnerModel(model,ownerid){
     return new Promise((resolve,reject)=>{
-        sql.query("UPDATE owner_master SET ? WHERE ownerid = ?",[model,ownerid],(err,res)=>{
+        query("UPDATE owner_master SET ? WHERE ownerid = ?",[model,ownerid],(err,res)=>{
                 if(err){
                     
                     console.log('Owner Update Failed due to '+err);
@@ -209,7 +187,7 @@ function updateOwnerModel(model,ownerid){
 
 function deleteData(uid,ownerid){
     return new Promise((resolve,reject)=>{
-        sql.query("DELETE FROM owner_master WHERE ownerid = ? AND uid = ?",[ownerid,uid],(err,data)=>{
+        query("DELETE FROM owner_master WHERE ownerid = ? AND uid = ?",[ownerid,uid],(err,data)=>{
             if(err){
                 reject();
                 
@@ -221,8 +199,5 @@ function deleteData(uid,ownerid){
         })
     })
 }
-
-
-
 
 module.exports = BillPayments;

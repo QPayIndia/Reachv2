@@ -19,7 +19,7 @@ exports.login = (req,res)=>{
 
     User.login(team,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });
@@ -77,7 +77,7 @@ exports.addUserAddress = (req,res)=>{
 
     AddressModel.create(model,req.body.addressid,(err,data)=>{
         if(err)
-            res.status(500).send(data);
+            res.status(400).send(data);
         else
             res.status(200).send(data);
     });
@@ -90,7 +90,7 @@ exports.getAllAddress = (req,res)=>{
     
     AddressModel.getLocationData(req.body.userid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -102,7 +102,7 @@ exports.deleteAddress = (req,res)=>{
     
     AddressModel.deleteData(req.body.addressid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -113,7 +113,7 @@ exports.updateName = (req,res)=>{
     
     User.updateName(req.body.name,req.body.lastname,req.body.uid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -124,7 +124,7 @@ exports.updateEmail = (req,res)=>{
     
     User.updateEmail(req.body.email,req.body.uid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -135,7 +135,7 @@ exports.updateDOB = (req,res)=>{
     
     User.updateDOB(req.body.dob,req.body.uid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -145,7 +145,7 @@ exports.getPrimaryAddress = (req,res)=>{
     
     AddressModel.getPrimaryAddress(req.body.userid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -155,7 +155,7 @@ exports.updatePrimaryAddress = (req,res)=>{
     
     AddressModel.UpdatePrimaryAddress(req.body.userid,req.body.addressid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -165,7 +165,7 @@ exports.getFavBusiness = (req,res)=>{
     
     BusinessFavouriteModel.getFavBusiness(req.body.userid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -182,7 +182,7 @@ exports.updateBusinessFavourite = (req,res)=>{
     
     BusinessFavouriteModel.updateFavourite(model,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -207,7 +207,7 @@ exports.addUser = (req,res)=>{
 
     User.addUser(model,req.body.uid,(err,data)=>{
         if(err)
-            res.status(500).send(data);
+            res.status(400).send(data);
         else
             res.status(200).send(data);
     });
@@ -219,7 +219,7 @@ exports.getUser = (req,res)=>{
     
     User.getUserById(req.body.uid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -230,7 +230,7 @@ exports.SendOTP = (req,res)=>{
     
     User.sendOTP(req.body.uid,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -241,7 +241,7 @@ exports.VerifyOTP = (req,res)=>{
     
     User.verifyOTP(req.body.phone,req.body.otp,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -251,7 +251,7 @@ exports.Auth = (req,res)=>{
     
     User.Auth(req.body.userid,req.body.refKey,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -265,7 +265,7 @@ exports.Auth = (req,res)=>{
    
 //     User.getMyTeams(req.body.userId,(err,rows)=>{
 //         if(err){
-//             res.status(500).json({
+//             res.status(400).json({
 //                 message:"Something went wrong"
 //             });
 //         }
@@ -280,7 +280,7 @@ exports.Auth = (req,res)=>{
    
 //     User.getOppTeams(req.body.userId,(err,rows)=>{
 //         if(err){
-//             res.status(500).json({
+//             res.status(400).json({
 //                 message:"Something went wrong"
 //             });
 //         }

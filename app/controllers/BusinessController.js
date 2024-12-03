@@ -11,7 +11,7 @@ exports.create = (req,res)=>{
 
     BusinessMaster.create(model,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });
@@ -30,7 +30,7 @@ exports.getAll = (req,res)=>{
 
     BusinessMaster.getAll(req.body.uid,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });
@@ -49,7 +49,7 @@ exports.deleteBusiness = (req,res)=>{
 
     BusinessMaster.deleteBusiness(req.body.uid,req.body.bid,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });

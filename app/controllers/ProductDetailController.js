@@ -12,7 +12,7 @@ exports.getDetail = (req,res)=>{
 
     ProductDetail.getDetail(model,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });
@@ -31,7 +31,7 @@ exports.addRating = (req,res)=>{
    
     ProductDetail.addRating([req.body.productid,req.body.userid,req.body.rating,req.body.review,req.body.type],(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });

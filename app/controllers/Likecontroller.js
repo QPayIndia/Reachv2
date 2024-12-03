@@ -17,7 +17,7 @@ const Like = require("../models/likeModel.js");
 
 //     Like.create(team,(err,data)=>{
 //         if(err){
-//             res.status(500).send({
+//             res.status(400).send({
 //                 message:
 //                   err.message || "Something went wrong."
 //               });
@@ -34,7 +34,7 @@ const Like = require("../models/likeModel.js");
     
 //     Like.getAllTeams(req.body.location,(err,data)=>{
 //         if(err){
-//             res.status(500).send({
+//             res.status(400).send({
 //                 message:
 //                   err.message || "Something went wrong."
 //               });
@@ -50,7 +50,7 @@ const Like = require("../models/likeModel.js");
    
 //     Like.getMyTeams(req.body.userId,(err,rows)=>{
 //         if(err){
-//             res.status(500).json({
+//             res.status(400).json({
 //                 message:"Something went wrong"
 //             });
 //         }
@@ -65,7 +65,7 @@ const Like = require("../models/likeModel.js");
    
 //     Like.getOppTeams(req.body.userId,(err,rows)=>{
 //         if(err){
-//             res.status(500).json({
+//             res.status(400).json({
 //                 message:"Something went wrong"
 //             });
 //         }

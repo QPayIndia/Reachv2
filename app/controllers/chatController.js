@@ -24,7 +24,7 @@ exports.createChatRoom = (req,res)=>{
     });
     ChatModel.createChatRoom(model,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });
@@ -40,7 +40,7 @@ exports.getChatRooms = (req,res)=>{
    
     ChatModel.getChatRooms(req.body.userid,req.body.usertype,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });
@@ -55,7 +55,7 @@ exports.getUnreadChats = (req,res)=>{
    
     ChatModel.getUnreadMessage(req.body.roomid,req.body.chatid,req.body.userid,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });
@@ -79,7 +79,7 @@ exports.InsertChat = (req,res)=>{
 
     ChatModel.insertChat(model,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });
@@ -96,7 +96,7 @@ exports.getChatFromRoom = (req,res)=>{
   
     ChatModel.getChatsFromRoom(req.body.roomid,req.body.userid,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });
@@ -139,7 +139,7 @@ exports.uploadFile = (req,res)=>{
         if (err instanceof multer.MulterError) {
             return res.status(400).json({status:false, message: 'File upload error', error: err });
           } else if (err) {
-            return res.status(500).json({status:false, message: 'Server error', error: err });
+            return res.status(400).json({status:false, message: 'Server error', error: err });
           }
       
           if (!req.file) {

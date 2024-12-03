@@ -24,7 +24,7 @@ exports.createCall = (req,res)=>{
 
     AudioVideoCallModel.create(model,req.body.hostname,req.body.hostprofile,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });

@@ -13,7 +13,7 @@ exports.getReports = (req,res)=>{
     
     BusinessReports.getReports(req.body.bid,req.body.type,req.body.status,req.body.fromdate,req.body.todate,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });

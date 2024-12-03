@@ -41,7 +41,7 @@ exports.add = (req,res)=>{
 
     CartModel.create(model,req.body.type,(err,data)=>{
         if(err){
-            res.status(500).send({
+            res.status(400).send({
                 message:
                   err.message || "Something went wrong."
               });
@@ -61,7 +61,7 @@ exports.getCartData = (req,res)=>{
     
     CartModel.getData(req.body.userid,req.body.type,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -74,7 +74,7 @@ exports.updateCart = (req,res)=>{
     
     CartModel.updateCart(req.body.uid,req.body.cartid,req.body.ischecked,req.body.qty,req.body.type,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -84,7 +84,7 @@ exports.Checkout = (req,res)=>{
     
     CartModel.Checkout(req.body.uid,req.body.type,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -96,7 +96,7 @@ exports.ViewOrders = (req,res)=>{
     
     OrderModel.getData(req.body.userid,req.body.type,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -108,7 +108,7 @@ exports.GetMerchantOrders = (req,res)=>{
     
     OrderModel.getMerchantOrders(req.body.bid,req.body.type,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -118,7 +118,7 @@ exports.GetOrderDetails = (req,res)=>{
     
     OrderModel.getOrderDetails(req.body.orderitemid,req.body.type,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -128,7 +128,7 @@ exports.UpdateStatus = (req,res)=>{
     
     OrderModel.UpdateStatus(req.body.orderitemid,req.body.status,req.body.type,(err,data)=>{
         if(err){
-            res.status(500).send(data);
+            res.status(400).send(data);
         }
         else
             res.status(200).send(data);
@@ -140,7 +140,7 @@ exports.UpdateStatus = (req,res)=>{
    
 //     User.getMyTeams(req.body.userId,(err,rows)=>{
 //         if(err){
-//             res.status(500).json({
+//             res.status(400).json({
 //                 message:"Something went wrong"
 //             });
 //         }
@@ -155,7 +155,7 @@ exports.UpdateStatus = (req,res)=>{
    
 //     User.getOppTeams(req.body.userId,(err,rows)=>{
 //         if(err){
-//             res.status(500).json({
+//             res.status(400).json({
 //                 message:"Something went wrong"
 //             });
 //         }
