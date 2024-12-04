@@ -3,6 +3,7 @@ const sql = require('./db.js');
 require('dotenv').config();
 const axios = require('axios');
 const { log } = require('console');
+const global = require('../config/globals.js');
 
 const BillPayments = function(model){
 
@@ -24,7 +25,29 @@ BillPayments.getBillDetails = (operator,cutomerMobile,result)=>{
     _getBillDetails(operator,cutomerMobile).then((data)=>{
         result(null,{status:"success",message:"Bill Details Fetched Successfully",data:data});
     }).catch((err)=>{
-        result(err,{status:"failure",message:err,data:{}});
+        result(err,{status:"failure",message:"Unable to fetch bill",data:{}});
+    });
+    
+    
+}
+
+BillPayments.initTransaction = (model,result)=>{
+   
+    _initTransaction(model).then((id)=>{
+        result(null,{status:"success",message:"Transaction Created",transactionId:id});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Transaction Failed",transactionId:0});
+    });
+    
+    
+}
+
+BillPayments.getOperators = (type,result)=>{
+   
+    _getOperators(type).then((data)=>{
+        result(null,{status:"success",message:"Bill Details Fetched Successfully",data:data});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Unable to fetch operators",data:[]});
     });
     
     
@@ -55,6 +78,24 @@ function _getPrepaidPlans(billerid,circle){
             
     
             resolve(parsedData);
+        })
+    })
+}
+
+function _getOperators(type){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT biller_id,biller_name FROM `instantpay_billers` WHERE type = ? ",[type],(err,data)=>{
+            if(err){
+                reject(err);
+                console.log(err);
+                
+                return;
+            }
+
+           
+            
+    
+            resolve(data);
         })
     })
 }
@@ -122,84 +163,33 @@ function _getBillDetails(operator,customerId){
     
 
 }
-
-BillPayments.create = (model,ownerid,result)=>{
-
-    if(ownerid === 0){
-        addOwnerModel(model).then((id)=>{
-            result(null,{status:"success",message:"Owner Inserted Successfully",data:id});
-        }).catch((err)=>{
-            result(err,{status:"failure",message:"Owner Insert Failed"});
-        });
-    }else{
-        
-        
-        updateOwnerModel(model,ownerid).then((id)=>{
-            result(null,{status:"success",message:"Owner Updated Successfully",data:id});
-        }).catch((err)=>{
-            console.log(err);
-            result(err,{status:"failure",message:"Owner Update Failed"});
-        });
-    }
-   
- 
-}
-BillPayments.deleteOwner = (uid,ownerid,result)=>{
-   
-    deleteData(uid,ownerid).then((id)=>{
-        result(null,{status:"success",message:"Owner Deleted Successfully",data:id});
-    }).catch(({
-
-    }));
+function _initTransaction(model){
     
-    
-    
-}
-
-function addOwnerModel(model){
     return new Promise((resolve,reject)=>{
-        query("INSERT INTO owner_master SET ?",model,(err,res)=>{
+        var query = "INSERT INTO bill_transaction_master (userid,billtype,billername,billerid,billnumber,mobilenumber,amount,createdby) VALUES ("+model.userid+",'"+model.billtype+"','"+model.billername+"','"+model.billerid+"','"+model.billnumber+"','"+model.mobilenumber+"',"+model.amount+","+model.userid+");";
+        sql.query(query,(err,res)=>{
                 if(err){
-                    
-                    console.log('Owner Insert Failed due to '+err);
+                    console.log('Bill Create Failed due to '+err);
                     reject(err);
                     return;
                 }
-                console.log('Owner Inserted successfully');
-                resolve(res.insertId);
-            })
-    });
-}
-function updateOwnerModel(model,ownerid){
-    return new Promise((resolve,reject)=>{
-        query("UPDATE owner_master SET ? WHERE ownerid = ?",[model,ownerid],(err,res)=>{
-                if(err){
-                    
-                    console.log('Owner Update Failed due to '+err);
-                    reject(err);
-                    return;
-                }
-                console.log('Owner Updated successfully');
-                resolve(ownerid);
-            })
-    });
-}
-
-
-
-function deleteData(uid,ownerid){
-    return new Promise((resolve,reject)=>{
-        query("DELETE FROM owner_master WHERE ownerid = ? AND uid = ?",[ownerid,uid],(err,data)=>{
-            if(err){
-                reject();
                 
-                return;
-            }
-    
-    
-            resolve();
-        })
-    })
+                var orderid = res.insertId;
+               
+                
+                sql.query("INSERT INTO `transaction_master` (`userid`, `amount`, `transtype`, `orderid`, `paymentstatus`,`commissionpercentage`,`commissionamount`,`settlementamount`) SELECT userid,amount,'bill',billid,1,?,amount * ?/100,amount - (amount * ?/100) FROM bill_transaction_master WHERE billid = ?;",[global.pgCommission,global.pgCommission,global.pgCommission,orderid],(err,res)=>{
+                    if(err){
+                        console.log('Transaction create Failed due to '+err);
+                        reject(err);
+                        return;
+                    }
+                    console.log('Transaction created successfully : '+res.insertId);
+                    resolve(res.insertId);
+                })
+                    
+                
+            })
+    });
 }
 
 module.exports = BillPayments;
