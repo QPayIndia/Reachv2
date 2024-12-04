@@ -1,7 +1,8 @@
 
-require('./db.js');
+const sql = require('./db.js');
 require('dotenv').config();
 const axios = require('axios');
+const { log } = require('console');
 
 const BillPayments = function(model){
 
@@ -31,7 +32,7 @@ BillPayments.getBillDetails = (operator,cutomerMobile,result)=>{
 
 function _getPrepaidPlans(billerid,circle){
     return new Promise((resolve,reject)=>{
-        query("SELECT jsonPlan FROM `instantpay_recharge_plans` WHERE billerid = ? AND circle = ?",[billerid,circle],(err,data)=>{
+        sql.query("SELECT jsonPlan FROM `instantpay_recharge_plans` WHERE billerid = ? AND circle = ?",[billerid,circle],(err,data)=>{
             if(err){
                 reject(err);
                 console.log(err);
@@ -104,12 +105,13 @@ function _getBillDetails(operator,customerId){
                 result.statuscode === "TXN" &&
                 result.status === "Transaction Successful"
             ) {
-                result.data.ipay_id = result.data.enquiryReferenceId;
-                result.data.billamount = result.data.BillAmount;
-                result.data.billduedate = result.data.BillDueDate;
-                result.data.customername = result.data.CustomerName;
-                result.data.additionalinfo = result.data.AdditionalDetails;
-                resolve(result);
+                let data = {}
+                data.ipay_id = result.data.enquiryReferenceId;
+                data.billamount = result.data.BillAmount;
+                data.billduedate = result.data.BillDueDate;
+                data.customername = result.data.CustomerName;
+                data.additionalinfo = result.data.AdditionalDetails;
+                resolve(data);
             }
             reject(result.status)
         } else {
