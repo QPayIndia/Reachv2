@@ -25,7 +25,7 @@ BillPayments.getBillDetails = (operator,cutomerMobile,result)=>{
     _getBillDetails(operator,cutomerMobile).then((data)=>{
         result(null,{status:"success",message:"Bill Details Fetched Successfully",data:data});
     }).catch((err)=>{
-        result(err,{status:"failure",message:err,data:{}});
+        result(err,{status:"failure",message:err.status,data:err});
     });
     
     
@@ -146,7 +146,18 @@ function _getBillDetails(operator,customerId){
         const result = response.data;
 
         // Process response
+
+        let data = {}
+                data.ipay_id = "";
+                data.billamount = "";
+                data.billduedate = "";
+                data.customername = "";
+                data.additionalinfo = "";
+                data.status = "Unable to fetch bill";
+
         if (result) {
+
+            data.status = result.status;
             if (
                 result.statuscode === "TXN" &&
                 result.status === "Transaction Successful"
@@ -157,11 +168,12 @@ function _getBillDetails(operator,customerId){
                 data.billduedate = result.data.BillDueDate;
                 data.customername = result.data.CustomerName;
                 data.additionalinfo = result.data.AdditionalDetails;
+                
                 resolve(data);
-            }
-            reject(result.status)
+            }else
+            reject(data)
         } else {
-            reject(result.status);
+            reject(data);
         }
     });
 
