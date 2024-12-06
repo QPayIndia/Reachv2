@@ -25,7 +25,7 @@ BillPayments.getBillDetails = (operator,cutomerMobile,result)=>{
     _getBillDetails(operator,cutomerMobile).then((data)=>{
         result(null,{status:"success",message:"Bill Details Fetched Successfully",data:data});
     }).catch((err)=>{
-        result(err,{status:"failure",message:"Unable to fetch bill",data:{}});
+        result(err,{status:"failure",message:err,data:{}});
     });
     
     
