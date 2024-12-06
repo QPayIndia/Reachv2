@@ -67,16 +67,22 @@ function _getPrepaidPlans(billerid,circle){
             let parsedData = [];
 
             if(data.length > 0){
-                let rawData = JSON.parse(data[0]['jsonPlan'])['data']['plans'];
-                for(let i=0; i< rawData.length ; i++){
-                    let model = {};
-                    model['planid'] = rawData[i]['_id'];
-                    model['amount'] = rawData[i]['planAmount'];
-                    model['validity'] = rawData[i]['planValidity'];
-                    model['description'] = rawData[i]['planDescription'];
-                   
-                    parsedData[i] = model;
+                try{
+                    let rawData = JSON.parse(data[0]['jsonPlan'])['data']['plans'];
+                    for(let i=0; i< rawData.length ; i++){
+                        let model = {};
+                        model['planid'] = rawData[i]['_id'];
+                        model['amount'] = rawData[i]['planAmount'];
+                        model['validity'] = rawData[i]['planValidity'];
+                        model['description'] = rawData[i]['planDescription'];
+                       
+                        parsedData[i] = model;
+                    }
+                }catch(err){
+                    console.log(err);
+                    
                 }
+                
             }
             
             
