@@ -69,7 +69,7 @@ const validateApiKey = (req, res, next) => {
 
 
 
-// app.use(validateApiKey);
+app.use(validateApiKey);
 
 function decryptMiddleware(req, res, next) {
  
