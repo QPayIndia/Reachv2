@@ -28,9 +28,15 @@ app.use(cors({ origin: true }));
 const validateApiKey = (req, res, next) => {
 
 
- 
+ let exemptPaths = [
+  "/api/business/uploadkyc",
+  "/api/business/signup",
+  "/api/user/verifyotp",
+  "/api/chat/sendfile",
+  "/api/user/auth"
+]
   
-  if (req.path === '/api/business/signup' || req.path === '/api/user/verifyotp' || req.path === '/api/user/auth' || req.path.includes('/uploads')) {
+  if (exemptPaths.includes(req.path) || req.path.includes('/uploads')) {
       return next();
   }else{
    const mode = req.headers['x-agent-mode'];
