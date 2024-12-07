@@ -33,7 +33,13 @@ const validateApiKey = (req, res, next) => {
   "/api/business/signup",
   "/api/user/verifyotp",
   "/api/chat/sendfile",
-  "/api/user/auth"
+  "/api/user/auth",
+  "/api/business/uploadcheque",
+  "/api/business/uploadbphoto",
+  "/api/business/uploadcertificate",
+  "/api/business/uploadpdf",
+  "/api/business/uploadbvideo"
+
 ]
   
   if (exemptPaths.includes(req.path) || req.path.includes('/uploads')) {
