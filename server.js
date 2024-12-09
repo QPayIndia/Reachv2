@@ -54,11 +54,11 @@ const validateApiKey = (req, res, next) => {
       envKey = process.env.USER_KEY;
    }else if(mode === "staff"){
       envKey = process.env.USER_KEY;
-   }   else if(mode === "test"){
-    next();
- }else{
-      return res.status(401).json({status:"failure", message: 'Invalid Request - 1' });
-   }
+   } else if(mode === "test"){
+       return next();
+    }else{
+          return res.status(401).json({status:"failure", message: 'Invalid Request - 1' });
+      }
  
 
   if(apiKey == envKey){
