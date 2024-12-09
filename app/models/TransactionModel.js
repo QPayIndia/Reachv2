@@ -2,6 +2,8 @@ const { json } = require('express');
 const sql = require('./db.js');
 const ContactInfo = require("./ContactInfoModel.js");
 const { pgCommission, payStatus } = require('../config/globals.js');
+const axios = require('axios');
+require('dotenv').config();
 
 const TransactionModel = function(model){
    
@@ -67,7 +69,11 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
                         result(null,{status:"success"});
                     }
                 }else if(transData[0]['transtype'] === 'bill'){
-                    
+                    _initBillPayment(transData[0]['orderid'],model.MerchantOrderID).then(()=>{
+                        result(null,{status:"success"});
+                    }).catch((err)=>{
+                        result(null,{status:"success"});
+                    })
                 }
                 else{
                     result(null,{status:"success"});
@@ -279,8 +285,90 @@ function getTransactions(userid,type,month){
     })
 }
 
-function _initBillPayment(){
+ function _initBillPayment(billid,txnid){
 
+    return new Promise((resolve,reject)=>{
+        const query = "SELECT * FROM bill_transaction_master WHERE billid = "+billid+";"
+        sql.query(query,async (err,data)=>{
+            if(err){}
+            
+            if(data.length > 0){
+
+                data = data[0];
+                const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
+
+                const sendData = {
+                    billerId: data.billerid,
+                    externalRef: sess,
+                    enquiryReferenceId: data.enquiryid,
+                    inputParameters: {
+                      param1: data.billnumber,
+                      param2: ''
+                    },
+                    initChannel: 'AGT',
+                    deviceInfo: {
+                      terminalId: '123456',
+                      mobile: '9940620016',
+                      postalCode: '638011',
+                      geoCode: '11.3275,77.7033'
+                    },
+                    paymentMode: 'Cash',
+                    paymentInfo: {
+                      Remarks: 'CashPayment'
+                    },
+                    remarks: {
+                      param1: '9940620016'
+                    },
+                    transactionAmount: data.amount
+                  };
+                
+            
+                try {
+                    const response = await axios.post(
+                      'https://api.instantpay.in/marketplace/utilityPayments/payment',
+                      sendData,
+                      {
+                        headers: {
+                          Accept: 'application/json',
+                          'Content-Type': 'application/json',
+                          'X-Ipay-Auth-Code': '1',
+                          "X-Ipay-Client-Id": process.env.INV_ID,
+                          "X-Ipay-Client-Secret": process.env.INV_SECRET,
+                          "X-Ipay-Outlet-Id": "192785",
+                          'X-Ipay-Endpoint-Ip': '216.48.190.93'
+                        }
+                      }
+                    );
+                
+                    // Handle response
+                    const result = response.data;
+                    console.log('API Response:', result);
+                    if(result.statuscode === "TXN"){
+                        
+                    }
+                    if(result.statuscode === "TUP"){
+
+                    }
+
+                    sql.query("UPDATE bill_transaction_master SET transactionid = ?,status = ? WHERE billid = ?",[txnid,result.statuscode,billid],async (err,data)=>{
+                    });
+                    resolve(result.message);
+                  } catch (error) {
+                    console.error('Error making API request:', error.response?.data || error.message);
+                    resolve("Transaction Under Process");
+                  }
+                return;
+            }else{
+                resolve("Transaction Under Process");
+            }
+        })
+    
+            
+  
+    })
+
+
+    
 }
 
 
