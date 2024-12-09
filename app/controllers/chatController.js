@@ -37,8 +37,11 @@ exports.createChatRoom = (req,res)=>{
 };
 
 exports.getChatRooms = (req,res)=>{
+
+    let userid = req.body.userid;
+    if(req.body.usertype === "merchant") userid = req.body.bid;
    
-    ChatModel.getChatRooms(req.body.userid,req.body.usertype,(err,data)=>{
+    ChatModel.getChatRooms(userid,req.body.usertype,(err,data)=>{
         if(err){
             res.status(400).send({
                 message:

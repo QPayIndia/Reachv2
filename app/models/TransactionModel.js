@@ -61,11 +61,15 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
                         }).catch((err)=>{
                             result(null,{status:"success"});
                         })
-                    }else{
+                    }
+                    else{
                         //add validation for carttype
                         result(null,{status:"success"});
                     }
-                }else{
+                }else if(transData[0]['transtype'] === 'bill'){
+                    
+                }
+                else{
                     result(null,{status:"success"});
                 }
             }else{
@@ -273,6 +277,10 @@ function getTransactions(userid,type,month){
             
         })
     })
+}
+
+function _initBillPayment(){
+
 }
 
 
