@@ -123,7 +123,8 @@ function getDetailFun(model){
 
             res[0]['userRating'] = 0;
             res[0]['userReview'] = "";
-            res[0]['upi'] = "upi://pay?pa=ipay.192785@icici&pn="+res[0]['name']+"&tn="+res[0]['name']+"&am=&cu=INR";
+            res[0]['upiurk'] = "upi://pay?pa=ipay.192785@icici&pn="+res[0]['name']+"&tn="+res[0]['name']+"&am=&cu=INR";
+            res[0]['upi'] = "ipay.192785@icici";
             res[0]['profile'] =  globals.domain+ res[0]['profile'];
            }
             
