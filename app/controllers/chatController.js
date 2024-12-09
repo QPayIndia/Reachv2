@@ -55,8 +55,10 @@ exports.getChatRooms = (req,res)=>{
 };
 
 exports.getUnreadChats = (req,res)=>{
+    let senderid = req.body.userid;
+    if(req.body.userid) senderid = req.body.senderid;
    
-    ChatModel.getUnreadMessage(req.body.roomid,req.body.chatid,req.body.userid,(err,data)=>{
+    ChatModel.getUnreadMessage(req.body.roomid,req.body.chatid,senderid,(err,data)=>{
         if(err){
             res.status(400).send({
                 message:
@@ -96,8 +98,10 @@ exports.InsertChat = (req,res)=>{
 
 exports.getChatFromRoom = (req,res)=>{
    
-  
-    ChatModel.getChatsFromRoom(req.body.roomid,req.body.userid,(err,data)=>{
+    let senderid = req.body.userid;
+    if(req.body.userid) senderid = req.body.senderid;
+    
+    ChatModel.getChatsFromRoom(req.body.roomid,senderid,(err,data)=>{
         if(err){
             res.status(400).send({
                 message:
