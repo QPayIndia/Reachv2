@@ -48,42 +48,48 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
 
     _updateTransactionResponse(model).then((id)=>{
        if(model.ResponseCode == 200 || model.ResponseCode == 100){
-        _getpostTransactionData(id).then((transData)=>{
-            if(transData.length > 0){
-                if(transData[0]['transtype'] === 'order'){
-                    if(transData[0]['carttype'] === 'service'){
-                        _updateServiceCartItems(transData[0]['orderid']).then(()=>{
+        _getTXNDetails(model.MerchantOrderID).then((data)=>{
+           if(data.transtype === "order")
+            { _getpostTransactionData(id).then((transData)=>{
+                if(transData.length > 0){
+                    if(transData[0]['transtype'] === 'order'){
+                        if(transData[0]['carttype'] === 'service'){
+                            _updateServiceCartItems(transData[0]['orderid']).then(()=>{
+                                result(null,{status:"success"});
+                            }).catch((err)=>{
+                                result(null,{status:"success"});
+                            })
+                        }else if (transData[0]['carttype'] === 'product'){
+                            _updateCartProductItems(transData[0]['orderid']).then(()=>{
+                                result(null,{status:"success"});
+                            }).catch((err)=>{
+                                result(null,{status:"success"});
+                            })
+                        }
+                        else{
+                            //add validation for carttype
                             result(null,{status:"success"});
-                        }).catch((err)=>{
-                            result(null,{status:"success"});
-                        })
-                    }else if (transData[0]['carttype'] === 'product'){
-                        _updateCartProductItems(transData[0]['orderid']).then(()=>{
-                            result(null,{status:"success"});
-                        }).catch((err)=>{
-                            result(null,{status:"success"});
-                        })
+                        }
                     }
                     else{
-                        //add validation for carttype
                         result(null,{status:"success"});
                     }
-                }else if(transData[0]['transtype'] === 'bill'){
-                    _initBillPayment(transData[0]['orderid'],model.MerchantOrderID).then(()=>{
-                        result(null,{status:"success"});
-                    }).catch((err)=>{
-                        result(null,{status:"success"});
-                    })
+                }else{
+                    result(err,{status:"failure"});
                 }
-                else{
-                    result(null,{status:"success"});
-                }
-            }else{
-                result(err,{status:"failure"});
-            }
-        }).catch((err)=>{
-        result(err,{status:"failure"});
-    })
+            }).catch((err)=>{
+            result(err,{status:"failure"});
+        })
+        }else if(data.transtype === 'bill'){
+            _initBillPayment(data.orderid,model.MerchantOrderID).then(()=>{
+                result(null,{status:"success"});
+            }).catch((err)=>{
+                result(null,{status:"success"});
+            })
+        }
+        }).catch((Err)=>{
+            result(null,{status:"success"});
+        })
        }else{
             result(null,{status:"success"});
        }
@@ -394,6 +400,26 @@ function getPaymentDetails(transactionid){
            }
            console.log(data[0]);
            
+           resolve(data[0]);
+    
+           
+            
+        })
+    })
+}
+
+function _getTXNDetails(transactionid){
+    
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT * FROM `transaction_master` WHERE transactionid = ?;",[transactionid],(err,data)=>{
+            if(err){
+                console.log("Get Transaction Details Failed : "+err);
+                reject(err);
+                return;
+            }
+          
+           console.log(data[0]);
+
            resolve(data[0]);
     
            
