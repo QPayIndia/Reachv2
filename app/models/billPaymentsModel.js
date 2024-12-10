@@ -250,8 +250,9 @@ function _getLoanProviders(){
 
         let data = [];
         if(result.statuscode == "TXN"){
-            let temp = {};
+           
             for( let i= 0 ; i < result.data.records.length ; i++){
+                let temp = {};
                 temp.billerid = result.data.records[i].billerId;
                 temp.billername = result.data.records[i].billerName;
                 temp.icon = result.data.records[i].iconUrl;
