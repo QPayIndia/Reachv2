@@ -43,7 +43,7 @@ BillPayments.initTransaction = (model,result)=>{
 
 
     let convenienceFee = (model.billamount * global.billPayCommission/100).toFixed(2);
-    if(parseFloat(convenienceFee)+model.billamount != model.amount) return result(err,{status:"failure",message:"Invalid Data",transactionId:0});
+    if(parseFloat(convenienceFee)+model.billamount != model.amount) return result("",{status:"failure",message:"Invalid Data",transactionId:0});
    
     _initTransaction(model).then((id)=>{
         result(null,{status:"success",message:"Transaction Created",transactionId:id});
