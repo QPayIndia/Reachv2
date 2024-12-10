@@ -261,7 +261,7 @@ function _getLoanProviders(page){
                 temp.icon = result.data.records[i].iconUrl;
                 data[i] = temp;
             } 
-            resolve(data);  
+            resolve({meta:meta,records:data});  
         }else{
             reject([])
         }
