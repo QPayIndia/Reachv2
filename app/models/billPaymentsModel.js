@@ -19,6 +19,14 @@ BillPayments.getPrepaidPlans = (userid,billerid,circle,result)=>{
     
     
 }
+BillPayments.getCheckoutTotal = (amount,result)=>{
+
+    let convenienceFee = (amount * global.billPayCommission/100).toFixed(2);
+    result(null,{status:"success",message:"Convenience Fee Fetched Successfully",data:{amount:amount,convenienceFee:convenienceFee,total:amount+convenienceFee}});
+   
+    
+    
+}
 
 BillPayments.getBillDetails = (operator,cutomerMobile,result)=>{
    
@@ -200,7 +208,7 @@ function _initTransaction(model){
                 var orderid = res.insertId;
                
                 
-                sql.query("INSERT INTO `transaction_master` (`userid`, `amount`, `transtype`, `orderid`, `paymentstatus`,`commissionpercentage`,`commissionamount`,`settlementamount`) SELECT userid,amount,'bill',billid,1,?,amount * ?/100,amount - (amount * ?/100) FROM bill_transaction_master WHERE billid = ?;",[global.pgCommission,global.pgCommission,global.pgCommission,orderid],(err,res)=>{
+                sql.query("INSERT INTO `transaction_master` (`userid`, `amount`, `transtype`, `orderid`, `paymentstatus`,`commissionpercentage`,`commissionamount`,`settlementamount`) SELECT userid,amount,'bill',billid,1,?,amount * ?/100,amount - (amount * ?/100) FROM bill_transaction_master WHERE billid = ?;",[global.billPayCommission,global.billPayCommission,global.billPayCommission,orderid],(err,res)=>{
                     if(err){
                         console.log('Transaction create Failed due to '+err);
                         reject(err);

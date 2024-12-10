@@ -53,6 +53,23 @@ exports.getBillDetails = (req,res)=>{
    
 };
 
+exports.Checkout = (req,res)=>{
+  
+
+    RequestValidator.validateRequest(req,res,["amount"],(auth)=>{
+        if(auth){
+            BillPayments.Checkout(req.body.amount,(err,data)=>{
+                if(err){
+                    res.status(400).send(data);
+                }
+                else
+                    res.status(200).send(data);
+            });
+        }
+    })
+};
+
+
 exports.initTransaction = (req,res)=>{
    
 

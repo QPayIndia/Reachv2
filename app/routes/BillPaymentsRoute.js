@@ -6,6 +6,7 @@ module.exports = app =>{
     router.post('/getbilldetails',controller.getBillDetails);
     router.post('/getoperators',controller.getOperators);
     router.post('/init',controller.initTransaction);
+    router.post('/checkout',controller.Checkout);
    
    
     app.use('/api/bill',router);
