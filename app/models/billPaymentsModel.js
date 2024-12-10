@@ -248,7 +248,7 @@ function _getLoanProviders(){
 
         // Process response
 
-        console.log(result);
+        console.log(result.data.records);
         
     });
 
