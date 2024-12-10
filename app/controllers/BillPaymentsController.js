@@ -101,6 +101,7 @@ exports.initTransaction = (req,res)=>{
                 billnumber : req.body.billnumber,
                 mobilenumber : req.body.mobilenumber,
                 amount : req.body.amount,
+                billamount:req.body.billamount,
                 createdby : req.body.userid
             })
 
