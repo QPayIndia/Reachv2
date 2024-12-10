@@ -206,7 +206,7 @@ function _initTransaction(model){
                 }
                 
                 var orderid = res.insertId;
-                let convenienceFee = (amount * global.billPayCommission/100).toFixed(2);
+                let convenienceFee = (model.amount * global.billPayCommission/100).toFixed(2);
                 
                 sql.query("INSERT INTO `transaction_master` (`userid`, `amount`, `transtype`, `orderid`, `paymentstatus`,`commissionpercentage`,`commissionamount`,`settlementamount`) SELECT userid,amount,'bill',billid,1,?,?,amount - ? FROM bill_transaction_master WHERE billid = ?;",[global.billPayCommission,parseFloat(convenienceFee),parseFloat(convenienceFee),orderid],(err,res)=>{
                     if(err){
