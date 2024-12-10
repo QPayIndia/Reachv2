@@ -223,7 +223,7 @@ function _getLoanProviders(){
             {
                 pagination : {
                     pageNumber : 1,
-                    recordsPerPage : 400
+                    recordsPerPage : 100
                 },
                 filters:{
                     categoryKey : "C13",
