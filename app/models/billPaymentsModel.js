@@ -68,9 +68,9 @@ BillPayments.getOperators = (type,result)=>{
     
 }
 
-BillPayments.getLoanProviders = (result)=>{
+BillPayments.getLoanProviders = (page,result)=>{
    
-    _getLoanProviders().then((data)=>{
+    _getLoanProviders(page).then((data)=>{
         result(null,{status:"success",message:"Loan Providers Fetched Successfully",data:data});
     }).catch((err)=>{
         result(err,{status:"failure",message:"Unable to fetch Loan Providers",data:[]});
@@ -213,7 +213,7 @@ function _getBillDetails(operator,customerId){
 
 }
 
-function _getLoanProviders(){
+function _getLoanProviders(page){
     return new Promise(async (resolve,reject)=>{
         const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
 
@@ -222,7 +222,7 @@ function _getLoanProviders(){
             "https://api.instantpay.in/marketplace/utilityPayments/billers",
             {
                 pagination : {
-                    pageNumber : 1,
+                    pageNumber : page,
                     recordsPerPage : 100
                 },
                 filters:{
@@ -249,7 +249,10 @@ function _getLoanProviders(){
         // Process response
 
         let data = [];
+        let meta = {};
         if(result.statuscode == "TXN"){
+            meta.totalPages = result.data.totalPages;
+            meta.currentPage = result.data.currentPage;
            
             for( let i= 0 ; i < result.data.records.length ; i++){
                 let temp = {};

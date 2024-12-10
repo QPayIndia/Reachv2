@@ -71,15 +71,17 @@ exports.Checkout = (req,res)=>{
 
 exports.getLoanProviders = (req,res)=>{
   
-
-    
-            BillPayments.getLoanProviders((err,data)=>{
+            
+    RequestValidator.validateRequest(req,res,["page"],(auth)=>{
+        if(auth){
+            BillPayments.getLoanProviders(req.body.page,(err,data)=>{
                 if(err){
                     res.status(400).send(data);
                 }
                 else
                     res.status(200).send(data);
             });
+    }})
         
     
 };
