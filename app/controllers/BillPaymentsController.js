@@ -82,6 +82,7 @@ exports.initTransaction = (req,res)=>{
         this.billnumber = model.billnumber,
         this.mobilenumber = model.mobilenumber,
         this.amount = model.amount,
+        this.billamount = model.billamount,
         this.createdby = model.createdby
         
        
