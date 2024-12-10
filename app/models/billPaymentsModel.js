@@ -71,9 +71,9 @@ BillPayments.getOperators = (type,result)=>{
 BillPayments.getLoanProviders = (result)=>{
    
     _getLoanProviders().then((data)=>{
-        result(null,{status:"success",message:"Bill Details Fetched Successfully",data:data});
+        result(null,{status:"success",message:"Loan Providers Fetched Successfully",data:data});
     }).catch((err)=>{
-        result(err,{status:"failure",message:"Unable to fetch operators",data:[]});
+        result(err,{status:"failure",message:"Unable to fetch Loan Providers",data:[]});
     });
     
     
@@ -223,7 +223,7 @@ function _getLoanProviders(){
             {
                 pagination : {
                     pageNumber : 1,
-                    recordsPerPage : 10
+                    recordsPerPage : 400
                 },
                 filters:{
                     categoryKey : "C13",
@@ -247,8 +247,12 @@ function _getLoanProviders(){
         const result = response.data;
 
         // Process response
-
-        console.log(result.data.records);
+        if(result.statuscode == "TXN"){
+            resolve(result.data.records);
+        }else{
+            reject([])
+        }
+        
         
     });
 
