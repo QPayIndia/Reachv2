@@ -69,6 +69,21 @@ exports.Checkout = (req,res)=>{
     })
 };
 
+exports.getLoanProviders = (req,res)=>{
+  
+
+    
+            BillPayments.getLoanProviders((err,data)=>{
+                if(err){
+                    res.status(400).send(data);
+                }
+                else
+                    res.status(200).send(data);
+            });
+        
+    
+};
+
 
 exports.initTransaction = (req,res)=>{
    

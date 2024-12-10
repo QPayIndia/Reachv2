@@ -68,6 +68,17 @@ BillPayments.getOperators = (type,result)=>{
     
 }
 
+BillPayments.getLoanProviders = (result)=>{
+   
+    _getLoanProviders().then((data)=>{
+        result(null,{status:"success",message:"Bill Details Fetched Successfully",data:data});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Unable to fetch operators",data:[]});
+    });
+    
+    
+}
+
 function _getPrepaidPlans(billerid,circle){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT jsonPlan FROM `instantpay_recharge_plans` WHERE billerid = ? AND circle = ?",[billerid,circle],(err,data)=>{
@@ -201,6 +212,51 @@ function _getBillDetails(operator,customerId){
     
 
 }
+
+function _getLoanProviders(){
+    return new Promise(async (resolve,reject)=>{
+        const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
+
+        // Prepare the HTTP request
+        const response = await axios.post(
+            "https://api.instantpay.in/marketplace/utilityPayments/billers",
+            {
+                pagination : {
+                    pageNumber : 1,
+                    recordsPerPage : 10
+                },
+                filters:{
+                    categoryKey : "C13",
+                    updatedAfterDate : ""
+                }
+            },
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "X-Ipay-Auth-Code": "1",
+                    "X-Ipay-Client-Id": process.env.INV_ID,
+                    "X-Ipay-Client-Secret": process.env.INV_SECRET,
+                    "X-Ipay-Outlet-Id": "192785",
+                    "X-Ipay-Endpoint-Ip": "216.48.190.93"
+                },
+                httpsAgent: new (require("https").Agent)({ rejectUnauthorized: false }) // Disable SSL verification
+            }
+        );
+
+        const result = response.data;
+
+        // Process response
+
+        console.log(result);
+        
+    });
+
+    
+
+}
+
+
 function _initTransaction(model){
     
     return new Promise((resolve,reject)=>{
