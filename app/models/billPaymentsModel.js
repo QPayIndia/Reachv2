@@ -251,8 +251,8 @@ function _getLoanProviders(page){
         let data = [];
         let meta = {};
         if(result.statuscode == "TXN"){
-            meta.totalPages = result.data.totalPages;
-            meta.currentPage = result.data.currentPage;
+            meta.totalPages = result.data.meta.totalPages;
+            meta.currentPage = result.data.meta.currentPage;
            
             for( let i= 0 ; i < result.data.records.length ; i++){
                 let temp = {};
