@@ -58,7 +58,7 @@ exports.Checkout = (req,res)=>{
 
     RequestValidator.validateRequest(req,res,["amount"],(auth)=>{
         if(auth){
-            BillPayments.Checkout(req.body.amount,(err,data)=>{
+            BillPayments.getCheckoutTotal(req.body.amount,(err,data)=>{
                 if(err){
                     res.status(400).send(data);
                 }
