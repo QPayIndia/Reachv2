@@ -247,8 +247,15 @@ function _getLoanProviders(){
         const result = response.data;
 
         // Process response
+
+        let data = [];
         if(result.statuscode == "TXN"){
-            resolve(result.data.records);
+            let temp = {};
+            for( let i= 0 ; i < result.data.records.length ; i++){
+                temp.billerId = result.data.records[i].billerId;
+                data[i] = temp;
+            } 
+            resolve(data);  
         }else{
             reject([])
         }
