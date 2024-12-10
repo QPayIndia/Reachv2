@@ -223,7 +223,7 @@ function _getLoanProviders(){
             {
                 pagination : {
                     pageNumber : 1,
-                    recordsPerPage : 100
+                    recordsPerPage : 300
                 },
                 filters:{
                     categoryKey : "C13",
@@ -252,7 +252,9 @@ function _getLoanProviders(){
         if(result.statuscode == "TXN"){
             let temp = {};
             for( let i= 0 ; i < result.data.records.length ; i++){
-                temp.billerId = result.data.records[i].billerId;
+                temp.billerid = result.data.records[i].billerId;
+                temp.billername = result.data.records[i].billerName;
+                temp.icon = result.data.records[i].iconUrl;
                 data[i] = temp;
             } 
             resolve(data);  
