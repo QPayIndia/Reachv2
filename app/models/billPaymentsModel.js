@@ -191,7 +191,7 @@ function _getBillDetails(operator,customerId){
         );
 
         const result = response.data;
-
+        _updateIPayLog(sess,result,result.ipay_uuid);
         // Process response
 
         let data = {}
@@ -373,6 +373,16 @@ function _initTransaction(model){
 
 function _insertIPayLog(sess,request){
     sql.query("INSERT INTO `instantpay_log` (`refid`, `request`) VALUES (? ,? );",[sess,JSON.stringify(request)],(err,res)=>{
+        if(err){
+            console.log(err);
+            
+            return;
+        }
+        
+    })
+}
+function _updateIPayLog(sess,response,ipay_id){
+    sql.query("UPDATE `instantpay_log` SET `response` = ? AND ipayid = ? WHERE refid = ?;",[JSON.stringify(response),ipay_id,sess],(err,res)=>{
         if(err){
             console.log(err);
             
