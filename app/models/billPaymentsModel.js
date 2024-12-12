@@ -172,6 +172,7 @@ function _getBillDetails(operator,customerId){
 
 
         _insertIPayLog(sess,request);
+        
         const response = await axios.post(
             "https://api.instantpay.in/marketplace/utilityPayments/prePaymentEnquiry",
             request,
