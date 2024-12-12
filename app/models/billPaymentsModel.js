@@ -191,8 +191,10 @@ function _getBillDetails(operator,customerId){
         );
 
         const result = response.data;
-        _updateIPayLog(sess,{result},result.ipay_uuid);
-        // Process response
+        console.log(result);
+        
+        _updateIPayLog(sess,"",result.ipay_uuid);
+        
 
         let data = {}
                 data.ipay_id = "";
