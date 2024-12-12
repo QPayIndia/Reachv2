@@ -68,6 +68,17 @@ BillPayments.getOperators = (type,result)=>{
     
 }
 
+BillPayments.validateCard = (bin,result)=>{
+   
+    _validateCard(bin).then((data)=>{
+        result(null,{status:"success",message:"Card Validated Successfully",data:data});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Invalid Card",data:{}});
+    });
+    
+    
+}
+
 BillPayments.getLoanProviders = (page,result)=>{
    
     _getLoanProviders(page).then((data)=>{
@@ -272,6 +283,58 @@ function _getLoanProviders(page){
     
 
 }
+
+
+function _validateCard(bin){
+    return new Promise(async (resolve,reject)=>{
+        const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
+
+        // Prepare the HTTP request
+        const response = await axios.post(
+            "https://api.instantpay.in/identity/binChecker",
+            {
+               binNumber: bin,
+                latitude: "38.8951",
+                longitude: "77.0364",
+                externalRef: sess
+            },
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "X-Ipay-Auth-Code": "1",
+                    "X-Ipay-Client-Id": process.env.INV_ID,
+                    "X-Ipay-Client-Secret": process.env.INV_SECRET,
+                    "X-Ipay-Outlet-Id": "192785",
+                    "X-Ipay-Endpoint-Ip": "216.48.190.93"
+                },
+                httpsAgent: new (require("https").Agent)({ rejectUnauthorized: false }) // Disable SSL verification
+            }
+        );
+
+        const result = response.data;
+
+        // Process response
+
+        let data = {};
+       
+        if(result.statuscode == "TXN"){
+            data.cardNetwork = result.data.binDetails.cardNetwork;
+            data.cardType = result.data.binDetails.cardType;
+            data.issuerBank = result.data.binDetails.issuerBank;
+          
+            resolve(data);  
+        }else{
+            reject({})
+        }
+        
+        
+    });
+
+    
+
+}
+
 
 
 function _initTransaction(model){

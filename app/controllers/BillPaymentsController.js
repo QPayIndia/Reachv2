@@ -86,6 +86,23 @@ exports.getLoanProviders = (req,res)=>{
     
 };
 
+exports.ValidateCard = (req,res)=>{
+  
+            
+    RequestValidator.validateRequest(req,res,["binNumber"],(auth)=>{
+        if(auth){
+            BillPayments.validateCard(req.body.binNumber,(err,data)=>{
+                if(err){
+                    res.status(400).send(data);
+                }
+                else
+                    res.status(200).send(data);
+            });
+    }})
+        
+    
+};
+
 
 exports.initTransaction = (req,res)=>{
    

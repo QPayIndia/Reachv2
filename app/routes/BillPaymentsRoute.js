@@ -8,6 +8,7 @@ module.exports = app =>{
     router.post('/init',controller.initTransaction);
     router.post('/checkout',controller.Checkout);
     router.post('/getloanproviders',controller.getLoanProviders);
+    router.post('/validatecard',controller.ValidateCard);
    
    
     app.use('/api/bill',router);
