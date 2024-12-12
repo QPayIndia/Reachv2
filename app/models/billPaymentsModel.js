@@ -152,26 +152,29 @@ function _getBillDetails(operator,customerId){
     return new Promise(async (resolve,reject)=>{
         const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
 
-        // Prepare the HTTP request
+        const request = {
+            billerId: operator,
+            initChannel: "AGT",
+            externalRef: sess,
+            inputParameters: {
+                param1: customerId,
+                param2: ""
+            },
+            deviceInfo: {
+                mac: "02-00-AC-10-7A-99",
+                ip: "164.52.211.128"
+            },
+            remarks: {
+                param1: "9940620016"
+            },
+            transactionAmount: 10
+        };
+
+
+        _insertIPayLog(sess,request);
         const response = await axios.post(
             "https://api.instantpay.in/marketplace/utilityPayments/prePaymentEnquiry",
-            {
-                billerId: operator,
-                initChannel: "AGT",
-                externalRef: sess,
-                inputParameters: {
-                    param1: customerId,
-                    param2: ""
-                },
-                deviceInfo: {
-                    mac: "02-00-AC-10-7A-99",
-                    ip: "164.52.211.128"
-                },
-                remarks: {
-                    param1: "9940620016"
-                },
-                transactionAmount: 10
-            },
+            request,
             {
                 headers: {
                     Accept: "application/json",
@@ -365,6 +368,15 @@ function _initTransaction(model){
                 
             })
     });
+}
+
+function _insertIPayLog(sess,request){
+    sql.query("INSERT INTO `instantpay_log` (`refid`, `request`) VALUES (? ,? ) ;",[sess,request],(err,res)=>{
+        if(err){
+            return;
+        }
+        
+    })
 }
 
 module.exports = BillPayments;
