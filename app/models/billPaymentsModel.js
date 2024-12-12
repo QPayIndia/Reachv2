@@ -317,7 +317,8 @@ function _validateCard(bin){
         // Process response
 
         let data = {};
-       
+        console.log(result);
+        
         if(result.statuscode == "TXN"){
             data.cardNetwork = result.data.binDetails.cardNetwork;
             data.cardType = result.data.binDetails.cardType;
