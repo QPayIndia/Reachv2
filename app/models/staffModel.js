@@ -19,6 +19,26 @@ StaffModel.InsertBMap = (model,result)=>{
 
 
 
+StaffModel.addUser = (phone,name,userid,result)=>{
+   
+    getUserByPhone(phone).then((data)=>{
+        if(data.length == 0){
+            addUser(phone,name,userid).then((id)=>{
+                result(null,{status:"success",message:"User Created Successfully",uid:id});
+            }).catch(()=>{
+                result("err",{status:"failure",message:"User create Failed"});
+            });
+        }else{
+            result("err",{status:"failure",message:"User already exists"});
+        }
+    }).catch(()=>{
+        result("err",{status:"failure",message:"User create Failed"});
+    });
+    
+    
+    
+}
+
 
 StaffModel.getAllBusiness = (userid,result)=>{
    
@@ -54,6 +74,21 @@ StaffModel.login = (phone,password,result)=>{
 
 
 
+function addUser(phone,name,userid){
+    return new Promise((resolve,reject)=>{
+        sql.query("INSERT INTO user_master SET name = ? ,phone = ?,usertype = 1,createdby = ?",[name,phone,userid],(err,res)=>{
+            if(err){
+                reject();
+                console.log('User Insert Failed due to '+err);
+                return;
+            }
+            console.log('User Created successfully');
+            resolve(res.insertId);
+        })
+    })
+}
+
+
 function _insertBMap(model){
     return new Promise((resolve,reject)=>{
         sql.query("INSERT INTO staff_business_mapping SET ?",[model],(err,res)=>{
@@ -74,7 +109,7 @@ function _insertBMap(model){
 
 function _getAllBusiness(userid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT B.name,B.description,A.status,A.bid FROM `staff_business_mapping` as A,`business_master` as B WHERE A.bid = B.bid AND A.staffid = ?;",[userid],(err,res)=>{
+        sql.query("SELECT B.name,B.description,A.status FROM `staff_business_mapping` as A,`business_master` as B WHERE A.bid = B.bid AND A.staffid = ?;",[userid],(err,res)=>{
                 if(err){
                     
                     console.log('Get All Merchants Failed due to '+err);
@@ -85,6 +120,20 @@ function _getAllBusiness(userid){
             })
     });
 }
+function getUserByPhone(phone){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT uid, name,phone,active,usertype,DATE_FORMAT(lastlogin, '%d-%m-%Y %h:%i:%s %p') as lastlogin,DATE_FORMAT(createdon, '%d-%m-%Y %h:%i:%s %p') as registeredon FROM user_master WHERE phone = ?;",phone,(err,res)=>{
+                if(err){
+                    
+                    console.log('Get Users Failed due to '+err);
+                    return;
+                }
+                console.log('Get  User Fetched');
+                resolve(res);
+            })
+    });
+}
+
 
 
 

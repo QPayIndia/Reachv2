@@ -13,27 +13,7 @@ const BMap = function(model){
     this.createdby = model.createdby
 }
 
-exports.getAllMerchants = (req,res)=>{
-    staffModel.getAllMerchants(req.body.uid,(err,data)=>{
-        if(err){
-            res.status(400).send(data);
-        }
-        else
-            res.status(200).send(data);
-    });
-};
-exports.getPendingMerchants = (req,res)=>{
-   
-    
 
-    staffModel.getPendingMerchants(req.body.uid,(err,data)=>{
-        if(err){
-            res.status(400).send(data);
-        }
-        else
-            res.status(200).send(data);
-    });
-};
 exports.getAllBusiness = (req,res)=>{
    
     staffModel.getAllBusiness(req.body.userid,(err,data)=>{
@@ -90,78 +70,7 @@ exports.addUser = (req,res)=>{
     });
 };
 
-exports.updateMerchantActiveStatus = (req,res)=>{
-   
-    
 
-    staffModel.updateMerchantActiveStatus(req.body.bid,(err,data)=>{
-        if(err){
-            res.status(400).send(data);
-        }
-        else
-            res.status(200).send(data);
-    });
-};
-exports.login = (req,res)=>{
-   
-    
-
-    staffModel.login(req.body.phone,req.body.password,(err,data)=>{
-        if(err){
-            res.status(400).send(data);
-        }
-        else
-            res.status(200).send(data);
-    });
-};
-exports.deleteBusiness = (req,res)=>{
-   
-    
-
-    staffModel.deleteBusiness(req.body.bid,(err,data)=>{
-        if(err){
-            res.status(400).send(data);
-        }
-        else
-            res.status(200).send(data);
-    });
-};
-
-
-//Home Banner
-
-exports.AddHomeBanner = (req,res)=>{
-   
-    staffModel.addBanner(req.body.title,req.body.url,req.body.uid,(err,data)=>{
-        if(err){
-            res.status(400).send(data);
-        }
-        else
-            res.status(200).send(data);
-    });
-};
-
-exports.UpdateHomeBannerStatus = (req,res)=>{
-   
-    staffModel.updateBannerStatus(req.body.bannerid,(err,data)=>{
-        if(err){
-            res.status(400).send(data);
-        }
-        else
-            res.status(200).send(data);
-    });
-};
-
-exports.GetAllBanner = (req,res)=>{
-   
-    staffModel.getHomeBanner(req.body.uid,(err,data)=>{
-        if(err){
-            res.status(400).send(data);
-        }
-        else
-            res.status(200).send(data);
-    });
-};
 
 
 
