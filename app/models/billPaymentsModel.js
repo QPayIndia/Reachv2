@@ -172,7 +172,7 @@ function _getBillDetails(operator,customerId){
 
 
         _insertIPayLog(sess,request);
-        
+
         const response = await axios.post(
             "https://api.instantpay.in/marketplace/utilityPayments/prePaymentEnquiry",
             request,
@@ -372,8 +372,10 @@ function _initTransaction(model){
 }
 
 function _insertIPayLog(sess,request){
-    sql.query("INSERT INTO `instantpay_log` (`refid`, `request`) VALUES (? ,? ) ;",[sess,request],(err,res)=>{
+    sql.query("INSERT INTO `instantpay_log` (`refid`, `request`) VALUES (? ,? );",[sess,request],(err,res)=>{
         if(err){
+            console.log(err);
+            
             return;
         }
         
