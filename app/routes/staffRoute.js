@@ -1,10 +1,10 @@
 module.exports = app =>{
-    const admin  = require('../controllers/adminMasterController.js');
+    const staff  = require('../controllers/staffController.js');
     const business  = require('../controllers/businessInfoController.js');
     
     var router = require('express').Router();
-    router.post('/getallusers',admin.getAllUsers);
-    router.post('/adduser',business.Signup);
+    router.post('/getallbusiness',staff.getAllBusiness);
+    router.post('/adduser',staff.addUser);
     
     app.use('/api/staff',router);
 }

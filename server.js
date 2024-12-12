@@ -40,7 +40,8 @@ const validateApiKey = (req, res, next) => {
   "/api/business/uploadpdf",
   "/api/pay/makepayment",
   "/api/pay/callback",
-  "/api/business/uploadbvideo"
+  "/api/business/uploadbvideo",
+  "/admin"
 
 ]
   

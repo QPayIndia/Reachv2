@@ -4,7 +4,7 @@ const BusinessMaster = function(model){
     this.name = model.name,
     this.description = model.description,
     this.uid = model.uid,
-    this.createdby = model.uid
+    this.createdby = model.createdby
     
 }
 

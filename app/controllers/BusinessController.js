@@ -7,6 +7,7 @@ exports.create = (req,res)=>{
         name:req.body.name,
         description:req.body.description,
         uid:req.body.uid,
+        createdby:req.body.userid
     });
 
     BusinessMaster.create(model,(err,data)=>{
