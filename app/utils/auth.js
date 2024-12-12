@@ -5,10 +5,15 @@ const Auth = function(model){}
 
 Auth.ValidateAPIKey = (userid,accesstoken,result)=>{
 
-  Logger.LogError(userid,"Success");
+ 
 
   _getAPIKey(userid).then((data)=>{
+    console.log(accesstoken);
+    
     if(data.length > 0){
+
+      console.log(data[0]['token']);
+      
         if(accesstoken === data[0]['token']){
           result(true,{status:"success",message:"Access Token Validated"})
         }else{
@@ -26,6 +31,8 @@ Auth.ValidateAPIKey = (userid,accesstoken,result)=>{
 
 
 function _getAPIKey(userid){
+  console.log(userid);
+  
   return new Promise((resolve,reject)=>{
       sql.query("SELECT * FROM access_token_master WHERE userid = ? ORDER BY tokenid DESC LIMIT 1",[userid],(err,data)=>{
           if(err){
