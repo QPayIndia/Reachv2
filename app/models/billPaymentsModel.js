@@ -325,7 +325,7 @@ function _payCreditCard(cardnumber){
                 },
                 payee: {
                     accountNumber: _aesEncryption(""),
-                    name: "THIRU SAM NATARAJAN"
+                    name: "Thirugnanasambantham N"
                 },
                 transferMode: "CREDITCARD",
                 transferAmount: "10.00",
@@ -482,7 +482,7 @@ function _aesEncryption(text) {
 
     const IV = crypto.randomBytes(16);
     const cipher = crypto.createCipheriv('aes-256-cbc', "4c9655e2cc77331e4c9655e2cc77331e", IV);
-    let encrypted = cipher.update("4022750130108596", 'utf8', 'hex'); // Input as UTF-8, output as hex
+    let encrypted = cipher.update("5334670026199774", 'utf8', 'hex'); // Input as UTF-8, output as hex
     encrypted += cipher.final('hex'); // Finalize the encryption
     return { encryptedData: encrypted, iv: IV.toString('hex') };
 }
