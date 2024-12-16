@@ -14,6 +14,16 @@ const BMap = function(model){
     this.createdby = model.createdby
 }
 
+const FollowUpModel = function(model){
+    this.bid = model.bid,
+    this.staffid = model.staffid,
+    this.appdate = model.appdate,
+    this.apptime = model.apptime,
+    this.remarks = model.remarks,
+    this.status = model.status,
+    this.createdby = model.createdby
+}
+
 
 exports.getAllBusiness = (req,res)=>{
    
@@ -43,9 +53,62 @@ exports.UpdateBusinessStatus = (req,res)=>{
                 if(err){
                     res.status(400).send(data);
                 }
-                else
-                    res.status(200).send(data);
+                else{
+                    
+                    if(req.body.status === "IN FOLLOWUP"){
+                        const model = new FollowUpModel({
+                            bid:req.body.bid,
+                            staffid:req.body.userid,
+                            appdate:req.body.appdate,
+                            apptime:req.body.apptime,
+                            remarks:req.body.remarks,
+                            status:"PENDING",
+                            createdby:req.body.userid
+                        });
+    
+                        StaffModel.AddFollowUp(model,(err,data)=>{
+                            if(err){
+                                res.status(400).send(data);
+                            }
+                            else{
+                                res.status(200).send(data);
+                            }
+                        })
+                    }
+                    else
+                        res.status(200).send(data);
+                }
+                    
             });
+        }
+    });
+};
+
+
+exports.AddFollowUp = (req,res)=>{
+   
+    RequestValidator.validateRequest(req,res,["bid","staffid","appdate","apptime","remarks","status"],(auth)=>{
+        if(auth){
+
+           
+            const model = new FollowUpModel({
+                bid:req.body.bid,
+                staffid:req.body.userid,
+                appdate:req.body.appdate,
+                apptime:req.body.apptime,
+                remarks:req.body.remarks,
+                status:req.body.status,
+                createdby:req.body.userid
+            });
+
+            StaffModel.AddFollowUp(model,(err,data)=>{
+                if(err){
+                    res.status(400).send(data);
+                }
+                else{
+                    res.status(200).send(data);
+                }
+            })
         }
     });
 };

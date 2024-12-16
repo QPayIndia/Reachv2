@@ -62,15 +62,17 @@ StaffModel.UpdateBusinessStatus = (model,result)=>{
 }
 
 
-StaffModel.AddFollowUp = (userid,result)=>{
+StaffModel.AddFollowUp = (model,result)=>{
    
-    _getAllBusiness(userid).then((data)=>{
-        result(null,{status:"success",message:"Merchant Data Fetched Successfully",data:data});
+    _insertFollowUp(model).then((data)=>{
+        result(null,{status:"success",message:"Follow Up Added Successfully",data:data});
     }).catch(()=>{
-        result(null,{status:"failure",message:"Merchant Data Fetch Failed"});
+        result(null,{status:"failure",message:"Follow Up Add Failed"});
     });
  
 }
+
+
 
 
 
@@ -117,6 +119,21 @@ function _insertBMap(model){
             if(err){
                 reject();
                 console.log('Staff BMap Insert Failed due to '+err);
+                return;
+            }
+            
+            resolve(res.insertId);
+        })
+    })
+}
+
+
+function _insertFollowUp(model){
+    return new Promise((resolve,reject)=>{
+        sql.query("INSERT INTO staff_follow_up_master SET ?",[model],(err,res)=>{
+            if(err){
+                reject();
+                console.log('Staff Follow Up Insert Failed due to '+err);
                 return;
             }
             
