@@ -4,6 +4,8 @@ require('dotenv').config();
 const axios = require('axios');
 const { log } = require('console');
 const global = require('../config/globals.js');
+const crypto = require('crypto');
+
 
 const BillPayments = function(model){
 
@@ -23,10 +25,18 @@ BillPayments.getCheckoutTotal = (amount,result)=>{
 
     let convenienceFee = (amount * global.billPayCommission/100).toFixed(2);
     result(null,{status:"success",message:"Convenience Fee Fetched Successfully",data:{amount:amount,convenienceFee:convenienceFee,total:amount+parseFloat(convenienceFee)}});
-   
-    
-    
 }
+
+
+BillPayments.PayCreditCard = (cardnumber,result)=>{
+
+    _payCreditCard(cardnumber).then((data)=>{
+        result(null,{status:"success",message:"Bill Details Fetched Successfully",data:data});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:err.status,data:err});
+    });
+}
+
 
 BillPayments.getBillDetails = (operator,cutomerMobile,result)=>{
    
@@ -291,6 +301,79 @@ function _getLoanProviders(page){
 }
 
 
+function _payCreditCard(cardnumber){
+    return new Promise(async (resolve,reject)=>{
+        const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
+
+        // Prepare the HTTP request
+        const response = await axios.post(
+            "https://api.instantpay.in/payments/payout",
+            {
+                payer: {
+                    bankId: "0",
+                    bankProfileId: "0",
+                    accountNumber: " 9940620016",
+                    name: "",
+                    paymentMode: "",
+                    cardNumber: "",
+                    cardSecurityCode: "",
+                    cardExpiry: {
+                        month: "",
+                        year: ""
+                    },
+                    referenceNumber: ""
+                },
+                payee: {
+                    accountNumber: _aesEncryption(""),
+                    name: "THIRU SAM NATARAJAN"
+                },
+                transferMode: "CREDITCARD",
+                transferAmount: "1.00",
+                externalRef: sess,
+                latitude: "20.5936",
+                longitude: "78.9628",
+                remarks: "Credit Card BILL",
+                alertEmail: ""
+            },
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "X-Ipay-Auth-Code": "1",
+                    "X-Ipay-Client-Id": process.env.INV_ID,
+                    "X-Ipay-Client-Secret": process.env.INV_SECRET,
+                    "X-Ipay-Outlet-Id": "192785",
+                    "X-Ipay-Endpoint-Ip": "216.48.190.93"
+                },
+                httpsAgent: new (require("https").Agent)({ rejectUnauthorized: false }) // Disable SSL verification
+            }
+        );
+
+        const result = response.data;
+
+        // Process response
+
+        let data = [];
+        let meta = {};
+
+        console.log(result);
+        
+        if(result.statuscode == "TXN"){
+          
+            
+            resolve(result);  
+        }else{
+            reject([])
+        }
+        
+        
+    });
+
+    
+
+}
+
+
 function _validateCard(bin){
     return new Promise(async (resolve,reject)=>{
         const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
@@ -392,6 +475,16 @@ function _updateIPayLog(sess,response,ipay_id){
         }
         
     })
+}
+
+
+function _aesEncryption(text) {
+
+    const IV = crypto.randomBytes(16);
+    const cipher = crypto.createCipheriv('aes-256-cbc', "4c9655e2cc77331e4c9655e2cc77331e", IV);
+    let encrypted = cipher.update("4022750130108596", 'utf8', 'hex'); // Input as UTF-8, output as hex
+    encrypted += cipher.final('hex'); // Finalize the encryption
+    return { encryptedData: encrypted, iv: IV.toString('hex') };
 }
 
 module.exports = BillPayments;

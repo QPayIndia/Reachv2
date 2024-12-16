@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const BusinessMaster = require("../models/businessMasterModel.js");
 const StaffModel = require("../models/staffModel.js");
+const RequestValidator = require("../utils/requestValidator.js");
 
 
 const BMap = function(model){
@@ -22,6 +23,30 @@ exports.getAllBusiness = (req,res)=>{
         }
         else
             res.status(200).send(data);
+    });
+};
+
+exports.UpdateBusinessStatus = (req,res)=>{
+   
+    RequestValidator.validateRequest(req,res,["bid","staffid","appdate","apptime","remarks","status"],(auth)=>{
+        if(auth){
+
+            const model = new BMap({
+                bid:req.body.bid,
+                staffid:req.body.userid,
+                followupid:0,
+                status:req.body.status,
+                createdby:req.body.userid
+            })
+
+            staffModel.UpdateBusinessStatus(model,(err,data)=>{
+                if(err){
+                    res.status(400).send(data);
+                }
+                else
+                    res.status(200).send(data);
+            });
+        }
     });
 };
 

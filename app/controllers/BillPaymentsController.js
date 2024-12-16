@@ -69,6 +69,22 @@ exports.Checkout = (req,res)=>{
     })
 };
 
+exports.PayCreditCard = (req,res)=>{
+  
+
+    RequestValidator.validateRequest(req,res,["cardnumber"],(auth)=>{
+        if(auth){
+            BillPayments.PayCreditCard(req.body.cardnumber,(err,data)=>{
+                if(err){
+                    res.status(400).send(data);
+                }
+                else
+                    res.status(200).send(data);
+            });
+        }
+    })
+};
+
 exports.getLoanProviders = (req,res)=>{
   
             

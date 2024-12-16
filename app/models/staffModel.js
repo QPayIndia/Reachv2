@@ -51,6 +51,28 @@ StaffModel.getAllBusiness = (userid,result)=>{
 }
 
 
+StaffModel.UpdateBusinessStatus = (model,result)=>{
+   
+    _updateBusinessStatus(model).then(()=>{
+        result(null,{status:"success",message:"BMap Data Updated Successfully"});
+    }).catch(()=>{
+        result(null,{status:"failure",message:"BMap Data Update Failed"});
+    });
+ 
+}
+
+
+StaffModel.AddFollowUp = (userid,result)=>{
+   
+    _getAllBusiness(userid).then((data)=>{
+        result(null,{status:"success",message:"Merchant Data Fetched Successfully",data:data});
+    }).catch(()=>{
+        result(null,{status:"failure",message:"Merchant Data Fetch Failed"});
+    });
+ 
+}
+
+
 
 
 StaffModel.login = (phone,password,result)=>{
@@ -99,6 +121,20 @@ function _insertBMap(model){
             }
             
             resolve(res.insertId);
+        })
+    })
+}
+
+function _updateBusinessStatus(model){
+    return new Promise((resolve,reject)=>{
+        sql.query("UPDATE staff_business_mapping SET status = ? WHERE bid = ? AND staffid = ?",[model.status,model.bid,model.staffid],(err,res)=>{
+            if(err){
+                reject();
+                console.log('Staff BMap Update Failed due to '+err);
+                return;
+            }
+            
+            resolve();
         })
     })
 }
