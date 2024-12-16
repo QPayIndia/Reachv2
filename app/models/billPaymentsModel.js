@@ -328,7 +328,7 @@ function _payCreditCard(cardnumber){
                     name: "THIRU SAM NATARAJAN"
                 },
                 transferMode: "CREDITCARD",
-                transferAmount: "1.00",
+                transferAmount: "10.00",
                 externalRef: sess,
                 latitude: "20.5936",
                 longitude: "78.9628",
