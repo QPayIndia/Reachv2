@@ -178,8 +178,7 @@ function _getBillDetails(operator,customerId){
             initChannel: "AGT",
             externalRef: sess,
             inputParameters: {
-                // param1: customerId,
-                param1: _aesEncryption(""),
+                param1: customerId,
                 param2: ""
             },
             deviceInfo: {
