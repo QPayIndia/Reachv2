@@ -355,17 +355,20 @@ function _getCreditCardProviders(page){
         let data = [];
         let meta = {};
         if(result.statuscode == "TXN"){
-            meta.totalPages = result.data.meta.totalPages;
-            meta.currentPage = result.data.meta.currentPage;
-            // console.log(result.data.records);
-            for( let i= 0 ; i < result.data.records.length ; i++){
-                let temp = {};
-                temp.billerid = result.data.records[i].billerId;
-                temp.billername = result.data.records[i].billerName;
-                temp.icon = result.data.records[i].iconUrl;
-                data[i] = temp;
-            } 
+            console.log(result.data);
+            
+            // meta.totalPages = result.data.meta.totalPages;
+            // meta.currentPage = result.data.meta.currentPage;
+            // // console.log(result.data.records);
+            // for( let i= 0 ; i < result.data.records.length ; i++){
+            //     let temp = {};
+            //     temp.billerid = result.data.records[i].billerId;
+            //     temp.billername = result.data.records[i].billerName;
+            //     temp.icon = result.data.records[i].iconUrl;
+            //     data[i] = temp;
+            // } 
             resolve({meta:meta,records:data});  
+            resolve(result.data);  
         }else{
             reject([])
         }
