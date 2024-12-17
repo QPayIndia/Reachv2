@@ -292,6 +292,8 @@ function _getLoanProviders(page){
             meta.totalPages = result.data.meta.totalPages;
             meta.currentPage = result.data.meta.currentPage;
            
+            console.log(result.data.records);
+            
             for( let i= 0 ; i < result.data.records.length ; i++){
                 let temp = {};
                 temp.billerid = result.data.records[i].billerId;
