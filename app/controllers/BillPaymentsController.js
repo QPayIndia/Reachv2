@@ -102,6 +102,23 @@ exports.getLoanProviders = (req,res)=>{
     
 };
 
+exports.getCreditCardProviders = (req,res)=>{
+  
+            
+    RequestValidator.validateRequest(req,res,["page"],(auth)=>{
+        if(auth){
+            BillPayments.getCreditCardProviders(req.body.page,(err,data)=>{
+                if(err){
+                    res.status(400).send(data);
+                }
+                else
+                    res.status(200).send(data);
+            });
+    }})
+        
+    
+};
+
 exports.ValidateCard = (req,res)=>{
   
             
