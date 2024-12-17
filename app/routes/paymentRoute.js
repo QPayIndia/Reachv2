@@ -11,6 +11,7 @@ module.exports = app =>{
     router.all('/getpaymentdetails',payModel.GetPaymentDetails);
     router.all('/gettransactions',payModel.GetTransactions);
     router.post('/initaeps',AepsModel.InitAEPS);
+    router.post('/testins',payModel.TestInstant);
    
     app.use('/api/pay',router);
 }

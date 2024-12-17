@@ -97,6 +97,20 @@ exports.GetTransactions = (req,res)=>{
 }
 
 
+exports.TestInstant = (req,res)=>{
+
+   
+   
+    TransactionModel.InitBillPayment(req.body.txnid,req.body.billid,(err,data)=>{
+        if(err){
+            res.status(400).send(data);
+        }
+        else
+            res.status(200).send(data);
+    })
+}
+
+
 exports.pay = (req,res)=>{
 
    

@@ -112,6 +112,19 @@ TransactionModel.getPaymentDetails = (transactionid,result)=>{
    
 }
 
+
+TransactionModel.InitBillPayment = (txnid,billid,result)=>{
+    
+
+    _initBillPayment(txnid,billid).then((row)=>{
+        result(null,{status:"success",message:"Payment Details Fetched Successfully",data:row});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Payment Details Fetch Failed"});
+    })
+    
+   
+}
+
 TransactionModel.getTransactions = (uid,bid,type,result)=>{
     
     var data = [];
