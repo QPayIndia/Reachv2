@@ -319,16 +319,20 @@ function _getCreditCardProviders(page){
 
         // Prepare the HTTP request
         const response = await axios.post(
-            "https://api.instantpay.in/marketplace/utilityPayments/billers",
+            // "https://api.instantpay.in/marketplace/utilityPayments/billers",
+            "https://api.instantpay.in/marketplace/utilityPayments/billerDetails",
+            // {
+            //     pagination : {
+            //         pageNumber : page,
+            //         recordsPerPage : 100
+            //     },
+            //     filters:{
+            //         categoryKey : "C15",
+            //         updatedAfterDate : ""
+            //     }
+            // },
             {
-                pagination : {
-                    pageNumber : page,
-                    recordsPerPage : 100
-                },
-                filters:{
-                    categoryKey : "C15",
-                    updatedAfterDate : ""
-                }
+                billerId : "AXIS00000NATKF"
             },
             {
                 headers: {
@@ -353,7 +357,7 @@ function _getCreditCardProviders(page){
         if(result.statuscode == "TXN"){
             meta.totalPages = result.data.meta.totalPages;
             meta.currentPage = result.data.meta.currentPage;
-            console.log(result.data.records);
+            // console.log(result.data.records);
             for( let i= 0 ; i < result.data.records.length ; i++){
                 let temp = {};
                 temp.billerid = result.data.records[i].billerId;
