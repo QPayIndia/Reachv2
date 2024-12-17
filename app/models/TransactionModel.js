@@ -308,8 +308,8 @@ function getTransactions(userid,type,month){
                     externalRef: sess,
                     enquiryReferenceId: data.enquiryid,
                     inputParameters: {
-                      param1: data.billnumber,
-                      param2: ''
+                      param1: data.billnumber
+                      
                     },
                     initChannel: 'AGT',
                     deviceInfo: {
@@ -325,9 +325,11 @@ function getTransactions(userid,type,month){
                     remarks: {
                       param1: '9940620016'
                     },
-                    transactionAmount: data.amount
+                    transactionAmount: data.amount,
+                    customerPan : ""
                   };
                 
+                  _insertIPayLog(sess,sendData);
             
                 try {
                     const response = await axios.post(
@@ -355,6 +357,7 @@ function getTransactions(userid,type,month){
                     if(result.statuscode === "TUP"){
 
                     }
+                    _updateIPayLog(sess,result,result.ipay_uuid);
 
                     sql.query("UPDATE bill_transaction_master SET transactionid = ?,status = ? WHERE billid = ?",[txnid,result.statuscode,billid],async (err,data)=>{
                     });
@@ -490,6 +493,28 @@ const getPreviousMonthAndYear = (month) => {
   
     return formattedMonthAndYear;
   };
+
+
+  function _insertIPayLog(sess,request){
+    sql.query("INSERT INTO `instantpay_log` (`refid`, `request`) VALUES (? ,? );",[sess,JSON.stringify(request)],(err,res)=>{
+        if(err){
+            console.log(err);
+            
+            return;
+        }
+        
+    })
+}
+function _updateIPayLog(sess,response,ipay_id){
+    sql.query("UPDATE `instantpay_log` SET `response` = ? AND ipayid = ? WHERE refid = ?;",[JSON.stringify(response),ipay_id,sess],(err,res)=>{
+        if(err){
+            console.log(err);
+            
+            return;
+        }
+        
+    })
+}
 
 
 
