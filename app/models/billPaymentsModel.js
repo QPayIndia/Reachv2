@@ -430,7 +430,7 @@ function _validateCard(bin){
 function _initTransaction(model){
     
     return new Promise((resolve,reject)=>{
-        var query = "INSERT INTO bill_transaction_master (userid,billtype,billername,billerid,billnumber,mobilenumber,amount,createdby,enquiryid) VALUES ("+model.userid+",'"+model.billtype+"','"+model.billername+"','"+model.billerid+"','"+model.billnumber+"','"+model.mobilenumber+"',"+model.amount+","+model.userid+","+model.enquiryid+");";
+        var query = "INSERT INTO bill_transaction_master (userid,billtype,billername,billerid,billnumber,mobilenumber,amount,createdby,enquiryid) VALUES ("+model.userid+",'"+model.billtype+"','"+model.billername+"','"+model.billerid+"','"+model.billnumber+"','"+model.mobilenumber+"',"+model.amount+","+model.userid+",'"+model.enquiryid+"');";
         sql.query(query,(err,res)=>{
                 if(err){
                     console.log('Bill Create Failed due to '+err);
