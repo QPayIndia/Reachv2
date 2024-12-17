@@ -319,20 +319,16 @@ function _getCreditCardProviders(page){
 
         // Prepare the HTTP request
         const response = await axios.post(
-            // "https://api.instantpay.in/marketplace/utilityPayments/billers",
-            "https://api.instantpay.in/marketplace/utilityPayments/billerDetails",
-            // {
-            //     pagination : {
-            //         pageNumber : page,
-            //         recordsPerPage : 100
-            //     },
-            //     filters:{
-            //         categoryKey : "C15",
-            //         updatedAfterDate : ""
-            //     }
-            // },
+            "https://api.instantpay.in/marketplace/utilityPayments/billers",
             {
-                billerId : "AXIS00000NATKF"
+                pagination : {
+                    pageNumber : page,
+                    recordsPerPage : 100
+                },
+                filters:{
+                    categoryKey : "C15",
+                    updatedAfterDate : ""
+                }
             },
             {
                 headers: {
@@ -355,20 +351,17 @@ function _getCreditCardProviders(page){
         let data = [];
         let meta = {};
         if(result.statuscode == "TXN"){
-            console.log(result.data);
-            
-            // meta.totalPages = result.data.meta.totalPages;
-            // meta.currentPage = result.data.meta.currentPage;
-            // // console.log(result.data.records);
-            // for( let i= 0 ; i < result.data.records.length ; i++){
-            //     let temp = {};
-            //     temp.billerid = result.data.records[i].billerId;
-            //     temp.billername = result.data.records[i].billerName;
-            //     temp.icon = result.data.records[i].iconUrl;
-            //     data[i] = temp;
-            // } 
+            meta.totalPages = result.data.meta.totalPages;
+            meta.currentPage = result.data.meta.currentPage;
+            // console.log(result.data.records);
+            for( let i= 0 ; i < result.data.records.length ; i++){
+                let temp = {};
+                temp.billerid = result.data.records[i].billerId;
+                temp.billername = result.data.records[i].billerName;
+                temp.icon = result.data.records[i].iconUrl;
+                data[i] = temp;
+            } 
             resolve({meta:meta,records:data});  
-            resolve(result.data);  
         }else{
             reject([])
         }
