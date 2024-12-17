@@ -304,7 +304,7 @@ function getTransactions(userid,type,month){
     })
 }
 
- function _initBillPayment(billid,txnid){
+ function _initBillPayment(txnid,billid){
 
     return new Promise((resolve,reject)=>{
         const query = "SELECT * FROM bill_transaction_master WHERE billid = "+billid+";"
