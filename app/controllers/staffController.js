@@ -38,7 +38,7 @@ exports.getAllBusiness = (req,res)=>{
 
 exports.UpdateBusinessStatus = (req,res)=>{
    
-    RequestValidator.validateRequest(req,res,["bid","staffid","appdate","apptime","remarks","status"],(auth)=>{
+    RequestValidator.validateRequest(req,res,["bid","staffid","status"],(auth)=>{
         if(auth){
 
             const model = new BMap({
@@ -102,6 +102,26 @@ exports.AddFollowUp = (req,res)=>{
             });
 
             StaffModel.AddFollowUp(model,(err,data)=>{
+                if(err){
+                    res.status(400).send(data);
+                }
+                else{
+                    res.status(200).send(data);
+                }
+            })
+        }
+    });
+};
+
+exports.getFollowups = (req,res)=>{
+   
+    RequestValidator.validateRequest(req,res,["staffid","appdate"],(auth)=>{
+        if(auth){
+
+           
+            
+
+            StaffModel.GetFollowupDate(req.body.staffid,req.body.appdate,(err,data)=>{
                 if(err){
                     res.status(400).send(data);
                 }

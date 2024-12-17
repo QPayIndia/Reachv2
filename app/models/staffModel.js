@@ -72,6 +72,16 @@ StaffModel.AddFollowUp = (model,result)=>{
  
 }
 
+StaffModel.GetFollowupDate = (staffid,date,result)=>{
+   
+    _getFollowUps(staffid,date).then((data)=>{
+        result(null,{status:"success",message:"Follow Up Fetched Successfully",data:data});
+    }).catch(()=>{
+        result(null,{status:"failure",message:"Follow Up Fetch Failed"});
+    });
+ 
+}
+
 
 
 
@@ -186,6 +196,22 @@ function getUserByPhone(phone){
             })
     });
 }
+
+
+function _getFollowUps(staffid,date){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT appdate,apptime,remarks,status FROM staff_follow_up_master WHERE staffid = ? AND appdate = ?;",[staffid,date],(err,res)=>{
+                if(err){
+                    
+                    console.log('Get Users Failed due to '+err);
+                    return;
+                }
+                console.log('Get  User Fetched');
+                resolve(res);
+            })
+    });
+}
+
 
 
 
