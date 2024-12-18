@@ -173,13 +173,14 @@ function _getBillDetails(operator,customerId,mobilenumber){
     return new Promise(async (resolve,reject)=>{
         const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
 
+        
         const request = {
             billerId: operator,
             initChannel: "AGT",
             externalRef: sess,
             inputParameters: {
-                param1: mobilenumber,
-                param2: customerId
+                param1: customerId,
+                param2: mobilenumber
             },
             deviceInfo: {
                 mac: "02-00-AC-10-7A-99",
