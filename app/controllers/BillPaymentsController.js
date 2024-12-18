@@ -35,7 +35,9 @@ exports.getBillDetails = (req,res)=>{
 
     RequestValidator.validateRequest(req,res,["operator","billnumber"],(auth)=>{
         if(auth){
-            BillPayments.getBillDetails(req.body.operator,req.body.billnumber,(err,data)=>{
+
+            const mobile = req.body.mobilenumber != null ? req.body.mobilenumber : "";
+            BillPayments.getBillDetails(req.body.operator,req.body.billnumber,mobile,(err,data)=>{
                 if(err){
                     res.status(400).send(data);
                 }

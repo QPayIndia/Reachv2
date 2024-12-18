@@ -38,9 +38,9 @@ BillPayments.PayCreditCard = (cardnumber,result)=>{
 }
 
 
-BillPayments.getBillDetails = (operator,cutomerMobile,result)=>{
+BillPayments.getBillDetails = (operator,billnumber,mobilenumber,result)=>{
    
-    _getBillDetails(operator,cutomerMobile).then((data)=>{
+    _getBillDetails(operator,billnumber,mobilenumber).then((data)=>{
         result(null,{status:"success",message:"Bill Details Fetched Successfully",data:data});
     }).catch((err)=>{
         result(err,{status:"failure",message:err.status,data:err});
@@ -169,7 +169,7 @@ function _getOperators(type){
     })
 }
 
-function _getBillDetails(operator,customerId){
+function _getBillDetails(operator,customerId,mobilenumber){
     return new Promise(async (resolve,reject)=>{
         const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
 
@@ -179,7 +179,7 @@ function _getBillDetails(operator,customerId){
             externalRef: sess,
             inputParameters: {
                 param1: customerId,
-                param2: ""
+                param2: mobilenumber
             },
             deviceInfo: {
                 mac: "02-00-AC-10-7A-99",
