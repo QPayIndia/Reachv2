@@ -541,7 +541,7 @@ function _insertIPayLog(sess,request){
     })
 }
 function _updateIPayLog(sess,response,ipay_id){
-    sql.query("UPDATE `instantpay_log` SET `response` = ? AND ipayid = ? WHERE refid = ?;",[JSON.stringify({response}),ipay_id,sess],(err,res)=>{
+    sql.query("UPDATE `instantpay_log` SET `response` = ? AND ipayid = ? WHERE refid = ?;",[JSON.stringify({response}),"123",sess],(err,res)=>{
         if(err){
             console.log(err);
             
