@@ -213,9 +213,9 @@ function _getBillDetails(operator,customerId,mobilenumber){
         );
 
         const result = response.data;
-        console.log(result);
+       
         
-        _updateIPayLog(sess,"",result.ipay_uuid);
+        _updateIPayLog(sess,result,result.ipay_uuid);
         
 
         let data = {}
@@ -541,7 +541,7 @@ function _insertIPayLog(sess,request){
     })
 }
 function _updateIPayLog(sess,response,ipay_id){
-    sql.query("UPDATE `instantpay_log` SET `response` = ? AND ipayid = ? WHERE refid = ?;",[JSON.stringify(response),ipay_id,sess],(err,res)=>{
+    sql.query("UPDATE `instantpay_log` SET `response` = ? AND ipayid = ? WHERE refid = ?;",[JSON.stringify({response}),ipay_id,sess],(err,res)=>{
         if(err){
             console.log(err);
             
