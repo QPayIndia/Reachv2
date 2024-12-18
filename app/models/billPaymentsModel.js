@@ -215,7 +215,7 @@ function _getBillDetails(operator,customerId,mobilenumber){
         const result = response.data;
        
         
-        _updateIPayLog(sess,result,result.ipay_uuid);
+        
         
 
         let data = {}
@@ -227,7 +227,7 @@ function _getBillDetails(operator,customerId,mobilenumber){
                 data.status = "Unable to fetch bill";
 
         if (result) {
-
+            _updateIPayLog(sess,result,result.ipay_uuid);
             data.status = result.status;
             if (
                 result.statuscode === "TXN" &&
@@ -547,6 +547,9 @@ function _updateIPayLog(sess,response,ipay_id){
             
             return;
         }
+
+        console.log("Data Inserted");
+        
         
     })
 }
