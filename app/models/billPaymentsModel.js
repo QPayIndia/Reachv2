@@ -178,8 +178,8 @@ function _getBillDetails(operator,customerId,mobilenumber){
             initChannel: "AGT",
             externalRef: sess,
             inputParameters: {
-                param1: customerId,
-                param2: mobilenumber
+                param1: mobilenumber,
+                param2: customerId
             },
             deviceInfo: {
                 mac: "02-00-AC-10-7A-99",
