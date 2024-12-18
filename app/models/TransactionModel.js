@@ -316,12 +316,16 @@ function getTransactions(userid,type,month){
                 data = data[0];
                 const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
 
+                const param1 = (data.billtype === "CREDIT CARD") ? data.mobilenumber : data.billnumber;
+                const param2 = (data.billtype === "CREDIT CARD") ? data.billnumber : data.mobilenumber;
+
                 const sendData = {
                     billerId: data.billerid,
                     externalRef: sess,
                     enquiryReferenceId: data.enquiryid,
                     inputParameters: {
-                      param1: data.billnumber
+                      param1: param1,
+                      param2: param2
                       
                     },
                     initChannel: 'AGT',
