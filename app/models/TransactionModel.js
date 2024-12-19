@@ -523,7 +523,7 @@ const getPreviousMonthAndYear = (month) => {
     })
 }
 function _updateIPayLog(sess,response,ipay_id){
-    sql.query("UPDATE `instantpay_log` SET `response` = ? AND ipayid = ? WHERE refid = ?;",[JSON.stringify({request}),ipay_id,sess],(err,res)=>{
+    sql.query("UPDATE `instantpay_log` SET `response` = ?, ipayid = ? WHERE refid = ?;",[JSON.stringify(request),ipay_id,sess],(err,res)=>{
         if(err){
             console.log(err);
             
