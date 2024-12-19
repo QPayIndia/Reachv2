@@ -62,13 +62,26 @@ StaffModel.UpdateBusinessStatus = (model,result)=>{
 }
 
 
-StaffModel.AddFollowUp = (model,result)=>{
+StaffModel.AddFollowUp = (model,followupid,result)=>{
    
-    _insertFollowUp(model).then((data)=>{
-        result(null,{status:"success",message:"Follow Up Added Successfully",data:data});
-    }).catch(()=>{
-        result(null,{status:"failure",message:"Follow Up Add Failed"});
-    });
+   if(followupid === 0){
+        _insertFollowUp(model).then((data)=>{
+            result(null,{status:"success",message:"Follow Up Added Successfully",data:data});
+        }).catch(()=>{
+            result(null,{status:"failure",message:"Follow Up Add Failed"});
+        });
+   }else{
+        _updateFollowup(model,followupid).then(()=>{
+            _getFollowUps(model.staffid,model.appdate).then((data)=>{
+                result(null,{status:"success",message:"Follow Up Updated Successfully",data:data});
+            }).catch(()=>{
+                result(null,{status:"failure",message:"Follow Up Fetch Failed"});
+            });
+            
+        }).catch(()=>{
+            result(null,{status:"failure",message:"Follow Up Update Failed"});
+        });
+   }
  
 }
 
@@ -152,6 +165,20 @@ function _insertFollowUp(model){
     })
 }
 
+function _updateFollowup(model,followupid){
+    return new Promise((resolve,reject)=>{
+        sql.query("UPDATE staff_follow_up_master SET status = ?,apptime = ?,remarks = ? WHERE followupid = ?",[model.status,model.apptime,model.remarks,followupid],(err,res)=>{
+            if(err){
+                reject();
+                console.log('Staff Follow Up Insert Failed due to '+err);
+                return;
+            }
+            
+            resolve(res.insertId);
+        })
+    })
+}
+
 function _updateBusinessStatus(model){
     return new Promise((resolve,reject)=>{
         sql.query("UPDATE staff_business_mapping SET status = ? WHERE bid = ? AND staffid = ?",[model.status,model.bid,model.staffid],(err,res)=>{
@@ -200,13 +227,13 @@ function getUserByPhone(phone){
 
 function _getFollowUps(staffid,date){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT DATE_FORMAT(A.appdate, '%Y-%m-%d') as appdate,A.apptime,A.remarks,A.status,B.name,C.name as ownername,C.phone as ownerphone FROM staff_follow_up_master as A,business_master as B,user_master as C WHERE A.staffid = ? AND A.appdate = ? AND A.bid = B.bid AND B.uid = C.uid;;",[staffid,date],(err,res)=>{
+        sql.query("SELECT DATE_FORMAT(A.appdate, '%Y-%m-%d') as appdate,A.followupid,A.apptime,A.remarks,A.status,B.name,C.name as ownername,C.phone as ownerphone FROM staff_follow_up_master as A,business_master as B,user_master as C WHERE A.staffid = ? AND A.appdate = ? AND A.bid = B.bid AND B.uid = C.uid;;",[staffid,date],(err,res)=>{
                 if(err){
                     
-                    console.log('Get Users Failed due to '+err);
+                    console.log('Get Followups Failed due to '+err);
                     return;
                 }
-                console.log('Get  User Fetched');
+                console.log('Get Followups Fetched');
                 resolve(res);
             })
     });

@@ -66,7 +66,7 @@ exports.UpdateBusinessStatus = (req,res)=>{
                             createdby:req.body.userid
                         });
     
-                        StaffModel.AddFollowUp(model,(err,data)=>{
+                        StaffModel.AddFollowUp(model,0,(err,data)=>{
                             if(err){
                                 res.status(400).send(data);
                             }
@@ -101,7 +101,9 @@ exports.AddFollowUp = (req,res)=>{
                 createdby:req.body.userid
             });
 
-            StaffModel.AddFollowUp(model,(err,data)=>{
+            const followupid = (req.body.followupid != null) ? req.body.followupid : 0;
+
+            StaffModel.AddFollowUp(model,followupid,(err,data)=>{
                 if(err){
                     res.status(400).send(data);
                 }
