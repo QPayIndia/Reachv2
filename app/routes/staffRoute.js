@@ -8,6 +8,9 @@ module.exports = app =>{
     router.post('/updatebusinessstatus',staff.UpdateBusinessStatus);
     router.post('/addfollowup',staff.AddFollowUp);
     router.post('/getfollowups',staff.getFollowups);
+    router.post('/addexpense',staff.AddExpense);
+    router.post('/getexpense',staff.GetExpense);
+    router.post('/uploadbill',staff.uploadBill);
     
     app.use('/api/staff',router);
 }

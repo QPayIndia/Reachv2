@@ -14,6 +14,16 @@ const BMap = function(model){
     this.createdby = model.createdby
 }
 
+const ExpenseModel = function(model){
+  
+    this.staffid = model.staffid,
+    this.title = model.title,
+    this.amount = model.amount,
+    this.bill = model.bill,
+    this.status = model.status
+   
+}
+
 const FollowUpModel = function(model){
     this.bid = model.bid,
     this.staffid = model.staffid,
@@ -115,6 +125,57 @@ exports.AddFollowUp = (req,res)=>{
     });
 };
 
+exports.AddExpense = (req,res)=>{
+   
+    RequestValidator.validateRequest(req,res,["staffid","title","amount","bill"],(auth)=>{
+        if(auth){
+
+           
+            const model = new ExpenseModel({
+               
+                staffid:req.body.staffid,
+                title:req.body.title,
+                amount:req.body.amount,
+                bill:req.body.bill,
+                status:"PENDING",
+                
+            });
+
+            const expenseid = (req.body.expenseid != null) ? req.body.expenseid : 0;
+
+            StaffModel.AddExpense(model,expenseid,(err,data)=>{
+                if(err){
+                    res.status(400).send(data);
+                }
+                else{
+                    res.status(200).send(data);
+                }
+            })
+        }
+    });
+};
+
+exports.GetExpense = (req,res)=>{
+   
+    RequestValidator.validateRequest(req,res,["staffid","date"],(auth)=>{
+        if(auth){
+
+           
+            
+
+            StaffModel.GetExpense(req.body.staffid,req.body.date,(err,data)=>{
+                if(err){
+                    res.status(400).send(data);
+                }
+                else{
+                    res.status(200).send(data);
+                }
+            })
+        }
+    });
+};
+
+
 exports.getFollowups = (req,res)=>{
    
     RequestValidator.validateRequest(req,res,["staffid","appdate"],(auth)=>{
@@ -187,15 +248,17 @@ exports.addUser = (req,res)=>{
 
 
 
-exports.uploadFile = (req,res)=>{
+exports.uploadBill = (req,res)=>{
 
     var ext = "";
     var img = "";
-
+   
+    
     const storage = multer.diskStorage({
         destination: function(req, file, cb) {
+            
              ext = path.extname(file.originalname);
-             cb(null, 'uploads/banner');
+             cb(null, 'uploads/staff/bill');
          
         },
         filename: function(req, file, cb) {
@@ -215,7 +278,9 @@ exports.uploadFile = (req,res)=>{
           if (!req.file) {
             return res.status(400).json({ message: 'No files were uploaded.' });
           }
-          img = "/uploads/banner/"+req.file.filename;
+
+        
+          img = "/uploads/staff/bill"+req.file.filename;
           
           res.status(200).send({status:"success",message:"File Uploaded Successfully",data : img});
             

@@ -62,6 +62,17 @@ StaffModel.UpdateBusinessStatus = (model,result)=>{
 }
 
 
+StaffModel.GetExpense = (staffid,date,result)=>{
+   
+    _getExpense(staffid,date).then((data)=>{
+        result(null,{status:"success",message:"Expenses Fetched Successfully",data:data});
+    }).catch(()=>{
+        result(null,{status:"failure",message:"Expenses Fetch Failed",data:[]});
+    });
+ 
+}
+
+
 StaffModel.AddFollowUp = (model,followupid,result)=>{
    
    if(followupid === 0){
@@ -84,6 +95,25 @@ StaffModel.AddFollowUp = (model,followupid,result)=>{
    }
  
 }
+
+StaffModel.AddExpense = (model,expenseid,result)=>{
+   
+    if(expenseid === 0){
+         _insertExpense(model).then((data)=>{
+             result(null,{status:"success",message:"Expense Added Successfully",data:data});
+         }).catch(()=>{
+             result(null,{status:"failure",message:"Expense Add Failed"});
+         });
+    }else{
+         _updateExpense(model,expenseid).then(()=>{
+            result(null,{status:"success",message:"Expense Updated Successfully"});
+
+         }).catch(()=>{
+             result(null,{status:"failure",message:"Expense Update Failed"});
+         });
+    }
+  
+ }
 
 StaffModel.GetFollowupDate = (staffid,date,result)=>{
    
@@ -165,12 +195,40 @@ function _insertFollowUp(model){
     })
 }
 
+function _insertExpense(model){
+    return new Promise((resolve,reject)=>{
+        sql.query("INSERT INTO staff_expense_master SET ?",[model],(err,res)=>{
+            if(err){
+                reject();
+                console.log('Staff Expense Insert Failed due to '+err);
+                return;
+            }
+            
+            resolve(res.insertId);
+        })
+    })
+}
+
 function _updateFollowup(model,followupid){
     return new Promise((resolve,reject)=>{
         sql.query("UPDATE staff_follow_up_master SET status = ?,apptime = ?,remarks = ? WHERE followupid = ?",[model.status,model.apptime,model.remarks,followupid],(err,res)=>{
             if(err){
                 reject();
                 console.log('Staff Follow Up Insert Failed due to '+err);
+                return;
+            }
+            
+            resolve(res.insertId);
+        })
+    })
+}
+
+function _updateExpense(model,expenseid){
+    return new Promise((resolve,reject)=>{
+        sql.query("UPDATE staff_expense_master SET status = ?,title = ?,amount = ?,bill =? WHERE expenseid = ?",[model.status,model.title,model.amount,model.bill,expenseid],(err,res)=>{
+            if(err){
+                reject();
+                console.log('Staff Expense Update Failed due to '+err);
                 return;
             }
             
@@ -227,7 +285,7 @@ function getUserByPhone(phone){
 
 function _getFollowUps(staffid,date){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT DATE_FORMAT(A.appdate, '%Y-%m-%d') as appdate,A.followupid,A.apptime,A.remarks,A.status,B.name,C.name as ownername,C.phone as ownerphone FROM staff_follow_up_master as A,business_master as B,user_master as C WHERE A.staffid = ? AND A.appdate = ? AND A.bid = B.bid AND B.uid = C.uid;;",[staffid,date],(err,res)=>{
+        sql.query("SELECT DATE_FORMAT(A.appdate, '%Y-%m-%d') as appdate,A.followupid,A.apptime,A.remarks,A.status,B.name,C.name as ownername,C.phone as ownerphone FROM staff_follow_up_master as A,business_master as B,user_master as C WHERE A.staffid = ? AND A.appdate = ? AND A.bid = B.bid AND B.uid = C.uid;",[staffid,date],(err,res)=>{
                 if(err){
                     
                     console.log('Get Followups Failed due to '+err);
@@ -239,6 +297,19 @@ function _getFollowUps(staffid,date){
     });
 }
 
+function _getExpense(staffid,date){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT DATE_FORMAT(A.date, '%d-%m-%Y %h:%i:%s %p') as date,A.expenseid,A.title,A.amount,A.bill FROM staff_expense_master as A WHERE A.staffid = ? AND date > ? AND date < ?;",[staffid,date+" 00:00:00",date+" 23:59:59"],(err,res)=>{
+                if(err){
+                    
+                    console.log('Get Expense Failed due to '+err);
+                    return;
+                }
+                console.log('Get Expense Fetched');
+                resolve(res);
+            })
+    });
+}
 
 
 
