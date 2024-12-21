@@ -100,6 +100,18 @@ BillPayments.getLoanProviders = (page,result)=>{
     
 }
 
+BillPayments.getRechargePlans = (circle,operator,result)=>{
+   
+    _getRechargePlans(circle,operator).then((data)=>{
+        result(null,{status:"success",message:"Loan Providers Fetched Successfully",data:data});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Unable to fetch Loan Providers",data:[]});
+    });
+    
+    
+}
+
+
 BillPayments.getCreditCardProviders = (page,result)=>{
    
     _getCreditCardProviders(page).then((data)=>{
@@ -523,6 +535,58 @@ function _getOperatorDetails(operator){
             "https://api.instantpay.in/marketplace/utilityPayments/billerDetails",
             {
                 billerId: operator,
+              
+            },
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "X-Ipay-Auth-Code": "1",
+                    "X-Ipay-Client-Id": process.env.INV_ID,
+                    "X-Ipay-Client-Secret": process.env.INV_SECRET,
+                    "X-Ipay-Outlet-Id": "192785",
+                    "X-Ipay-Endpoint-Ip": "216.48.190.93"
+                },
+                httpsAgent: new (require("https").Agent)({ rejectUnauthorized: false }) // Disable SSL verification
+            }
+        );
+
+        const result = response.data;
+
+        // Process response
+
+        let data = {};
+        console.log(result);
+        
+        if(result.statuscode == "TXN"){
+           
+          
+            resolve(result);  
+        }else{
+            reject({})
+        }
+        
+        
+    });
+
+    
+
+}
+
+
+function _getRechargePlans(circle,operator){
+    return new Promise(async (resolve,reject)=>{
+        const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
+
+        // Prepare the HTTP request
+        const response = await axios.post(
+            "https://api.instantpay.in/marketplace/utilityPayments/rechargePlans",
+            {
+                subProductCode: operator,
+                telecomCircle : circle,
+                externalRef: sess,
+                latitude: "27.897394",
+                longitude: "78.088013"
               
             },
             {
