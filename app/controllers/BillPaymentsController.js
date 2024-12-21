@@ -109,7 +109,7 @@ exports.getRechargePlans = (req,res)=>{
             
     RequestValidator.validateRequest(req,res,["circle","operator"],(auth)=>{
         if(auth){
-            BillPayments.getRechargePlans(req.body.page,(err,data)=>{
+            BillPayments.getRechargePlans(req.body.circle.req.body.operator,(err,data)=>{
                 if(err){
                     res.status(400).send(data);
                 }
