@@ -111,6 +111,18 @@ BillPayments.getCreditCardProviders = (page,result)=>{
     
 }
 
+
+BillPayments.GetOperatorDetails = (operator,result)=>{
+   
+    _getOperatorDetails(operator).then((data)=>{
+        result(null,{status:"success",message:"Data Fetched Successfully",data:data});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Unable to fetch Data",data:[]});
+    });
+    
+    
+}
+
 function _getPrepaidPlans(billerid,circle){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT jsonPlan FROM `instantpay_recharge_plans` WHERE billerid = ? AND circle = ?",[billerid,circle],(err,data)=>{
@@ -488,6 +500,55 @@ function _validateCard(bin){
             data.issuerBank = result.data.binDetails.issuerBank;
           
             resolve(data);  
+        }else{
+            reject({})
+        }
+        
+        
+    });
+
+    
+
+}
+
+
+
+function _getOperatorDetails(operator){
+    return new Promise(async (resolve,reject)=>{
+        const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
+
+        // Prepare the HTTP request
+        const response = await axios.post(
+            "https://api.instantpay.in/marketplace/utilityPayments/billerDetails",
+            {
+                billerId: operator,
+              
+            },
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "X-Ipay-Auth-Code": "1",
+                    "X-Ipay-Client-Id": process.env.INV_ID,
+                    "X-Ipay-Client-Secret": process.env.INV_SECRET,
+                    "X-Ipay-Outlet-Id": "192785",
+                    "X-Ipay-Endpoint-Ip": "216.48.190.93"
+                },
+                httpsAgent: new (require("https").Agent)({ rejectUnauthorized: false }) // Disable SSL verification
+            }
+        );
+
+        const result = response.data;
+
+        // Process response
+
+        let data = {};
+        console.log(result);
+        
+        if(result.statuscode == "TXN"){
+           
+          
+            resolve(result);  
         }else{
             reject({})
         }

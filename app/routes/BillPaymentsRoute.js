@@ -11,6 +11,7 @@ module.exports = app =>{
     router.post('/getcreditcardproviders',controller.getCreditCardProviders);
     router.post('/validatecard',controller.ValidateCard);
     router.post('/paycard',controller.PayCreditCard);
+    router.post('/getoperatordetail',controller.GetOperatorDetails);
    
    
     app.use('/api/bill',router);

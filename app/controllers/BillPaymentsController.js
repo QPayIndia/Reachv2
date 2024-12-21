@@ -201,4 +201,19 @@ exports.getOperators = (req,res)=>{
     }) 
 };
 
+exports.GetOperatorDetails = (req,res)=>{
+    
+    RequestValidator.validateRequest(req,res,["operator"],(auth)=>{
+        if(auth){
+            BillPayments.GetOperatorDetails(req.body.operator,(err,data)=>{
+                if(err){
+                    res.status(400).send(data);
+                }
+                else
+                    res.status(200).send(data);
+            });
+        }
+    }) 
+};
+
 
