@@ -154,9 +154,9 @@ AdminMaster.addBanner = (title,url,userid,result)=>{
 AdminMaster.GetLocationLog = (staffid,fromdate,todate,result)=>{
    
     _getLocationLog(staffid,fromdate,todate).then((id)=>{
-        result(null,{status:"success",message:"Banner Created Successfully",uid:id});
+        result(null,{status:"success",message:"Data Fetched Successfully",uid:id});
     }).catch((err)=>{
-        result(err,{status:"failure",message:"Banner create Failed"});
+        result(err,{status:"failure",message:"Data Fetch Failed"});
     });
 }
 
