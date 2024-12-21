@@ -104,6 +104,25 @@ exports.getLoanProviders = (req,res)=>{
     
 };
 
+
+exports.getProviders = (req,res)=>{
+  
+            
+    RequestValidator.validateRequest(req,res,["page","categorykey"],(auth)=>{
+        if(auth){
+            BillPayments.getProviders(req.body.page,req.body.categorykey,(err,data)=>{
+                if(err){
+                    res.status(400).send(data);
+                }
+                else
+                    res.status(200).send(data);
+            });
+    }})
+        
+    
+};
+
+
 exports.getRechargePlans = (req,res)=>{
   
             
