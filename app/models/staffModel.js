@@ -313,7 +313,7 @@ function getUserByPhone(phone){
 
 function _getFollowUps(staffid,date){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT DATE_FORMAT(A.appdate, '%Y-%m-%d') as appdate,A.followupid,A.apptime,A.remarks,A.status,B.name,C.name as ownername,C.phone as ownerphone FROM staff_follow_up_master as A,business_master as B,user_master as C WHERE A.staffid = ? AND A.appdate = ? AND A.bid = B.bid AND B.uid = C.uid;",[staffid,date],(err,res)=>{
+        sql.query("SELECT DATE_FORMAT(A.appdate, '%Y-%m-%d') as appdate,A.followupid,A.apptime,A.remarks,A.status,B.name,B.bid,C.name as ownername,C.phone as ownerphone FROM staff_follow_up_master as A,business_master as B,user_master as C WHERE A.staffid = ? AND A.appdate = ? AND A.bid = B.bid AND B.uid = C.uid;",[staffid,date],(err,res)=>{
                 if(err){
                     
                     console.log('Get Followups Failed due to '+err);
