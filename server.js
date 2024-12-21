@@ -195,6 +195,14 @@ app.get('/uploads/:name', (req, res) => {
   res.sendFile("C:/Users/Public/Reach/reach/Reachv2/uploads/"+imagePath); 
 });
 
+app.get('/uploads/banner/:name', (req, res) => { 
+  const imagePath = req.params.name; 
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.sendFile("C:/Users/Public/Reach/reach/Reachv2/uploads/banner/"+imagePath); 
+});
+
 app.get('/uploads/business/certificates/:name', (req, res) => { 
   const imagePath = req.params.name; 
   res.header("Access-Control-Allow-Origin", "*");
