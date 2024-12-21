@@ -1,6 +1,7 @@
 const adminModel = require("../models/adminMaster.js");
 const multer = require('multer');
 const path = require('path');
+const RequestValidator = require("../utils/requestValidator.js");
 
 exports.getAllMerchants = (req,res)=>{
    
@@ -74,6 +75,24 @@ exports.login = (req,res)=>{
             res.status(200).send(data);
     });
 };
+
+exports.GetLocationLog = (req,res)=>{
+   
+    
+
+    RequestValidator.validateRequest(req,res,["staffid","fromdate","todate"],(auth)=>{
+        if(auth){
+            adminModel.GetLocationLog(req.body.staffid,req.body.fromdate,req.body.todate,(err,data)=>{
+                if(err){
+                    res.status(400).send(data);
+                }
+                else
+                    res.status(200).send(data);
+            });
+        }
+    })
+};
+
 exports.deleteBusiness = (req,res)=>{
    
     

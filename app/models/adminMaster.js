@@ -148,9 +148,16 @@ AdminMaster.addBanner = (title,url,userid,result)=>{
     }).catch((err)=>{
         result(err,{status:"failure",message:"Banner create Failed"});
     });
-    
-    
-    
+}
+
+
+AdminMaster.GetLocationLog = (staffid,fromdate,todate,result)=>{
+   
+    _getLocationLog(staffid,fromdate,todate).then((id)=>{
+        result(null,{status:"success",message:"Banner Created Successfully",uid:id});
+    }).catch((err)=>{
+        result(err,{status:"failure",message:"Banner create Failed"});
+    });
 }
 
 function addUser(username,password,usertype,uid){
@@ -337,6 +344,21 @@ function addBanner(title,url,userid){
             }
             console.log('Banner Inserted successfully');
             resolve(res.insertId);
+        })
+    })
+}
+
+
+function _getLocationLog(staffid,fromdate,todate){
+    return new Promise((resolve,reject)=>{
+        sql.query(" SELECT A.llogid,A.latitude,A.longitude,B.name,B.description,B.bid FROM `staff_location_log` as A, business_master as B WHERE A.bid = B.bid AND A.staffid = ? AND A.date > ? AND date < ?;",[staffid,fromdate,todate],(err,res)=>{
+            if(err){
+                reject();
+                console.log('Staff Location Fetch Failed due to '+err);
+                return;
+            }
+            
+            resolve(res);
         })
     })
 }

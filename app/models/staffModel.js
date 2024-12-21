@@ -126,6 +126,17 @@ StaffModel.GetFollowupDate = (staffid,date,result)=>{
 }
 
 
+StaffModel.InsertLocationLog = (model,result)=>{
+   
+    _insertLocationLog(model).then((data)=>{
+        result(null,{status:"success",message:"Location Log Inserted Successfully",data:data});
+    }).catch(()=>{
+        result(null,{status:"failure",message:"Location Log Insert Failed"});
+    });
+ 
+}
+
+
 
 
 
@@ -194,6 +205,23 @@ function _insertFollowUp(model){
         })
     })
 }
+
+
+function _insertLocationLog(model){
+    return new Promise((resolve,reject)=>{
+        sql.query("INSERT INTO staff_location_log SET ?",[model],(err,res)=>{
+            if(err){
+                reject();
+                console.log('Staff Location Insert Failed due to '+err);
+                return;
+            }
+            
+            resolve(res.insertId);
+        })
+    })
+}
+
+
 
 function _insertExpense(model){
     return new Promise((resolve,reject)=>{

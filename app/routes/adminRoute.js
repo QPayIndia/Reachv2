@@ -14,6 +14,7 @@ module.exports = app =>{
     router.post('/updateHomeBanner',admin.UpdateHomeBannerStatus);
     router.post('/addHomeBanner',admin.AddHomeBanner);
     router.post('/uploadhomebanner',admin.uploadFile);
+    router.post('/getstafflocationlog',admin.GetLocationLog);
     //router.post('/addrating',business.addRating);
     
     

@@ -14,6 +14,14 @@ const BMap = function(model){
     this.createdby = model.createdby
 }
 
+const StaffLocationModel = function(model){
+    this.bid = model.bid,
+    this.staffid = model.staffid,
+    this.latitude = model.latitude,
+    this.longitude = model.longitude,
+    this.createdby = model.createdby
+}
+
 const ExpenseModel = function(model){
   
     this.staffid = model.staffid,
@@ -48,7 +56,7 @@ exports.getAllBusiness = (req,res)=>{
 
 exports.UpdateBusinessStatus = (req,res)=>{
    
-    RequestValidator.validateRequest(req,res,["bid","staffid","status"],(auth)=>{
+    RequestValidator.validateRequest(req,res,["bid","staffid","status","latitude","longitude"],(auth)=>{
         if(auth){
 
             const model = new BMap({
@@ -59,34 +67,56 @@ exports.UpdateBusinessStatus = (req,res)=>{
                 createdby:req.body.userid
             })
 
+            
+
             staffModel.UpdateBusinessStatus(model,(err,data)=>{
                 if(err){
                     res.status(400).send(data);
                 }
                 else{
-                    
-                    if(req.body.status === "IN FOLLOWUP"){
-                        const model = new FollowUpModel({
-                            bid:req.body.bid,
-                            staffid:req.body.userid,
-                            appdate:req.body.appdate,
-                            apptime:req.body.apptime,
-                            remarks:req.body.remarks,
-                            status:"PENDING",
-                            createdby:req.body.userid
-                        });
-    
-                        StaffModel.AddFollowUp(model,0,(err,data)=>{
-                            if(err){
-                                res.status(400).send(data);
+
+                    const model = new StaffLocationModel({
+                        bid:req.body.bid,
+                        staffid:req.body.userid,
+                        latitude:req.body.latitude,
+                        longitude:req.body.longitude,
+                        createdby:req.body.userid
+                    })
+
+                    StaffModel.InsertLocationLog(model,(err,data)=>{
+                        if(err){
+                            res.status(400).send(data);
+                        }
+                        else{
+                            if(req.body.status === "IN FOLLOWUP"){
+                                const model = new FollowUpModel({
+                                    bid:req.body.bid,
+                                    staffid:req.body.userid,
+                                    appdate:req.body.appdate,
+                                    apptime:req.body.apptime,
+                                    remarks:req.body.remarks,
+                                    status:"PENDING",
+                                    createdby:req.body.userid
+                                });
+            
+                                StaffModel.AddFollowUp(model,0,(err,data)=>{
+                                    if(err){
+                                        res.status(400).send(data);
+                                    }
+                                    else{
+                                        res.status(200).send(data);
+                                    }
+                                })
                             }
-                            else{
+                            else
                                 res.status(200).send(data);
-                            }
-                        })
-                    }
-                    else
-                        res.status(200).send(data);
+                        }
+                    })
+
+
+
+                    
+                    
                 }
                     
             });
@@ -263,7 +293,7 @@ exports.uploadBill = (req,res)=>{
         },
         filename: function(req, file, cb) {
             
-          cb(null, Date.now() +path.extname(file.originalname));
+          cb(null, Date.now() +".jpg");
         }
       });
       
