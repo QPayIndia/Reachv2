@@ -81,10 +81,10 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
             result(err,{status:"failure"});
         })
         }else if(data.transtype === 'bill'){
-            _initBillPayment(model.MerchantOrderID,data.orderid).then(()=>{
-                result(null,{status:"success"});
+            _initBillPayment(model.MerchantOrderID,data.orderid).then((data)=>{
+                result(null,{status:"success",message:data.message,code:data.code});
             }).catch((err)=>{
-                result(null,{status:"success"});
+                result(null,{status:"success",message:data.message,code:data.code});
             })
         }
         }).catch((Err)=>{
@@ -116,8 +116,8 @@ TransactionModel.getPaymentDetails = (transactionid,result)=>{
 TransactionModel.InitBillPayment = (txnid,billid,result)=>{
     
 
-    _initBillPayment(txnid,billid).then((row)=>{
-        result(null,{status:"success",message:"Payment Details Fetched Successfully",data:row});
+    _initBillPayment(txnid,billid).then((data)=>{
+        result(null,{status:"success",message:"Payment Details Fetched Successfully",data:data});
     }).catch((err)=>{
         result(err,{status:"failure",message:"Payment Details Fetch Failed"});
     })
@@ -367,25 +367,27 @@ function getTransactions(userid,type,month){
                 
                     // Handle response
                     const result = response.data;
-                    console.log('API Response:', result);
+                   
                     if(result.statuscode === "TXN"){
-                        
+                       
                     }
                     if(result.statuscode === "TUP"){
 
                     }
+
+                    resolve({code:result.statuscode,message:result.message});
                     _updateIPayLog(sess,result,result.ipay_uuid);
 
-                    sql.query("UPDATE bill_transaction_master SET transactionid = ?,status = ? WHERE billid = ?",[txnid,result.statuscode,billid],async (err,data)=>{
+                    sql.query("UPDATE bill_transaction_master SET transactionid = ?,qpayrefid = ?,status = ?,ipayrefid = ? WHERE billid = ?",[txnid,sess,result.statuscode,result.ipay_uui,billid],async (err,data)=>{
                     });
-                    resolve(result.message);
+                    
                   } catch (error) {
                     console.error('Error making API request:', error.response?.data || error.message);
-                    resolve("Transaction Under Process");
+                    resolve({code:"ERR",message:"Unable To Process"});
                   }
                 return;
             }else{
-                resolve("Transaction Under Process");
+                resolve({code:"ERR",message:"Unable To Process"});
             }
         })
     
