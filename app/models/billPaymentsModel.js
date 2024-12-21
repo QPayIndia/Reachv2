@@ -126,9 +126,9 @@ BillPayments.getCreditCardProviders = (page,result)=>{
 BillPayments.getProviders = (page,categoryKey,result)=>{
    
     _getProviders(page,categoryKey).then((data)=>{
-        result(null,{status:"success",message:"Loan Providers Fetched Successfully",data:data});
+        result(null,{status:"success",message:"Data Fetched Successfully",data:data});
     }).catch((err)=>{
-        result(err,{status:"failure",message:"Unable to fetch Loan Providers",data:[]});
+        result(err,{status:"failure",message:"Unable to fetch Providers",data:[]});
     });
     
     
@@ -390,7 +390,7 @@ function _getProviders(page,categoryKey){
         if(result.statuscode == "TXN"){
             meta.totalPages = result.data.meta.totalPages;
             meta.currentPage = result.data.meta.currentPage;
-           
+           _updateRechargePlans(circle,operator,result);
             
             
             for( let i= 0 ; i < result.data.records.length ; i++){
@@ -793,6 +793,24 @@ function _updateIPayLog(sess,response,ipay_id){
     
     
     sql.query("UPDATE `instantpay_log` SET `response` = ? , ipayid = ? WHERE refid = ?;",[JSON.stringify(response),ipay_id,sess],(err,res)=>{
+        if(err){
+            console.log(err);
+            
+            return;
+        }
+
+        console.log("Data Inserted");
+        
+        
+    })
+}
+
+
+function _updateRechargePlans(circle,operator,response){
+
+    
+    
+    sql.query("UPDATE `instantpay_recharge_plans` SET jsonPlan = ? WHERE  `billerid` = ? AND circle = ?;",[JSON.stringify(response),operator,circle],(err,res)=>{
         if(err){
             console.log(err);
             
