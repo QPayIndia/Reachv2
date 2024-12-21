@@ -390,7 +390,7 @@ function _getProviders(page,categoryKey){
         if(result.statuscode == "TXN"){
             meta.totalPages = result.data.meta.totalPages;
             meta.currentPage = result.data.meta.currentPage;
-           _updateRechargePlans(circle,operator,result);
+           
             
             
             for( let i= 0 ; i < result.data.records.length ; i++){
@@ -685,7 +685,7 @@ function _getRechargePlans(circle,operator){
         
         if(result.statuscode == "TXN"){
            
-          
+            _updateRechargePlans(circle,operator,result);
             resolve(result);  
         }else{
             reject({})
