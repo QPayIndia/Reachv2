@@ -378,7 +378,7 @@ function getTransactions(userid,type,month){
                     resolve({code:result.statuscode,message:result.message});
                     _updateIPayLog(sess,result,result.ipay_uuid);
 
-                    sql.query("UPDATE bill_transaction_master SET transactionid = ?,qpayrefid = ?,status = ?,ipayrefid = ? WHERE billid = ?",[txnid,sess,result.statuscode,result.ipay_uui,billid],async (err,data)=>{
+                    sql.query("UPDATE bill_transaction_master SET transactionid = ?,qpayrefid = ?,status = ?,ipayrefid = ? WHERE billid = ?",[txnid,sess,result.statuscode,result.ipay_uuid,billid],async (err,data)=>{
                     });
                     
                   } catch (error) {
