@@ -249,6 +249,7 @@ function _getBillDetails(operator,customerId,mobilenumber){
                 data.ipay_id = result.data.enquiryReferenceId;
                 data.billamount = result.data.BillAmount;
                 data.billduedate = result.data.BillDueDate;
+                data.billdate = result.data.BillDate;
                 data.customername = result.data.CustomerName;
                 data.additionalinfo = result.data.AdditionalDetails;
                 
@@ -500,6 +501,55 @@ function _validateCard(bin){
             data.issuerBank = result.data.binDetails.issuerBank;
           
             resolve(data);  
+        }else{
+            reject({})
+        }
+        
+        
+    });
+
+    
+
+}
+
+
+
+function _getOperatorDetails(operator){
+    return new Promise(async (resolve,reject)=>{
+        const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
+
+        // Prepare the HTTP request
+        const response = await axios.post(
+            "https://api.instantpay.in/marketplace/utilityPayments/billerDetails",
+            {
+                billerId: operator,
+              
+            },
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "X-Ipay-Auth-Code": "1",
+                    "X-Ipay-Client-Id": process.env.INV_ID,
+                    "X-Ipay-Client-Secret": process.env.INV_SECRET,
+                    "X-Ipay-Outlet-Id": "192785",
+                    "X-Ipay-Endpoint-Ip": "216.48.190.93"
+                },
+                httpsAgent: new (require("https").Agent)({ rejectUnauthorized: false }) // Disable SSL verification
+            }
+        );
+
+        const result = response.data;
+
+        // Process response
+
+        let data = {};
+        console.log(result);
+        
+        if(result.statuscode == "TXN"){
+           
+          
+            resolve(result);  
         }else{
             reject({})
         }
