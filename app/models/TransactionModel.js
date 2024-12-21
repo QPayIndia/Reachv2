@@ -81,7 +81,7 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
             result(err,{status:"failure"});
         })
         }else if(data.transtype === 'bill'){
-            _initBillPayment(data.orderid,model.MerchantOrderID).then(()=>{
+            _initBillPayment(model.MerchantOrderID,data.orderid).then(()=>{
                 result(null,{status:"success"});
             }).catch((err)=>{
                 result(null,{status:"success"});
