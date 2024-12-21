@@ -12,7 +12,7 @@ module.exports = app =>{
     router.post('/validatecard',controller.ValidateCard);
     router.post('/paycard',controller.PayCreditCard);
     router.post('/getrechargeplans',controller.getRechargePlans);
-    router.post('/getoperators',controller.getOperators);
+    router.post('/getproviders',controller.getProviders);
     router.post('/getoperatordetail',controller.GetOperatorDetails);
    
    
