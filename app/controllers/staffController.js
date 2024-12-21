@@ -310,7 +310,7 @@ exports.uploadBill = (req,res)=>{
           }
 
         
-          img = "/uploads/staff/bill"+req.file.filename;
+          img = "/uploads/staff/bill/"+req.file.filename;
           
           res.status(200).send({status:"success",message:"File Uploaded Successfully",data : img});
             
