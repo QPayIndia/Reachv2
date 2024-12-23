@@ -71,15 +71,14 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
                         }else if (transData[0]['carttype'] === 'product'){
 
                             //Send Notification
-                            _getUIDFromProductOrder(transData[0]['orderid'],(err,data)=>{
-                                if(err){
-                                    console.log(err);
-                                }else{
+                            _getUIDFromProductOrder(transData[0]['orderid'].then((data)=>{
+                               
                                   if(data['uid']!= null)  Socket.SendMessageByUserId(data.uid,'order',{orderid:transData[0]['orderid'],userid:data.uid,message:'Hurray! You got an order'},"","","");
-                                }
+                                
                             })
+                             );
 
-                            
+
                             _updateCartProductItems(transData[0]['orderid']).then(()=>{
                                 result(null,{status:"success"});
                             }).catch((err)=>{
@@ -323,7 +322,7 @@ function _getUIDFromProductOrder(orderid){
                 reject(err);
                 return;
             }
-           resolve(data);
+           resolve(data[0]);
     
            
             
