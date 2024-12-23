@@ -69,6 +69,17 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
                                 result(null,{status:"success"});
                             })
                         }else if (transData[0]['carttype'] === 'product'){
+
+                            //Send Notification
+                            _getUIDFromProductOrder(transData[0]['orderid'],(err,data)=>{
+                                if(err){
+                                    console.log(err);
+                                }else{
+                                  if(data['uid']!= null)  Socket.SendMessageByUserId(data.uid,'order',{orderid:transData[0]['orderid'],userid:data.uid,message:'Hurray! You got an order'},"","","");
+                                }
+                            })
+
+                            
                             _updateCartProductItems(transData[0]['orderid']).then(()=>{
                                 result(null,{status:"success"});
                             }).catch((err)=>{
@@ -303,6 +314,23 @@ function getData(refId){
         })
     })
 }
+
+function _getUIDFromProductOrder(orderid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT D.uid FROM `product_master`as A,`product_order_items` as B,`business_master` as D WHERE B.productid = A.productid AND A.uid = D.bid AND B.orderid = ?;",[orderid],(err,data)=>{
+            if(err){
+                
+                reject(err);
+                return;
+            }
+           resolve(data);
+    
+           
+            
+        })
+    })
+}
+
 function getTransactions(userid,type,month){
     var query = "";
     if(type === "merchant")
