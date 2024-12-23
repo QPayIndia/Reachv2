@@ -3,6 +3,7 @@ const sql = require('./db.js');
 const ContactInfo = require("./ContactInfoModel.js");
 const { pgCommission, payStatus } = require('../config/globals.js');
 const axios = require('axios');
+const BusinessMaster = require('./businessMasterModel.js');
 require('dotenv').config();
 
 const TransactionModel = function(model){
@@ -50,7 +51,15 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
        if(model.ResponseCode == 200 || model.ResponseCode == 100){
         _getTXNDetails(model.MerchantOrderID).then((data)=>{
            if(data.transtype === "order")
-            { _getpostTransactionData(id).then((transData)=>{
+            { 
+                BusinessMaster.getUserIdByBID(model.uid,(err,data)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                      if(data['userid']!= null)  Socket.SendMessageByUserId(data.userid,'rating',{bid:model.uid,userid:data.userid,message:'Your Business Got A New Review!'},"","","");
+                    }
+                })
+                _getpostTransactionData(id).then((transData)=>{
                 if(transData.length > 0){
                     if(transData[0]['transtype'] === 'order'){
                         if(transData[0]['carttype'] === 'service'){
@@ -81,11 +90,11 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
             result(err,{status:"failure"});
         })
         }else if(data.transtype === 'bill'){
-            _initBillPayment(model.MerchantOrderID,data.orderid).then((data)=>{
-                result(null,{status:"success",message:data.message,code:data.code});
-            }).catch((err)=>{
-                result(null,{status:"success",message:data.message,code:data.code});
-            })
+            // _initBillPayment(model.MerchantOrderID,data.orderid).then((data)=>{
+            //     result(null,{status:"success",message:data.message,code:data.code});
+            // }).catch((err)=>{
+            //     result(null,{status:"success",message:data.message,code:data.code});
+            // })
         }
         }).catch((Err)=>{
             result(null,{status:"success"});
