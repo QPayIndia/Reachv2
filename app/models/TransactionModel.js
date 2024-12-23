@@ -70,7 +70,7 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
                             
                             _getUIDFromProductOrder(transData[0]['orderid']).then((data)=>{
                                
-                                  if(data['uid']!= null)  Socket.SendMessageByUserId(data.uid,'order',{orderid:transData[0]['orderid'],ordertype:"product",message:'Hurray! You got an order'},"","","");
+                                  if(data['uid']!= null)  Socket.SendMessageByUserId(data.uid,'order',{orderitemid:transData[0]['orderitemid'],ordertype:"product",message:'Hurray! You got an order'},"","","");
                                 
                             }
                              );
