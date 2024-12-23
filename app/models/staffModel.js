@@ -210,6 +210,7 @@ function _insertBMap(model){
 
 
 function _insertFollowUp(model){
+    console.log(model);
     return new Promise((resolve,reject)=>{
         sql.query("INSERT INTO staff_follow_up_master SET ?",[model],(err,res)=>{
             if(err){
@@ -241,7 +242,7 @@ function _insertLocationLog(model){
 
 
 function _insertExpense(model){
-    console.log(model);
+   
     
     return new Promise((resolve,reject)=>{
         sql.query("INSERT INTO staff_expense_master SET ?",[model],(err,res)=>{
