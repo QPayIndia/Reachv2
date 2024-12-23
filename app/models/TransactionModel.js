@@ -110,7 +110,7 @@ TransactionModel.getPaymentDetails = (transactionid,result)=>{
                 result(err,{status:"failure",message:"Payment Details Fetch Failed"});
             })
         }else if(data.transtype === 'order'){
-            _getBillPaymentDetails(transactionid).then((row)=>{
+            _getOrderPaymentDetails(transactionid).then((row)=>{
                 result(null,{status:"success",message:"Payment Details Fetched Successfully",data:row});
             }).catch((err)=>{
                 result(err,{status:"failure",message:"Payment Details Fetch Failed"});
