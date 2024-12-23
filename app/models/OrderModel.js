@@ -168,13 +168,13 @@ function UpdateServiceDeliveryStatus(orderitemid,staus){
 
 function getProductOrders(userId){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT DISTINCT A.orderid,D.orderitemid,B.paymentstatus,C.productid as itemid,D.deliverystatus,C.name,C.productimg as itemimage FROM `order_master` as A,`transaction_master` as B,`product_master` as C,`product_order_items` as D WHERE A.orderid = B.orderid AND A.orderid = D.orderid AND D.productid = C.productid AND A.userid = ? ORDER BY A.orderid DESC;",[userId],(err,data)=>{
+        sql.query("SELECT DISTINCT A.orderid,D.orderitemid,B.paymentstatus,C.productid as itemid,D.deliverystatus,C.name,C.productimg as itemimage FROM `order_master` as A,`transaction_master` as B,`product_master` as C,`product_order_items` as D WHERE A.orderid = B.orderid AND A.orderid = D.orderid AND D.productid = C.productid AND A.userid = ? GROUP BY D.orderitemid ORDER BY A.orderid DESC;",[userId],(err,data)=>{
             if(err){
                 console.log("Get Orders Failed : "+err);
                 reject(err);
                 return;
             }
-           console.log('Orders Fetched Successfully for : '+userId);
+          
            for(let i =0 ; i< data.length ; i++){
             data[i]['itemimage'] = domain+data[i]['itemimage'];
             data[i]['deliverystatus'] = deliveryStatus[data[i]['deliverystatus']];
@@ -189,7 +189,7 @@ function getProductOrders(userId){
 
 function getServiceOrders(userId){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT DISTINCT A.orderid,D.orderitemid,B.paymentstatus,C.serviceid as itemid,D.deliverystatus,C.name,C.serviceimg as itemimage FROM `order_master` as A,`transaction_master` as B,`service_master` as C,`service_order_items` as D WHERE A.orderid = B.orderid AND A.orderid = D.orderid AND D.serviceid = C.serviceid AND A.userid = ? ORDER BY A.orderid DESC;",[userId],(err,data)=>{
+        sql.query("SELECT DISTINCT A.orderid,D.orderitemid,B.paymentstatus,C.serviceid as itemid,D.deliverystatus,C.name,C.serviceimg as itemimage FROM `order_master` as A,`transaction_master` as B,`service_master` as C,`service_order_items` as D WHERE A.orderid = B.orderid AND A.orderid = D.orderid AND D.serviceid = C.serviceid AND A.userid = ? GROUP BY D.orderitemid ORDER BY A.orderid DESC;",[userId],(err,data)=>{
             if(err){
                 console.log("Get Orders Failed : "+err);
                 reject(err);
