@@ -53,7 +53,7 @@ AdminMaster.updateMerchantActiveStatus = (uid,result)=>{
    
     updateMerchantActiveStatus(uid).then(()=>{
         getMerchantActiveStatus(uid).then((data)=>{
-           if(data.active === 1) _updateMerchantStatusinStaffBusinessMappping(bid).then(()=>{});
+           if(data.active === 1) _updateMerchantStatusinStaffBusinessMappping(uid).then(()=>{});
             result(null,{status:"success",message:"Merchant Data Fetched Successfully",active:data['active']});
         }).catch((err)=>{
             result(null,{status:"failure",message:"Merchant Data Fetch Failed"});
