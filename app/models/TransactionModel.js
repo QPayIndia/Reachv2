@@ -58,6 +58,14 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
                 if(transData.length > 0){
                     if(transData[0]['transtype'] === 'order'){
                         if(transData[0]['carttype'] === 'service'){
+
+                            _getUIDFromProductOrder(transData[0]['orderid']).then((data)=>{
+                               
+                                if(data['uid']!= null)  Socket.SendMessageByUserId(data.uid,'order',{orderitemid:data.orderitemid,ordertype:"service",message:'Hurray! You got an order'},"","","");
+                              
+                          }
+                           );
+
                             _updateServiceCartItems(transData[0]['orderid']).then(()=>{
                                 result(null,{status:"success"});
                             }).catch((err)=>{
@@ -66,7 +74,7 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
                         }else if (transData[0]['carttype'] === 'product'){
 
                             //Send Notification
-                            console.log("ENter Product");
+                            
                             
                             _getUIDFromProductOrder(transData[0]['orderid']).then((data)=>{
                                
@@ -314,6 +322,22 @@ function getData(refId){
 function _getUIDFromProductOrder(orderid){
     return new Promise((resolve,reject)=>{
         sql.query("SELECT D.uid,B.orderitemid FROM `product_master`as A,`product_order_items` as B,`business_master` as D WHERE B.productid = A.productid AND A.uid = D.bid AND B.orderid = ?;",[orderid],(err,data)=>{
+            if(err){
+                
+                reject(err);
+                return;
+            }
+           resolve(data[0]);
+    
+           
+            
+        })
+    })
+}
+
+function _getUIDFromServiceOrder(orderid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT D.uid,B.orderitemid FROM `service_master`as A,`service_order_items` as B,`business_master` as D WHERE B.serviceid = A.serviceid AND A.uid = D.bid AND B.orderid = ?;",[orderid],(err,data)=>{
             if(err){
                 
                 reject(err);
