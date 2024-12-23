@@ -52,13 +52,7 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
         _getTXNDetails(model.MerchantOrderID).then((data)=>{
            if(data.transtype === "order")
             { 
-                BusinessMaster.getUserIdByBID(model.uid,(err,data)=>{
-                    if(err){
-                        console.log(err);
-                    }else{
-                      if(data['userid']!= null)  Socket.SendMessageByUserId(data.userid,'rating',{bid:model.uid,userid:data.userid,message:'Your Business Got A New Review!'},"","","");
-                    }
-                })
+               
                 _getpostTransactionData(id).then((transData)=>{
                 if(transData.length > 0){
                     if(transData[0]['transtype'] === 'order'){
@@ -71,6 +65,8 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
                         }else if (transData[0]['carttype'] === 'product'){
 
                             //Send Notification
+                            console.log("ENter Product");
+                            
                             _getUIDFromProductOrder(transData[0]['orderid'].then((data)=>{
                                
                                   if(data['uid']!= null)  Socket.SendMessageByUserId(data.uid,'order',{orderid:transData[0]['orderid'],userid:data.uid,message:'Hurray! You got an order'},"","","");
