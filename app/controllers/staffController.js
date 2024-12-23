@@ -139,7 +139,7 @@ exports.UpdateBusinessStatus = (req,res)=>{
 
 exports.AddFollowUp = (req,res)=>{
    
-    RequestValidator.validateRequest(req,res,["bid","staffid","appdate","apptime","remarks","status"],(auth)=>{
+    RequestValidator.validateRequest(req,res,["bid","staffid","appdate","apptime","status"],(auth)=>{
         if(auth){
 
            
