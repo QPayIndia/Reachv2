@@ -54,6 +54,18 @@ exports.getAllBusiness = (req,res)=>{
     });
 };
 
+
+exports.getHomeData = (req,res)=>{
+   
+    staffModel.getHomeData(req.body.userid,(err,data)=>{
+        if(err){
+            res.status(400).send(data);
+        }
+        else
+            res.status(200).send(data);
+    });
+};
+
 exports.UpdateBusinessStatus = (req,res)=>{
    
     RequestValidator.validateRequest(req,res,["bid","staffid","status","latitude","longitude"],(auth)=>{

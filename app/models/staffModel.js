@@ -51,6 +51,23 @@ StaffModel.getAllBusiness = (userid,result)=>{
 }
 
 
+StaffModel.getHomeData = (userid,result)=>{
+   
+    _getAllBusiness(userid).then((data)=>{
+        _getHomeData(userid).then((analytics)=>{
+            result(null,{status:"success",message:"Merchant Data Fetched Successfully",data:data,analytics:analytics});
+        }).catch(()=>{
+            result(null,{status:"failure",message:"Merchant Data Fetch Failed"});
+        });
+
+       
+    }).catch(()=>{
+        result(null,{status:"failure",message:"Merchant Data Fetch Failed"});
+    });
+ 
+}
+
+
 StaffModel.UpdateBusinessStatus = (model,result)=>{
    
     _updateBusinessStatus(model).then(()=>{
@@ -334,6 +351,20 @@ function _getExpense(staffid,date){
                     return;
                 }
                 console.log('Get Expense Fetched');
+                resolve(res);
+            })
+    });
+}
+
+function _getHomeData(staffid){
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT COUNT(*) as attended,SUM(CASE WHEN status = 'ONBOARDING' THEN 1 ELSE 0 END) AS onboarded,SUM(CASE WHEN status = 'REJECTED' THEN 1 ELSE 0 END) AS rejected,SUM(CASE WHEN status = 'INLIVE' THEN 1 ELSE 0 END) AS inlive FROM staff_business_mapping WHERE date > '2024-12-01 00:00:00' AND date	< '2024-12-31 23:59:59';",[staffid,date+" 00:00:00",date+" 23:59:59"],(err,res)=>{
+                if(err){
+                    
+                    console.log('Get Home Data Failed due to '+err);
+                    return;
+                }
+                
                 resolve(res);
             })
     });

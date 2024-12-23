@@ -11,6 +11,7 @@ module.exports = app =>{
     router.post('/addexpense',staff.AddExpense);
     router.post('/getexpense',staff.GetExpense);
     router.post('/uploadbill',staff.uploadBill);
+    router.post('/gethomedata',staff.getHomeData);
     
     app.use('/api/staff',router);
 }
