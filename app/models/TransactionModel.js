@@ -4,6 +4,7 @@ const ContactInfo = require("./ContactInfoModel.js");
 const { pgCommission, payStatus } = require('../config/globals.js');
 const axios = require('axios');
 const BusinessMaster = require('./businessMasterModel.js');
+const Socket = require('../utils/socket.js');
 require('dotenv').config();
 
 const TransactionModel = function(model){
