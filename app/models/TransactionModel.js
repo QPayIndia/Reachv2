@@ -431,7 +431,7 @@ function getPaymentDetails(transactionid){
            console.log("Transaction Details Fetched Successfully");
            
 
-           data['type'] = "pay";
+           data[0]['type'] = "pay";
            if(data.length> 0){
             data[0]['status'] = payStatus[data[0]['status']]
             if(data[0]['amount'] != null){
@@ -460,7 +460,7 @@ function _getBillPaymentDetails(transactionid){
                 reject(err);
                 return;
             }
-           data['type'] = "bill";
+           data[0]['type'] = "bill";
            
 
            if(data.length> 0){
@@ -491,7 +491,7 @@ function _getOrderPaymentDetails(transactionid){
                 reject(err);
                 return;
             }
-            data['type'] = "order";
+            data[0]['type'] = "order";
            data[0]['businessname'] = "";
            data[0]['businessphone'] = "";
            if(data.length> 0){
