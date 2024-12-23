@@ -366,7 +366,7 @@ function addBanner(title,url,userid){
 
 function _getLocationLog(staffid,fromdate,todate){
     return new Promise((resolve,reject)=>{
-        sql.query(" SELECT A.llogid,A.latitude,A.longitude,B.name,B.description,B.bid FROM `staff_location_log` as A, business_master as B WHERE A.bid = B.bid AND A.staffid = ? AND A.date > ? AND date < ?;",[staffid,fromdate,todate],(err,res)=>{
+        sql.query(" SELECT A.llogid,A.latitude,A.longitude,B.name,B.description,B.bid FROM `staff_location_log` as A, business_master as B WHERE A.bid = B.bid AND A.staffid = ? AND A.date > ? AND date < ?;",[staffid,fromdate+" 00:00:00",todate+" 23:59:59"],(err,res)=>{
             if(err){
                 reject();
                 console.log('Staff Location Fetch Failed due to '+err);
