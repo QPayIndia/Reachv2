@@ -59,7 +59,7 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
                     if(transData[0]['transtype'] === 'order'){
                         if(transData[0]['carttype'] === 'service'){
 
-                            _getUIDFromProductOrder(transData[0]['orderid']).then((data)=>{
+                            _getUIDFromServiceOrder(transData[0]['orderid']).then((data)=>{
                                
                                 if(data['uid']!= null)  Socket.SendMessageByUserId(data.uid,'order',{orderitemid:data.orderitemid,ordertype:"service",message:'Hurray! You got an order'},"","","");
                               
