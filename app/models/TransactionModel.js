@@ -68,11 +68,11 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
                             //Send Notification
                             console.log("ENter Product");
                             
-                            _getUIDFromProductOrder(transData[0]['orderid'].then((data)=>{
+                            _getUIDFromProductOrder(transData[0]['orderid']).then((data)=>{
                                
                                   if(data['uid']!= null)  Socket.SendMessageByUserId(data.uid,'order',{orderid:transData[0]['orderid'],userid:data.uid,message:'Hurray! You got an order'},"","","");
                                 
-                            })
+                            }
                              );
 
 
