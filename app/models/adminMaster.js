@@ -53,6 +53,7 @@ AdminMaster.updateMerchantActiveStatus = (uid,result)=>{
    
     updateMerchantActiveStatus(uid).then(()=>{
         getMerchantActiveStatus(uid).then((data)=>{
+           if(data.active === 1) _updateMerchantStatusinStaffBusinessMappping(bid);
             result(null,{status:"success",message:"Merchant Data Fetched Successfully",active:data['active']});
         }).catch((err)=>{
             result(null,{status:"failure",message:"Merchant Data Fetch Failed"});
@@ -241,6 +242,20 @@ function updateMerchantActiveStatus(bid){
                     return;
                 }
                 console.log('Status Updated Successfully for bid ' + bid);
+                resolve();
+            })
+    });
+}
+function _updateMerchantStatusinStaffBusinessMappping(bid){
+    return new Promise((resolve,reject)=>{
+        sql.query("UPDATE staff_business_mapping SET status = 'INLIVE' WHERE bid = ?;",bid,(err,res)=>{
+                if(err){
+                    
+                    console.log('Status Update Failed due to '+err);
+                    reject(err);
+                    return;
+                }
+                
                 resolve();
             })
     });
