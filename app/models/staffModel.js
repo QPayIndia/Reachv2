@@ -358,7 +358,15 @@ function _getExpense(staffid,date){
 
 function _getHomeData(staffid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT COUNT(*) as attended,SUM(CASE WHEN status = 'ONBOARDING' THEN 1 ELSE 0 END) AS onboarded,SUM(CASE WHEN status = 'REJECTED' THEN 1 ELSE 0 END) AS rejected,SUM(CASE WHEN status = 'INLIVE' THEN 1 ELSE 0 END) AS inlive FROM staff_business_mapping WHERE date > '2024-12-01 00:00:00' AND date	< '2024-12-31 23:59:59';",[staffid,date+" 00:00:00",date+" 23:59:59"],(err,res)=>{
+
+        //Getting the Start and End Date of a Month
+        const currentDate = new Date();
+        const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        const formatDate = (date) => date.toISOString().split('T')[0];
+
+
+        sql.query("SELECT COUNT(*) as attended,SUM(CASE WHEN status = 'ONBOARDING' THEN 1 ELSE 0 END) AS onboarded,SUM(CASE WHEN status = 'REJECTED' THEN 1 ELSE 0 END) AS rejected,SUM(CASE WHEN status = 'INLIVE' THEN 1 ELSE 0 END) AS inlive FROM staff_business_mapping WHERE date > ? AND date < ?;",[staffid,formatDate(startOfMonth)+" 00:00:00",formatDate(endOfMonth)+" 23:59:59"],(err,res)=>{
                 if(err){
                     
                     console.log('Get Home Data Failed due to '+err);
