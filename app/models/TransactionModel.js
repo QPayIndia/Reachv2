@@ -105,12 +105,12 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
             result(err,{status:"failure"});
         })
         }else if(data.transtype === 'bill'){
-            result(null,{status:"success",message:"asd",code:"sad"});
-            // _initBillPayment(model.MerchantOrderID,data.orderid).then((data)=>{
-            //     result(null,{status:"success",message:data.message,code:data.code});
-            // }).catch((err)=>{
-            //     result(null,{status:"success",message:data.message,code:data.code});
-            // })
+            //result(null,{status:"success",message:"asd",code:"sad"});
+            _initBillPayment(model.MerchantOrderID,data.orderid).then((data)=>{
+                result(null,{status:"success",message:data.message,code:data.code});
+            }).catch((err)=>{
+                result(null,{status:"success",message:data.message,code:data.code});
+            })
         }
         }).catch((Err)=>{
             result(null,{status:"success"});
