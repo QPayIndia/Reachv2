@@ -763,7 +763,7 @@ function _initTransaction(model){
                 var orderid = res.insertId;
                 let convenienceFee = (model.amount * global.billPayCommission/100).toFixed(2);
                 
-                sql.query("INSERT INTO `transaction_master` (`userid`, `amount`, `transtype`, `orderid`, `paymentstatus`,`commissionpercentage`,`commissionamount`,`settlementamount`) SELECT userid,?,'bill',billid,1,?,?,? FROM bill_transaction_master WHERE billid = ?;",[model.amount,global.billPayCommission,parseFloat(convenienceFee),- model.amount - parseFloat(convenienceFee),orderid],(err,res)=>{
+                sql.query("INSERT INTO `transaction_master` (`userid`, `amount`, `transtype`, `orderid`, `paymentstatus`,`commissionpercentage`,`commissionamount`,`settlementamount`) SELECT userid,?,'bill',billid,1,?,?,? FROM bill_transaction_master WHERE billid = ?;",[model.amount,global.billPayCommission,parseFloat(convenienceFee), model.amount - parseFloat(convenienceFee),orderid],(err,res)=>{
                     if(err){
                         console.log('Transaction create Failed due to '+err);
                         reject(err);
