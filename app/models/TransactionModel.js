@@ -70,7 +70,7 @@ TransactionModel.UpdateTransactionResponse = (model,result)=>{
                             
                             _getUIDFromProductOrder(transData[0]['orderid']).then((data)=>{
                                
-                                  if(data['uid']!= null)  Socket.SendMessageByUserId(data.uid,'order',{orderid:transData[0]['orderid'],userid:data.uid,message:'Hurray! You got an order'},"","","");
+                                  if(data['uid']!= null)  Socket.SendMessageByUserId(data.uid,'order',{orderid:transData[0]['orderid'],ordertype:"product",message:'Hurray! You got an order'},"","","");
                                 
                             }
                              );
@@ -313,7 +313,7 @@ function getData(refId){
 
 function _getUIDFromProductOrder(orderid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT D.uid FROM `product_master`as A,`product_order_items` as B,`business_master` as D WHERE B.productid = A.productid AND A.uid = D.bid AND B.orderid = ?;",[orderid],(err,data)=>{
+        sql.query("SELECT D.uid,B.orderitemid FROM `product_master`as A,`product_order_items` as B,`business_master` as D WHERE B.productid = A.productid AND A.uid = D.bid AND B.orderid = ?;",[orderid],(err,data)=>{
             if(err){
                 
                 reject(err);
