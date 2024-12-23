@@ -109,7 +109,14 @@ TransactionModel.getPaymentDetails = (transactionid,result)=>{
             }).catch((err)=>{
                 result(err,{status:"failure",message:"Payment Details Fetch Failed"});
             })
-        }else{
+        }else if(data.transtype === 'order'){
+            _getBillPaymentDetails(transactionid).then((row)=>{
+                result(null,{status:"success",message:"Payment Details Fetched Successfully",data:row});
+            }).catch((err)=>{
+                result(err,{status:"failure",message:"Payment Details Fetch Failed"});
+            })
+        }
+        else{
             getPaymentDetails(transactionid).then((row)=>{
                 result(null,{status:"success",message:"Payment Details Fetched Successfully",data:row});
             }).catch((err)=>{
@@ -455,6 +462,39 @@ function _getBillPaymentDetails(transactionid){
            console.log("Transaction Details Fetched Successfully");
            
 
+           if(data.length> 0){
+            data[0]['status'] = payStatus[data[0]['status']]
+            if(data[0]['amount'] != null){
+                data[0]['amountinwords'] = numberToWords(data[0]['amount']);
+               }else{
+                data[0]['amountinwords'] = "Rs. "+data[0]['amount'];
+               }
+           }
+           
+           
+           resolve(data[0]);
+    
+           
+            
+        })
+    })
+}
+
+
+function _getOrderPaymentDetails(transactionid){
+   
+    return new Promise((resolve,reject)=>{
+        sql.query("SELECT A.amount,DATE_FORMAT(A.createdon, '%h:%i %p , %d %M %Y') as date,paymentstatus as status ,C.name as username,C.phone as userphone  FROM `transaction_master`as A,`user_master` as C WHERE A.userid = C.uid  AND A.transactionid = ?;",[transactionid],(err,data)=>{
+            if(err){
+                console.log("Get Transaction Details Failed : "+err);
+                reject(err);
+                return;
+            }
+           console.log("Transaction Details Fetched Successfully");
+           
+
+           data[0]['businessname'] = "";
+           data[0]['businessphone'] = "";
            if(data.length> 0){
             data[0]['status'] = payStatus[data[0]['status']]
             if(data[0]['amount'] != null){
