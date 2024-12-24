@@ -132,7 +132,7 @@ exports.pay = (req,res)=>{
             let secretKey =  'vMVOg9wxslEUlvX3IjYDXAgVL9vUk+n0zvrA3fG/9sg4ZTdXST8=';  
             let QPayID = 'qpyerapiacc'+amount;
             let QPayPWD = 'qpyer!123';
-            let Mode = 'live';
+            let Mode = 'ds';
             let ResponseURL = 'http://ec2-3-108-62-163.ap-south-1.compute.amazonaws.com:8080/api/pay/callback';
             let TransactionType = 'PURCHASE';
             let Currency = 'INR';
