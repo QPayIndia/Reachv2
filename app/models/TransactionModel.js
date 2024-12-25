@@ -401,7 +401,8 @@ function getTransactions(userid,type,month){
                     externalRef: sess,
                     enquiryReferenceId: data.enquiryid,
                     inputParameters: {
-                      param1: param1
+                      param1: param1,
+                      telecomCircle :"TN"
                       //param2: param2
                       
                     },
