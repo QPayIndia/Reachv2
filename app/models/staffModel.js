@@ -305,7 +305,7 @@ function _updateBusinessStatus(model){
 
 function _getAllBusiness(userid){
     return new Promise((resolve,reject)=>{
-        sql.query("SELECT B.bid,B.name,B.description,A.status FROM `staff_business_mapping` as A,`business_master` as B WHERE A.bid = B.bid AND A.staffid = ?;",[userid],(err,res)=>{
+        sql.query("SELECT B.bid,B.name,B.description,A.status FROM `staff_business_mapping` as A,`business_master` as B WHERE A.bid = B.bid AND A.staffid = ? ORDER BY bmapid DESC;",[userid],(err,res)=>{
                 if(err){
                     
                     console.log('Get All Merchants Failed due to '+err);
