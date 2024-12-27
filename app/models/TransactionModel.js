@@ -398,13 +398,12 @@ function getTransactions(userid,type,month){
 
                 const sendData = {
                     billerId: data.billerid,
-                    telecomCircle :"TN",
+                    telecomCircle :data.telecomcircle,
                     externalRef: sess,
                     enquiryReferenceId: data.enquiryid,
                     inputParameters: {
                       param1: param1,
-                      telecomCircle :"TN"
-                      //param2: param2
+                      param2: param2
                       
                     },
                     initChannel: 'AGT',
