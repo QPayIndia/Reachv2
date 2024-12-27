@@ -38,9 +38,9 @@ BillPayments.PayCreditCard = (cardnumber,result)=>{
 }
 
 
-BillPayments.getBillDetails = (operator,billnumber,mobilenumber,amount,result)=>{
+BillPayments.getBillDetails = (operator,billnumber,mobilenumber,amount,type,result)=>{
    
-    _getBillDetails(operator,billnumber,mobilenumber,amount).then((data)=>{
+    _getBillDetails(operator,billnumber,mobilenumber,amount,type).then((data)=>{
         result(null,{status:"success",message:"Bill Details Fetched Successfully",data:data});
     }).catch((err)=>{
         result(err,{status:"failure",message:err.status,data:err});
@@ -204,18 +204,28 @@ function _getOperators(type){
     })
 }
 
-function _getBillDetails(operator,customerId,mobilenumber,amount){
+function _getBillDetails(operator,customerId,mobilenumber,amount,type){
     return new Promise(async (resolve,reject)=>{
         const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
 
-        
+                let param1 = customerId;
+                let param2 = mobilenumber;
+
+                if(type === "CREDIT CARD"){
+                    param1 = mobilenumber ;
+                    param2 = customerId ;
+                }else if(type === "DTH"){
+                    param1 = customerId;
+                    param2 = amount;
+                }
+
         const request = {
             billerId: operator,
             initChannel: "AGT",
             externalRef: sess,
             inputParameters: {
-                param1: customerId,
-                param2: mobilenumber
+                param1: param1,
+                param2: param2
             },
             deviceInfo: {
                 mac: "02-00-AC-10-7A-99",
