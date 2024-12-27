@@ -398,6 +398,7 @@ function getTransactions(userid,type,month){
 
                 const sendData = {
                     billerId: data.billerid,
+                    telecomCircle :"TN",
                     externalRef: sess,
                     enquiryReferenceId: data.enquiryid,
                     inputParameters: {
