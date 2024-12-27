@@ -224,7 +224,7 @@ function _getBillDetails(operator,customerId,mobilenumber,amount){
             remarks: {
                 param1: "9940620016"
             },
-            transactionAmount: 20
+            transactionAmount: amount
         };
 
 
