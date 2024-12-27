@@ -38,9 +38,9 @@ BillPayments.PayCreditCard = (cardnumber,result)=>{
 }
 
 
-BillPayments.getBillDetails = (operator,billnumber,mobilenumber,result)=>{
+BillPayments.getBillDetails = (operator,billnumber,mobilenumber,amount,result)=>{
    
-    _getBillDetails(operator,billnumber,mobilenumber).then((data)=>{
+    _getBillDetails(operator,billnumber,mobilenumber,amount).then((data)=>{
         result(null,{status:"success",message:"Bill Details Fetched Successfully",data:data});
     }).catch((err)=>{
         result(err,{status:"failure",message:err.status,data:err});
@@ -204,7 +204,7 @@ function _getOperators(type){
     })
 }
 
-function _getBillDetails(operator,customerId,mobilenumber){
+function _getBillDetails(operator,customerId,mobilenumber,amount){
     return new Promise(async (resolve,reject)=>{
         const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
 
