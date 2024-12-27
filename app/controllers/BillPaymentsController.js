@@ -186,6 +186,7 @@ exports.initTransaction = (req,res)=>{
         this.enquiryid = model.enquiryid,
         this.billnumber = model.billnumber,
         this.mobilenumber = model.mobilenumber,
+        this.telecomcircle = model.telecomcircle,
         this.amount = model.amount,
         this.billamount = model.billamount,
         this.createdby = model.createdby
@@ -195,9 +196,9 @@ exports.initTransaction = (req,res)=>{
 
    
 
-    RequestValidator.validateRequest(req,res,["userid","billtype","billername","billerid","billnumber","mobilenumber","amount"],(auth)=>{
+    RequestValidator.validateRequest(req,res,["userid","billtype","billername","billerid","billnumber","mobilenumber","amount","telecomcircle"],(auth)=>{
         if(auth){
-
+            let telecomCircle = req.body.telecomcircle;
             let model = new BillInitModel({
                 userid : req.body.userid,
                 billtype : req.body.billtype,
@@ -206,6 +207,7 @@ exports.initTransaction = (req,res)=>{
                 enquiryid : req.body.enquiryid,
                 billnumber : req.body.billnumber,
                 mobilenumber : req.body.mobilenumber,
+                telecomcircle : (req.body.billtype === "DTH") ? "IN" :telecomCircle,
                 amount : req.body.amount,
                 billamount:req.body.billamount,
                 createdby : req.body.userid

@@ -752,7 +752,7 @@ function _getOperatorDetails(operator){
 function _initTransaction(model){
     
     return new Promise((resolve,reject)=>{
-        var query = "INSERT INTO bill_transaction_master (userid,billtype,billername,billerid,billnumber,mobilenumber,amount,createdby,enquiryid) VALUES ("+model.userid+",'"+model.billtype+"','"+model.billername+"','"+model.billerid+"','"+model.billnumber+"','"+model.mobilenumber+"',"+model.billamount+","+model.userid+",'"+model.enquiryid+"');";
+        var query = "INSERT INTO bill_transaction_master (userid,billtype,billername,billerid,billnumber,mobilenumber,amount,createdby,enquiryid,telecomcircle) VALUES ("+model.userid+",'"+model.billtype+"','"+model.billername+"','"+model.billerid+"','"+model.billnumber+"','"+model.mobilenumber+"',"+model.billamount+","+model.userid+",'"+model.enquiryid+"',"+model.telecomcircle+"');";
         sql.query(query,(err,res)=>{
                 if(err){
                     console.log('Bill Create Failed due to '+err);
