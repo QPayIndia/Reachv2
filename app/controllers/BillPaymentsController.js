@@ -207,7 +207,7 @@ exports.initTransaction = (req,res)=>{
                 enquiryid : req.body.enquiryid,
                 billnumber : req.body.billnumber,
                 mobilenumber : req.body.mobilenumber,
-                telecomcircle : (req.body.billtype === "DTH") ? "IN" :telecomCircle,
+                telecomcircle : (req.body.billtype === "DTH") ? "TN" :telecomCircle,
                 amount : req.body.amount,
                 billamount:req.body.billamount,
                 createdby : req.body.userid
