@@ -393,8 +393,18 @@ function getTransactions(userid,type,month){
                 data = data[0];
                 const sess = `${Date.now()}${Math.floor(100 + Math.random() * 900)}`;
 
-                const param1 = (data.billtype === "CREDIT CARD") ? data.mobilenumber : data.billnumber;
-                const param2 = (data.billtype === "CREDIT CARD") ? data.billnumber : data.mobilenumber;
+                const param1 = data.billnumber;
+                const param2 = data.mobilenumber;
+
+                if(data.billtype === "CREDIT CARD"){
+                    param1 = data.mobilenumber ;
+                    param2 = data.billnumber ;
+                }else if(data.billtype === "DTH"){
+                    param1 = data.billnumber;
+                    param2 = data.amount;
+                }
+
+                 
 
                 const sendData = {
                     billerId: data.billerid,
