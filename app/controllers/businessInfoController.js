@@ -202,7 +202,7 @@ exports.getDistircts = (req,res)=>{
 }
 exports.Login = (req,res)=>{
     
-  if(req.body.phone === '123459876'){
+  if(req.body.phone === '1234509876'){
     res.status(200).send({status:"success",message:"OTP Send Successfully"});
   }else{
     LoginModel.Login(req.body.phone,(err,data)=>{
