@@ -202,7 +202,6 @@ exports.getDistircts = (req,res)=>{
 }
 exports.Login = (req,res)=>{
     
-  console.log(req.body.phone);
   
   if(req.body.phone == '1234509876'){
     res.status(200).send({status:"success",message:"OTP Send Successfully"});
@@ -234,7 +233,9 @@ exports.Signup = (req,res)=>{
     nameprefix : 0,
     name : req.body.name
   })
-    
+  if(req.body.phone == '1234509876'){
+    res.status(200).send({status:"success",message:"OTP Send Successfully"});
+  }else{
     LoginModel.Signup(model,(err,data)=>{
         if(err){
             res.status(400).send(data);
@@ -251,6 +252,7 @@ exports.Signup = (req,res)=>{
         })
         }
     })
+  }
 }
 
 
