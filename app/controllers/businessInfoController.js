@@ -27,7 +27,7 @@ const FAQModel = require("../models/faqModel.js");
 const UserModel = require("../models/userModel.js");
 const PaymentDeliveryModel = require("../models/paymentdeliveryModel.js");
 const User = require("../models/userModel.js");
-const { profile } = require("console");
+const { profile, log } = require("console");
 exports.create = (req,res)=>{
     if(!req.body){
         res.status(400).send({
@@ -202,6 +202,8 @@ exports.getDistircts = (req,res)=>{
 }
 exports.Login = (req,res)=>{
     
+  console.log(req.body.phone);
+  
   if(req.body.phone == '1234509876'){
     res.status(200).send({status:"success",message:"OTP Send Successfully"});
   }else{
