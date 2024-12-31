@@ -395,6 +395,7 @@ function getTransactions(userid,type,month){
 
                 let param1 = data.billnumber;
                 let param2 = data.mobilenumber;
+                let telecomCircle = data.telecomcircle;
 
                 if(data.billtype === "CREDIT CARD"){
                     param1 = data.mobilenumber ;
@@ -402,13 +403,15 @@ function getTransactions(userid,type,month){
                 }else if(data.billtype === "DTH"){
                     param1 = data.billnumber;
                     param2 = data.amount;
+                }else if (data.billtype === "ELECTRICITY"){
+                    telecomCircle = "TN";
                 }
 
                  
 
                 const sendData = {
                     billerId: data.billerid,
-                    telecomCircle :data.telecomcircle,
+                    telecomCircle :telecomCircle,
                     externalRef: sess,
                     enquiryReferenceId: data.enquiryid,
                     inputParameters: {
