@@ -403,7 +403,7 @@ function getTransactions(userid,type,month){
                 }else if(data.billtype === "DTH"){
                     param1 = data.billnumber;
                     param2 = data.amount;
-                }else if (data.billtype === "ELECTRICITY" || data.billtype === "FASTAG" || data.billtype === "POSTPAID"){
+                }else if (data.billtype === "ELECTRICITY" || data.billtype === "FASTAG" || data.billtype === "POSTPAID" || data.billtype === "LOANEMI"){
                     telecomCircle = "TN";
                 }
 
