@@ -24,7 +24,8 @@ BillPayments.getPrepaidPlans = (userid,billerid,circle,result)=>{
 BillPayments.getCheckoutTotal = (amount,result)=>{
 
     let convenienceFee = (amount * global.billPayCommission/100).toFixed(2);
-    result(null,{status:"success",message:"Convenience Fee Fetched Successfully",data:{amount:amount,convenienceFee:convenienceFee,total:amount+parseFloat(convenienceFee)}});
+    let total = (amount + (amount * global.billPayCommission/100)).toFixed(2);
+    result(null,{status:"success",message:"Convenience Fee Fetched Successfully",data:{amount:amount,convenienceFee:convenienceFee,total:total}});
 }
 
 
