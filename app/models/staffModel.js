@@ -375,6 +375,10 @@ function _getHomeData(staffid){
                     console.log('Get Home Data Failed due to '+err);
                     return;
                 }
+
+                if(res.length > 0){
+                    res[0]['attended'] = res[0]['attended'] - res[0]['inlive']
+                }
                 
                 resolve(res);
             })
